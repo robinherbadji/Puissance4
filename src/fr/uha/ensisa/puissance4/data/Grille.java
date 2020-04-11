@@ -19,7 +19,7 @@ public class Grille {
 	}
 	
 	/**
-	 * Constructeur permettant de crÃ©er une copie de la grille donnÃ©e en argument
+	 * Constructeur permettant de créer une copie de la grille donnée en argument
 	 * @param original
 	 */
 	private Grille(Grille original)
@@ -28,7 +28,7 @@ public class Grille {
 	}
 	
 	/**
-	 * Renvoie le contenu de la case aux coordonnÃ©es donnÃ©es en argument
+	 * Renvoie le contenu de la case aux coordonnées données en argument
 	 * @param ligne
 	 * @param colonne
 	 * @return
@@ -39,7 +39,7 @@ public class Grille {
 	}
 
 	/**
-	 * Indique s'il y a encore de la place dans la colonne indiquÃ©e
+	 * Indique s'il y a encore de la place dans la colonne indiquée
 	 * @param colonne
 	 * @return
 	 */
@@ -55,7 +55,7 @@ public class Grille {
 	}
 
 	/**
-	 * Ajoute le symbole indiquÃ© dans la colonne indiquÃ©e
+	 * Ajoute le symbole indiqué dans la colonne indiquée
 	 * ce qui permet de jouer ce coup
 	 * @param colonne
 	 * @param symbole
@@ -73,7 +73,7 @@ public class Grille {
 	}
 	
 	/**
-	 * Renvoie l'Ã©tat de la partie
+	 * Renvoie l'état de la partie
 	 * @param symboleJoueurCourant
 	 * @param tour
 	 * @return
@@ -90,7 +90,7 @@ public class Grille {
 			victoire=Constantes.VICTOIRE_JOUEUR_2;
 		}
 		int nbAlignes=0;
-		//VÃ©rification alignement horizontaux
+		//Vérification alignement horizontaux
 		for(int i=0;i<Constantes.NB_LIGNES;i++)
 		{
 			for(int j=0;j<Constantes.NB_COLONNES;j++)
@@ -106,7 +106,7 @@ public class Grille {
 			}
 			nbAlignes=0;
 		}
-		//VÃ©rification alignement verticaux
+		//Vérification alignement verticaux
 		for(int j=0;j<Constantes.NB_COLONNES;j++)
 		{
 			for(int i=0;i<Constantes.NB_LIGNES;i++)
@@ -122,7 +122,7 @@ public class Grille {
 			}
 			nbAlignes=0;
 		}
-		//VÃ©rification alignement diagonaux (bas-droite vers haut-gauche)
+		//Vérification alignement diagonaux (bas-droite vers haut-gauche)
 		for(int i=0;i<Constantes.NB_LIGNES-3;i++)
 			for(int j=0;j<Constantes.NB_COLONNES-3;j++)
 			{
@@ -140,7 +140,7 @@ public class Grille {
 				nbAlignes=0;
 			}
 		
-		//VÃ©rification alignement diagonaux (bas-gauche vers haut-droit)
+		//Vérification alignement diagonaux (bas-gauche vers haut-droit)
 		for(int i=0;i<Constantes.NB_LIGNES-3;i++)
 			for(int j=Constantes.NB_COLONNES-1;j>=3;j--)
 			{
@@ -167,7 +167,7 @@ public class Grille {
 	}
 	
 	/**
-	 * Donne un score Ã  la grille en fonction du joueur 
+	 * Donne un score à la grille en fonction du joueur 
 	 * @param symboleJoueurCourant
 	 * @return
 	 */

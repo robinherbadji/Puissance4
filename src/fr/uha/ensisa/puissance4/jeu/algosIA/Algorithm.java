@@ -47,7 +47,7 @@ public abstract class Algorithm {
 
 	/**
 	 * Lancement de l'algorithme de Jeu
-	 * @return le coup choisi pour la grille indiquÃ© lors de l'instantiation de l'algo
+	 * @return le coup choisi pour la grille indiqué lors de l'instantiation de l'algo
 	 */
 	public abstract int choisirCoup();
 	

@@ -5,7 +5,7 @@ import fr.uha.ensisa.puissance4.data.Joueur;
 
 
 /**
-	Classe implÃ©mentant l'algorithme Minimax
+	Classe implémentant l'algorithme Minimax
 */
 public class Minimax extends Algorithm {
 	

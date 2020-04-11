@@ -8,7 +8,7 @@ public abstract class Puissance4 {
 	public static void main(String[] args) {
 
 		int mode = Constantes.MODE_CONSOLE;
-		//Indique la bonne interface et la lance dans un thread diffÃ©rent
+		//Indique la bonne interface et la lance dans un thread différent
 		switch(mode)
 		{
 		default :

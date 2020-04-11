@@ -7,7 +7,7 @@ import fr.uha.ensisa.puissance4.ui.Console;
 import fr.uha.ensisa.puissance4.util.Constantes;
 
 /**
- Classe permettant de gÃ©rer l'IA comme joueur	
+ Classe permettant de gérer l'IA comme joueur	
 */
 public class IA extends Joueur {
 	
@@ -42,11 +42,11 @@ public class IA extends Joueur {
 		Algorithm iA;
 		if(algoIA==Constantes.IA_MINIMAX)
 		{
-			iA = new Minimax(levelIA,grille, this, tour);
+			iA = new Minimax(levelIA, grille, this, tour);
 		}
 		else
 		{
-			iA = new AlphaBeta(levelIA,grille,this, tour);
+			iA = new AlphaBeta(levelIA, grille, this, tour);
 		}
 		return iA.choisirCoup();
 	}

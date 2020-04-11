@@ -51,7 +51,7 @@ public class Partie {
 	}
 	
 	/**
-	 * Renvoie le numÃ©ro du tour actuel
+	 * Renvoie le numéro du tour actuel
 	 * @return
 	 */
 	public int getTour()
@@ -78,7 +78,7 @@ public class Partie {
 	}
 
 	/**
-	 * Joue le coup indiquÃ© (colonne oÃ¹ mettre un symbole)
+	 * Joue le coup indiqué (colonne où mettre un symbole)
 	 * @param colonne
 	 * @param tempsReflexion
 	 * @return
@@ -118,7 +118,7 @@ public class Partie {
 	}
 	
 	/**
-	 * Mets Ã  jour l'Ã©tat de la partie
+	 * Mets à jour l'état de la partie
 	 */
 	private void verificationFinPartie()
 	{		
@@ -126,7 +126,7 @@ public class Partie {
 	}
 	
 	/**
-	 * Renvoie l'Ã©tat de la partie
+	 * Renvoie l'état de la partie
 	 * @return
 	 */
 	public int getEtatPartie()

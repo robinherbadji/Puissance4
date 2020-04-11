@@ -27,7 +27,7 @@ public abstract class Joueur {
 	public abstract int getType();
 	
 	/**
-	 * Renvoie "Humain" ou "IA" Ã  des fins d'affichage
+	 * Renvoie "Humain" ou "IA" à des fins d'affichage
 	 * @return
 	 */
 	public abstract String getTypeNom();
@@ -51,7 +51,7 @@ public abstract class Joueur {
 	}
 	
 	/**
-	 * Renvoie le symbole utilisÃ© par le joueur (X ou O)
+	 * Renvoie le symbole utilisé par le joueur (X ou O)
 	 * @return Case symbole
 	 */
 	public Case getSymbole()

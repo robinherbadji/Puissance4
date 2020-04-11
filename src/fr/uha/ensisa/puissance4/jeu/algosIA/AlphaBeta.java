@@ -4,7 +4,7 @@ import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
 
 /**
-	Classe implÃ©mentant l'algorithme Alpha-Beta
+	Classe implémentant l'algorithme Alpha-Beta
 */
 public class AlphaBeta extends Algorithm {
 

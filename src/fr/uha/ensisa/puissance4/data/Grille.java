@@ -11,20 +11,29 @@ public class Grille {
 	public Grille()
 	{
 		grille= new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
-		for(int i=0;i<Constantes.NB_COLONNES;i++)
+		for(int i=0;i<Constantes.NB_COLONNES;i++) {
 			for(int j=0;j<Constantes.NB_LIGNES;j++)
 			{
-				grille[i][j] = Case.V;
-			}		
+				grille[i][j] = Case.V;				
+			}
+		}
 	}
 	
 	/**
 	 * Constructeur permettant de créer une copie de la grille donnée en argument
+	 * 
 	 * @param original
+	 * @author Yassine & Robin
 	 */
 	private Grille(Grille original)
 	{
-		//Ã€ complÃ©ter
+		grille = new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
+		for(int i=0;i<Constantes.NB_COLONNES;i++) {
+			for(int j=0;j<Constantes.NB_LIGNES;j++)
+			{
+				grille[i][j] = original.getCase(j, i);
+			}
+		}
 	}
 	
 	/**

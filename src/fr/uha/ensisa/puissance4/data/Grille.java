@@ -4,12 +4,14 @@ package fr.uha.ensisa.puissance4.data;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class Grille {
+public class Grille extends Noeud {
 	
 	private Case[][] grille;
+	//private Noeud noeud;
 	
 	public Grille()
 	{
+		super();
 		grille= new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
 		for(int i=0;i<Constantes.NB_COLONNES;i++) {
 			for(int j=0;j<Constantes.NB_LIGNES;j++)
@@ -17,6 +19,7 @@ public class Grille {
 				grille[i][j] = Case.V;				
 			}
 		}
+		
 	}
 	
 	/**
@@ -27,6 +30,8 @@ public class Grille {
 	 */
 	private Grille(Grille original)
 	{
+		super(original, original.getProfondeur()+1);
+		
 		grille = new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
 		for(int i=0;i<Constantes.NB_COLONNES;i++) {
 			for(int j=0;j<Constantes.NB_LIGNES;j++)
@@ -110,6 +115,7 @@ public class Grille {
 					nbAlignes=0;
 				if(nbAlignes==4)
 				{
+					//System.out.println("vict horiz");
 					return victoire;
 				}
 			}
@@ -126,6 +132,7 @@ public class Grille {
 					nbAlignes=0;
 				if(nbAlignes==4)
 				{
+					//System.out.println("vict vert");
 					return victoire;
 				}
 			}
@@ -143,6 +150,7 @@ public class Grille {
 						nbAlignes=0;
 					if(nbAlignes==4)
 					{
+						//System.out.println("vict diag");
 						return victoire;
 					}
 				}
@@ -161,6 +169,7 @@ public class Grille {
 						nbAlignes=0;
 					if(nbAlignes==4)
 					{
+						//System.out.println("vict diag");
 						return victoire;
 					}
 				}
@@ -175,6 +184,8 @@ public class Grille {
 		return Constantes.PARTIE_EN_COURS;
 	}
 	
+	
+	
 	/**
 	 * Donne un score à la grille en fonction du joueur 
 	 * @param symboleJoueurCourant
@@ -182,9 +193,94 @@ public class Grille {
 	 */
 	public double evaluer(Case symboleJoueurCourant)
 	{
-		//Ã€ complÃ©ter
-		return 0; 
+		double score = 0;
+		
+		int nbAlignes=0;
+		//Vérification alignement horizontaux
+		for(int i=0;i<Constantes.NB_LIGNES;i++)
+		{
+			for(int j=0;j<Constantes.NB_COLONNES;j++)
+			{
+				if(grille[j][i]==symboleJoueurCourant)
+					nbAlignes++;
+				else
+					nbAlignes=0;
+				
+				score += basicScoreAlignement(nbAlignes);
+			}
+			nbAlignes=0;
+		}
+		//Vérification alignement verticaux
+		for(int j=0;j<Constantes.NB_COLONNES;j++)
+		{
+			for(int i=0;i<Constantes.NB_LIGNES;i++)
+			{
+				if(grille[j][i]==symboleJoueurCourant)
+					nbAlignes++;
+				else
+					nbAlignes=0;
+				
+				score += basicScoreAlignement(nbAlignes);
+			}
+			nbAlignes=0;
+		}
+		//Vérification alignement diagonaux (bas-droite vers haut-gauche)
+		for(int i=0;i<Constantes.NB_LIGNES-3;i++)
+			for(int j=0;j<Constantes.NB_COLONNES-3;j++)
+			{
+				for(int x=0;i+x<Constantes.NB_LIGNES&&j+x<Constantes.NB_COLONNES;x++)
+				{
+					if(grille[j+x][i+x]==symboleJoueurCourant)
+						nbAlignes++;
+					else
+						nbAlignes=0;
+					
+					score += basicScoreAlignement(nbAlignes);
+				}
+				nbAlignes=0;
+			}
+		
+		//Vérification alignement diagonaux (bas-gauche vers haut-droit)
+		for(int i=0;i<Constantes.NB_LIGNES-3;i++)
+			for(int j=Constantes.NB_COLONNES-1;j>=3;j--)
+			{
+				for(int x=0;i+x<Constantes.NB_LIGNES&&j-x>=0;x++)
+				{
+					if(grille[j-x][i+x]==symboleJoueurCourant)
+						nbAlignes++;
+					else
+						nbAlignes=0;
+					
+					score += basicScoreAlignement(nbAlignes);
+				}
+				nbAlignes=0;
+			}
+		
+		return score; 
 	}
+	
+	
+	private double basicScoreAlignement(int nbAlignes) {
+		double score = 0;
+		if(nbAlignes==4)
+		{
+			score += 1000;
+		}
+		if(nbAlignes==3)
+		{
+			score += 100;
+		}
+		if(nbAlignes==2)
+		{
+			score += 10;
+		}
+		if(nbAlignes==1)
+		{
+			score += 1;
+		}
+		return score;
+	}
+	
 	
 	/**
 	 * Clone la grille

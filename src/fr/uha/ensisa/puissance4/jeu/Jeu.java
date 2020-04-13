@@ -17,7 +17,7 @@ public class Jeu extends Thread{
 	
 	public void run()
 	{
-		console.lancementPartie(partie.getJoueur1(), partie.getJoueur2());
+		console.lancementPartie(partie.getJoueur1(), partie.getJoueur2());		
 		while(!partie.isPartieFinie())
 		{
 			console.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille());

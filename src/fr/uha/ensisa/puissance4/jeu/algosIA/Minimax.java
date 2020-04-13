@@ -80,8 +80,8 @@ public class Minimax extends Algorithm {
 			//System.out.println("Max : "+state.evaluer(symboleMax));
 			//System.out.println("Min : "+state.evaluer(symboleMin));
 			//return state.evaluer(symboleMax); // L'evaluation se fait tjrs sur symboleMax
-			
-			return state.evaluer(symboleMax) - state.evaluer(symboleMin);
+			System.out.println(("profondeur : "+ (this.tourExplore - this.tourDepart)));
+			return state.evaluer(symboleMax);
 		}
 		
 		//double utility = Constantes.SCORE_MAX_NON_DEFINI; // tend vers +inf
@@ -108,13 +108,13 @@ public class Minimax extends Algorithm {
 	}
 	
 	private double max_value(Grille state) {
-		int etatPartie = state.getEtatPartie(symboleMax, tourExplore); // L'etat partie se fait tjrs sur symboleMax
+		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		if (etatPartie != Constantes.PARTIE_EN_COURS || (this.tourExplore - this.tourDepart) >= this.levelIA) {
 			//System.out.println("On est dans Max Value");
 			//System.out.println("\tMax : "+state.evaluer(symboleMax)+" / Min : "+state.evaluer(symboleMin));
 			//System.out.println("Min : "+state.evaluer(symboleMin));
 			//return state.evaluer(symboleMax); // L'evaluation se fait tjrs sur symboleMax
-			return state.evaluer(symboleMax) - state.evaluer(symboleMin);
+			return state.evaluer(symboleMax);
 		}
 		
 		//double utility = Constantes.SCORE_MIN_NON_DEFINI; // tend vers -inf

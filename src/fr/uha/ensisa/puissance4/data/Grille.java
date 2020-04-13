@@ -115,7 +115,7 @@ public class Grille extends Noeud {
 					nbAlignes=0;
 				if(nbAlignes==4)
 				{
-					//System.out.println("vict horiz");
+					System.out.println("vict horiz");
 					return victoire;
 				}
 			}
@@ -132,7 +132,7 @@ public class Grille extends Noeud {
 					nbAlignes=0;
 				if(nbAlignes==4)
 				{
-					//System.out.println("vict vert");
+					System.out.println("vict vert");
 					return victoire;
 				}
 			}
@@ -150,7 +150,7 @@ public class Grille extends Noeud {
 						nbAlignes=0;
 					if(nbAlignes==4)
 					{
-						//System.out.println("vict diag");
+						System.out.println("vict diag");
 						return victoire;
 					}
 				}
@@ -169,7 +169,7 @@ public class Grille extends Noeud {
 						nbAlignes=0;
 					if(nbAlignes==4)
 					{
-						//System.out.println("vict diag");
+						System.out.println("vict diag");
 						return victoire;
 					}
 				}

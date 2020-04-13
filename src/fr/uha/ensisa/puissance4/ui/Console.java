@@ -29,7 +29,7 @@ public class Console extends Thread {
 		//j1 = choixJoueur(Constantes.JOUEUR_1, entry);
 		//j2 = choixJoueur(Constantes.JOUEUR_2, entry);
 		
-		int difficulte = 3;
+		int difficulte = 2;
 		j1 = new Humain("Robin", 1);
 		//j1 = new IA("Trop nul", 2, Constantes.IA_MINIMAX, 1);
 		j2 = new IA("Robocop", 2, Constantes.IA_MINIMAX, difficulte);

@@ -22,25 +22,15 @@ public class Minimax extends Algorithm {
 		super(levelIA, grilleDepart, joueurActuel, tour);
 		this.joueurActuel = joueurActuel;
 	}
-	/*
-	private class ComparateurDeCout implements Comparator<Integer> {
-
-		@Override
-		public int compare(Integer val1, Integer val2) {
-			
-			return val1 - val2;
-		}
-	}
-	*/
 
 	@Override
 	public int choisirCoup() {
 		// Tester si on peut jouer le coup dans la case qu'on voualait mettre
 		
 		//max_value();
-		System.out.println("MAX : "+grilleDepart.evaluer(symboleMax));
-		System.out.println("MIN : "+grilleDepart.evaluer(symboleMin));
-		int coup = 0;
+		//System.out.println("MAX : "+grilleDepart.evaluer(symboleMax));
+		//System.out.println("MIN : "+grilleDepart.evaluer(symboleMin));
+		int coup = Constantes.COUP_NON_DEFINI;
 		/*
 		while (!grilleDepart.isCoupPossible(coup)) {
 			coup = (int)Math.floor(Math.random()*Constantes.NB_COLONNES);
@@ -56,14 +46,13 @@ public class Minimax extends Algorithm {
 				
 				grille_next.ajouterCoup(col, symboleMax);
 				tourExplore = this.tourDepart + 1;
-				
-				//double eval_grille_next = grille_next.evaluer(symboleMax);
+			
 				double eval_grille_next = min_value(grille_next);
 				System.out.println("colonne "+(col+1)+" : "+eval_grille_next);
 				if (eval_grille_next > utility_max) {
 					utility_max = eval_grille_next;
 					coup = col;
-					System.out.println("on a trouuvé mieux");
+					//System.out.println("on a trouuvé mieux");
 				}
 			}			
 		}
@@ -80,7 +69,7 @@ public class Minimax extends Algorithm {
 			//System.out.println("Max : "+state.evaluer(symboleMax));
 			//System.out.println("Min : "+state.evaluer(symboleMin));
 			//return state.evaluer(symboleMax); // L'evaluation se fait tjrs sur symboleMax
-			System.out.println(("profondeur : "+ (this.tourExplore - this.tourDepart)));
+			//System.out.println(("profondeur : "+ (this.tourExplore - this.tourDepart)));
 			return state.evaluer(symboleMax);
 		}
 		

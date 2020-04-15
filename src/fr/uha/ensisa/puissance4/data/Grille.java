@@ -1,6 +1,15 @@
 package fr.uha.ensisa.puissance4.data;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+
+import fr.uha.ensisa.puissance4.data.combinaisons.Combinaison;
+import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonHorizontale;
+import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonObliqueDroiteGauche;
+import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonObliqueGaucheDroite;
+import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonVerticale;
+import fr.uha.ensisa.puissance4.data.strategies.Strategie;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
@@ -49,7 +58,12 @@ public class Grille extends Noeud {
 	 */
 	public Case getCase(int ligne, int colonne)
 	{
-		return grille[colonne][ligne];
+		try {
+			return grille[colonne][ligne];
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
@@ -115,7 +129,6 @@ public class Grille extends Noeud {
 					nbAlignes=0;
 				if(nbAlignes==4)
 				{
-					System.out.println("vict horiz");
 					return victoire;
 				}
 			}
@@ -132,13 +145,13 @@ public class Grille extends Noeud {
 					nbAlignes=0;
 				if(nbAlignes==4)
 				{
-					System.out.println("vict vert");
 					return victoire;
 				}
 			}
 			nbAlignes=0;
 		}
-		//Vérification alignement diagonaux (bas-droite vers haut-gauche)
+		
+		//Vérification alignement diagonaux (bas-gauche vers haut-droit)
 		for(int i=0;i<Constantes.NB_LIGNES-3;i++)
 			for(int j=0;j<Constantes.NB_COLONNES-3;j++)
 			{
@@ -150,14 +163,13 @@ public class Grille extends Noeud {
 						nbAlignes=0;
 					if(nbAlignes==4)
 					{
-						System.out.println("vict diag");
 						return victoire;
 					}
 				}
 				nbAlignes=0;
 			}
 		
-		//Vérification alignement diagonaux (bas-gauche vers haut-droit)
+		//Vérification alignement diagonaux (bas-droite vers haut-gauche)
 		for(int i=0;i<Constantes.NB_LIGNES-3;i++)
 			for(int j=Constantes.NB_COLONNES-1;j>=3;j--)
 			{
@@ -169,7 +181,6 @@ public class Grille extends Noeud {
 						nbAlignes=0;
 					if(nbAlignes==4)
 					{
-						System.out.println("vict diag");
 						return victoire;
 					}
 				}
@@ -186,6 +197,12 @@ public class Grille extends Noeud {
 	
 	
 	
+	
+	///////////////////////////////////////////////////////////////////////////
+	// EVALUATION
+	///////////////////////////////////////////////////////////////////////////
+	
+	
 	/**
 	 * Donne un score à la grille en fonction du joueur 
 	 * @param symboleJoueurCourant
@@ -193,6 +210,114 @@ public class Grille extends Noeud {
 	 */
 	public double evaluer(Case symboleJoueurCourant)
 	{
+		//Joueur joueurCourant = null;
+		//this.symboleJoueurCourant = symboleJoueurCourant;
+		
+		
+		Strategie strategie = new Strategie(this,Constantes.STRATEGIE_GLOBALE, symboleJoueurCourant);
+		
+		//double utility = coef_IA * evaluerJoueur(symboleJoueurCourant) - coef_Other * evaluerJoueur(symboleJoueurAdverse);
+		/*
+		double utility = Constantes.COEF_IA * evaluerJoueur_test1(symboleJoueurCourant) - Constantes.COEF_OTHER * evaluerJoueur_test1(symboleJoueurAdverse);
+		return utility;
+		*/
+		return strategie.getUtility();
+	}
+	
+	/*
+	public double[] evaluer_tab(Case symboleJoueurCourant)
+	{
+		Strategie strategie = new Strategie(this,Constantes.STRATEGIE_GLOBALE, symboleJoueurCourant);
+		
+		return strategie.getUtility_tab();
+	}
+	*/
+	
+	private double evaluerJoueur_test1(Case symboleJoueurCourant) {
+		double score = 0;
+		
+		//Vérification alignement horizontaux
+		// Parcourt des 6 lignes
+		for(int i=0; i < Constantes.NB_LIGNES; i++)
+		{
+			// Parcours de 4 possiblilités
+			for(int j=0; j < Constantes.NB_COLONNES-Constantes.NB_JETONS_VICTOIRE+1; j++)
+			{
+				Combinaison combinaison = new CombinaisonHorizontale(symboleJoueurCourant);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symboleCourant = this.getCase(i, j+k);
+					combinaison.addSymbole(symboleCourant);
+					//System.out.println("ligne : "+j+" et colonne : "+(i+k));
+				}
+				combinaison.addBonus(this.getCase(i, j+Constantes.NB_JETONS_VICTOIRE));
+				score += combinaison.getScore();
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println(combinaison.toString());
+			}
+		}
+		
+		//Vérification alignement verticaux
+		//Parcours des 3 lignes
+		for(int i=0;i<Constantes.NB_LIGNES-Constantes.NB_JETONS_VICTOIRE+1;i++) {
+			
+			for(int j=0;j<Constantes.NB_COLONNES;j++)
+			{
+				Combinaison combinaison = new CombinaisonVerticale( symboleJoueurCourant);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symboleCourant = this.getCase(i+k, j);
+					combinaison.addSymbole(symboleCourant);
+				}
+				combinaison.addBonus(this.getCase(i+Constantes.NB_JETONS_VICTOIRE, j));
+				score += combinaison.getScore();
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println(combinaison.toString());
+			}
+		}
+		
+		//Vérification alignement diagonaux (bas-gauche vers haut-droit)
+		//Parcours des 3 lignes
+		for(int i=0;i<Constantes.NB_LIGNES-Constantes.NB_JETONS_VICTOIRE+1;i++) {
+			// Parcours des 4 colonnes
+			for(int j=0; j < Constantes.NB_COLONNES-Constantes.NB_JETONS_VICTOIRE+1; j++) {				
+				Combinaison combinaison = new CombinaisonObliqueGaucheDroite(symboleJoueurCourant);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symboleCourant = this.getCase(i+k, j+k);
+					combinaison.addSymbole(symboleCourant);
+				}
+				combinaison.addBonus(this.getCase(i+Constantes.NB_JETONS_VICTOIRE, j+Constantes.NB_JETONS_VICTOIRE));
+				score += combinaison.getScore();
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println(combinaison.toString());
+			}
+		}
+		
+
+		//Vérification alignement diagonaux (bas-droite vers haut-gauche)
+		// Parcours des 3 lignes possibles
+		for(int i=0;i<Constantes.NB_LIGNES-Constantes.NB_JETONS_VICTOIRE+1;i++)
+			// Parcours des 4 colonnes en sens inverse
+			for(int j=Constantes.NB_COLONNES-1;j>=Constantes.NB_COLONNES-Constantes.NB_JETONS_VICTOIRE;j--)
+			{
+				Combinaison combinaison = new CombinaisonObliqueDroiteGauche(symboleJoueurCourant);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symboleCourant = this.getCase(i+k, j-k);
+					combinaison.addSymbole(symboleCourant);
+				}
+				combinaison.addBonus(this.getCase(i+Constantes.NB_JETONS_VICTOIRE, j-Constantes.NB_JETONS_VICTOIRE));
+				score += combinaison.getScore();
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println(combinaison.toString());
+			}		
+		return score; 
+	}
+	
+	
+	/*
+	private double evaluerJoueur(Case symboleJoueurCourant) {
 		double score = 0;
 		
 		int nbAlignes=0;
@@ -260,6 +385,32 @@ public class Grille extends Noeud {
 	}
 	
 	
+	
+	private double basicScoreAlignement(int nb_jetons_combin, boolean bonus) {
+		double score = 0;
+		if(nb_jetons_combin==4)
+		{
+			score += 1000;
+		}
+		if(nb_jetons_combin==3)
+		{
+			score += 100;
+			if (bonus) {
+				score += 400;
+			}			
+		}
+		if(nb_jetons_combin==2)
+		{
+			score += 10;
+		}
+		if(nb_jetons_combin==1)
+		{
+			score += 1;
+		}
+		return score;
+	}
+	*/
+	
 	private double basicScoreAlignement(int nbAlignes) {
 		double score = 0;
 		if(nbAlignes==4)
@@ -280,6 +431,23 @@ public class Grille extends Noeud {
 		}
 		return score;
 	}
+	
+	/*
+	public ArrayList<Combinaison> getCombinaison() {
+		Combinaison comb1 = new CombinaisonHorizontale(grille);
+	}
+	*/
+	
+	/*
+	private Case getSymboleAdverse(Case symboleJoueurCourant) {
+		Case symboleJoueurAdverse=Constantes.SYMBOLE_J1;
+		if(symboleJoueurCourant==Constantes.SYMBOLE_J1)
+		{
+			symboleJoueurAdverse=Constantes.SYMBOLE_J2;
+		}
+		return symboleJoueurAdverse;
+	}
+	*/
 	
 	
 	/**

@@ -1,21 +1,21 @@
-package fr.uha.ensisa.puissance4.data.combinaisons;
+package fr.uha.ensisa.puissance4.data.evaluation.combinaisons;
 
 import java.util.ArrayList;
 
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class CombinaisonVerticale extends Combinaison{
+public class CombinaisonObliqueDroiteGauche extends Combinaison{
 
-	public CombinaisonVerticale(ArrayList<Case> combinaison, Case symbCourant) {
-		super(Constantes.DIRECTION_VERTICALE, combinaison, symbCourant);
+	public CombinaisonObliqueDroiteGauche(ArrayList<Case> combinaison, Case symbCourant) {
+		super(Constantes.DIRECTION_OBLIQUE_DROITE_GAUCHE, combinaison, symbCourant);
 	}
 	
-	public CombinaisonVerticale(Case symbCourant) {
-		super(Constantes.DIRECTION_VERTICALE, symbCourant);
+	public CombinaisonObliqueDroiteGauche(Case symbCourant) {
+		super(Constantes.DIRECTION_OBLIQUE_DROITE_GAUCHE, symbCourant);
 	}
 
-	/*
+	
 	@Override
 	public double getScore() {
 		double score = 0;
@@ -24,24 +24,29 @@ public class CombinaisonVerticale extends Combinaison{
 			score = Constantes.SCORE_4;
 		}
 		// Combinaison possible
-		if (getNbCurrent() == 3) {
+		if (getNbCurrent() == 3 && getNbVides() == 1) {
 			score = Constantes.SCORE_3;
+			if (this.combinaison.get(0)==Case.V && bonus==Case.V) {
+				score += Constantes.SCORE_BONUS;
+			}
 		}
-		if (getNbCurrent() == 2) {
+		if (getNbCurrent() == 2 && getNbVides() == 2) {
 			score = Constantes.SCORE_2;
 		}
-		if (getNbCurrent() == 1) {
+		if (getNbCurrent() == 1 && getNbVides() == 3) {
 			score = Constantes.SCORE_1;
 		}
-		
+		//System.out.println("Oblique Droite Gauche score : "+score);
 		return score;
 	}
-	*/
-
+	
+	
+	
 	@Override
 	public String getNomDirection() {
-		return "Vertical";
+		return "Oblique Droite-Gauche";
 	}
+
 	
 	
 	/*

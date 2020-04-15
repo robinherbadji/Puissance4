@@ -1,4 +1,4 @@
-package fr.uha.ensisa.puissance4.data.combinaisons;
+package fr.uha.ensisa.puissance4.data.evaluation.combinaisons;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class CombinaisonHorizontale extends Combinaison{
 		super(Constantes.DIRECTION_HORIZONTALE, symbCourant);
 	}
 
-	/*
+	
 	@Override
 	public double getScore() {
 		double score = 0;
@@ -23,7 +23,7 @@ public class CombinaisonHorizontale extends Combinaison{
 		if (getNbCurrent() == 4) {
 			score = Constantes.SCORE_4;
 		}
-		// Combinaison possible
+		// Combinaisons possibles
 		if (getNbCurrent() == 3 && getNbVides() == 1) {
 			score = Constantes.SCORE_3;
 			if (this.combinaison.get(0)==Case.V && bonus==Case.V) {
@@ -36,10 +36,10 @@ public class CombinaisonHorizontale extends Combinaison{
 		if (getNbCurrent() == 1 && getNbVides() == 3) {
 			score = Constantes.SCORE_1;
 		}
-		
+		//System.out.println("Horizontal score : "+score);
 		return score;
 	}
-	*/
+	
 
 	@Override
 	public String getNomDirection() {

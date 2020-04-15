@@ -1,4 +1,4 @@
-package fr.uha.ensisa.puissance4.data.combinaisons;
+package fr.uha.ensisa.puissance4.data.evaluation.combinaisons;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,36 +1,31 @@
-package fr.uha.ensisa.puissance4.data.strategies;
+package fr.uha.ensisa.puissance4.data.evaluation.strategies;
 
 import fr.uha.ensisa.puissance4.data.Grille;
-import fr.uha.ensisa.puissance4.data.combinaisons.Combinaison;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonHorizontale;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonObliqueDroiteGauche;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonObliqueGaucheDroite;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonVerticale;
+import fr.uha.ensisa.puissance4.data.evaluation.Strategie;
+import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison;
+import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.CombinaisonHorizontale;
+import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.CombinaisonObliqueDroiteGauche;
+import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.CombinaisonObliqueGaucheDroite;
+import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.CombinaisonVerticale;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class Strategie {
-	private Grille grille;
-	private int strategie;
-	Case symboleJoueurCourant;
-	Case symboleJoueurAdverse;
+public class StrategieGlobale extends Strategie {
 	
-	public Strategie(Grille grille, int strategie, Case symboleJoueurCourant) {
-		this.grille = grille;
-		this.strategie = strategie;
-		this.symboleJoueurCourant = symboleJoueurCourant;
-		this.symboleJoueurAdverse = getSymboleAdverse(symboleJoueurCourant);
+	public StrategieGlobale(Grille grille, Case symboleJoueurCourant) {
+		super(grille, symboleJoueurCourant);
 	}
-
+	
+	
 	public double getUtility() {
 		double attaque = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant);
 		double defense = Constantes.COEF_OTHER * evaluerJoueur(symboleJoueurAdverse);
 		double utility = attaque - defense;
-		//double utility = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant) - Constantes.COEF_OTHER * evaluerJoueur(symboleJoueurAdverse);
-		System.out.println("Attaque : "+attaque+" / Défense : "+defense);
+		//System.out.println("Attaque : "+attaque+" / Défense : "+defense);
 		return utility;
 	}
 	
+	/*
 	public double[] getUtility_tab() {
 		double[] tab_utility = new double[3];
 		tab_utility[0] = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant);
@@ -40,8 +35,7 @@ public class Strategie {
 		System.out.println("Attaque : "+tab_utility[0]+" / Défense : "+tab_utility[1]);
 		return tab_utility;
 	}
-	
-	
+	*/
 	
 	
 	private double evaluerJoueur(Case symboleJoueur) {
@@ -63,7 +57,7 @@ public class Strategie {
 				combinaison.addBonus(grille.getCase(i, j+Constantes.NB_JETONS_VICTOIRE));
 				score += combinaison.getScore();
 				//System.out.println(combinaison.getNbCombinaison());
-				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println("colonne : "+j+" et ligne : "+i+" / "+combinaison.toString());
 				//System.out.println(combinaison.toString());
 			}
 		}
@@ -99,6 +93,7 @@ public class Strategie {
 				}
 				combinaison.addBonus(grille.getCase(i+Constantes.NB_JETONS_VICTOIRE, j+Constantes.NB_JETONS_VICTOIRE));
 				score += combinaison.getScore();
+				//System.out.println("colonne : "+j+" et ligne : "+i+" / "+combinaison.toString());
 				//System.out.println(combinaison.getNbCombinaison());
 				//System.out.println("colonne : "+j+" et ligne : "+i);
 				//System.out.println(combinaison.toString());
@@ -119,23 +114,12 @@ public class Strategie {
 				}
 				combinaison.addBonus(grille.getCase(i+Constantes.NB_JETONS_VICTOIRE, j-Constantes.NB_JETONS_VICTOIRE));
 				score += combinaison.getScore();
+				//System.out.println("colonne : "+j+" et ligne : "+i+" / "+combinaison.toString());
 				//System.out.println(combinaison.getNbCombinaison());
 				//System.out.println("colonne : "+j+" et ligne : "+i);
 				//System.out.println(combinaison.toString());
 			}		
 		return score; 
 	}
-	
-	
-	private Case getSymboleAdverse(Case symboleJoueurCourant) {
-		Case symboleJoueurAdverse=Constantes.SYMBOLE_J1;
-		if(symboleJoueurCourant==Constantes.SYMBOLE_J1)
-		{
-			symboleJoueurAdverse=Constantes.SYMBOLE_J2;
-		}
-		return symboleJoueurAdverse;
-	}
-	
-	
-}
 
+}

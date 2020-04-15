@@ -1,15 +1,8 @@
 package fr.uha.ensisa.puissance4.data;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import fr.uha.ensisa.puissance4.data.combinaisons.Combinaison;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonHorizontale;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonObliqueDroiteGauche;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonObliqueGaucheDroite;
-import fr.uha.ensisa.puissance4.data.combinaisons.CombinaisonVerticale;
-import fr.uha.ensisa.puissance4.data.strategies.Strategie;
+import fr.uha.ensisa.puissance4.data.evaluation.Strategie;
+import fr.uha.ensisa.puissance4.data.evaluation.strategies.StrategieGlobale;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
@@ -203,6 +196,7 @@ public class Grille extends Noeud {
 	///////////////////////////////////////////////////////////////////////////
 	
 	
+	// VERSION 3
 	/**
 	 * Donne un score à la grille en fonction du joueur 
 	 * @param symboleJoueurCourant
@@ -210,29 +204,16 @@ public class Grille extends Noeud {
 	 */
 	public double evaluer(Case symboleJoueurCourant)
 	{
-		//Joueur joueurCourant = null;
-		//this.symboleJoueurCourant = symboleJoueurCourant;
-		
-		
-		Strategie strategie = new Strategie(this,Constantes.STRATEGIE_GLOBALE, symboleJoueurCourant);
-		
-		//double utility = coef_IA * evaluerJoueur(symboleJoueurCourant) - coef_Other * evaluerJoueur(symboleJoueurAdverse);
-		/*
-		double utility = Constantes.COEF_IA * evaluerJoueur_test1(symboleJoueurCourant) - Constantes.COEF_OTHER * evaluerJoueur_test1(symboleJoueurAdverse);
-		return utility;
-		*/
+		Strategie strategie = new StrategieGlobale(this, symboleJoueurCourant);		
 		return strategie.getUtility();
 	}
 	
-	/*
-	public double[] evaluer_tab(Case symboleJoueurCourant)
-	{
-		Strategie strategie = new Strategie(this,Constantes.STRATEGIE_GLOBALE, symboleJoueurCourant);
-		
-		return strategie.getUtility_tab();
-	}
-	*/
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+	// VERSION 2
+	/*
 	private double evaluerJoueur_test1(Case symboleJoueurCourant) {
 		double score = 0;
 		
@@ -316,6 +297,37 @@ public class Grille extends Noeud {
 	}
 	
 	
+	private double basicScoreAlignement(int nb_jetons_combin, boolean bonus) {
+		double score = 0;
+		if(nb_jetons_combin==4)
+		{
+			score += 1000;
+		}
+		if(nb_jetons_combin==3)
+		{
+			score += 100;
+			if (bonus) {
+				score += 400;
+			}			
+		}
+		if(nb_jetons_combin==2)
+		{
+			score += 10;
+		}
+		if(nb_jetons_combin==1)
+		{
+			score += 1;
+		}
+		return score;
+	}
+	*/
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	// VERSION 1
 	/*
 	private double evaluerJoueur(Case symboleJoueurCourant) {
 		double score = 0;
@@ -385,32 +397,6 @@ public class Grille extends Noeud {
 	}
 	
 	
-	
-	private double basicScoreAlignement(int nb_jetons_combin, boolean bonus) {
-		double score = 0;
-		if(nb_jetons_combin==4)
-		{
-			score += 1000;
-		}
-		if(nb_jetons_combin==3)
-		{
-			score += 100;
-			if (bonus) {
-				score += 400;
-			}			
-		}
-		if(nb_jetons_combin==2)
-		{
-			score += 10;
-		}
-		if(nb_jetons_combin==1)
-		{
-			score += 1;
-		}
-		return score;
-	}
-	*/
-	
 	private double basicScoreAlignement(int nbAlignes) {
 		double score = 0;
 		if(nbAlignes==4)
@@ -430,22 +416,6 @@ public class Grille extends Noeud {
 			score += 1;
 		}
 		return score;
-	}
-	
-	/*
-	public ArrayList<Combinaison> getCombinaison() {
-		Combinaison comb1 = new CombinaisonHorizontale(grille);
-	}
-	*/
-	
-	/*
-	private Case getSymboleAdverse(Case symboleJoueurCourant) {
-		Case symboleJoueurAdverse=Constantes.SYMBOLE_J1;
-		if(symboleJoueurCourant==Constantes.SYMBOLE_J1)
-		{
-			symboleJoueurAdverse=Constantes.SYMBOLE_J2;
-		}
-		return symboleJoueurAdverse;
 	}
 	*/
 	

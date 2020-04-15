@@ -1,21 +1,21 @@
-package fr.uha.ensisa.puissance4.data.combinaisons;
+package fr.uha.ensisa.puissance4.data.evaluation.combinaisons;
 
 import java.util.ArrayList;
 
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class CombinaisonObliqueDroiteGauche extends Combinaison{
+public class CombinaisonObliqueGaucheDroite extends Combinaison{
 
-	public CombinaisonObliqueDroiteGauche(ArrayList<Case> combinaison, Case symbCourant) {
-		super(Constantes.DIRECTION_OBLIQUE_DROITE_GAUCHE, combinaison, symbCourant);
+	public CombinaisonObliqueGaucheDroite(ArrayList<Case> combinaison, Case symbCourant) {
+		super(Constantes.DIRECTION_OBLIQUE_GAUCHE_DROITE, combinaison, symbCourant);
 	}
 	
-	public CombinaisonObliqueDroiteGauche(Case symbCourant) {
-		super(Constantes.DIRECTION_OBLIQUE_DROITE_GAUCHE, symbCourant);
+	public CombinaisonObliqueGaucheDroite(Case symbCourant) {
+		super(Constantes.DIRECTION_OBLIQUE_GAUCHE_DROITE, symbCourant);
 	}
 
-	/*
+	
 	@Override
 	public double getScore() {
 		double score = 0;
@@ -36,15 +36,14 @@ public class CombinaisonObliqueDroiteGauche extends Combinaison{
 		if (getNbCurrent() == 1 && getNbVides() == 3) {
 			score = Constantes.SCORE_1;
 		}
-		
+		//System.out.println("Oblique Gauche Droite score : "+score);
 		return score;
 	}
-	*/
 	
 	
 	@Override
 	public String getNomDirection() {
-		return "Oblique Droite-Gauche";
+		return "Oblique Gauche-Droite";
 	}
 
 	
@@ -78,3 +77,4 @@ public class CombinaisonObliqueDroiteGauche extends Combinaison{
 	}
 	*/
 }
+

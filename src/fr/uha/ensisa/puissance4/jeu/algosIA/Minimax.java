@@ -31,7 +31,7 @@ public class Minimax extends Algorithm {
 			
 				double eval_grille_next = min_value(grille_next);
 				System.out.println("colonne "+(col+1)+" : "+eval_grille_next);
-				if (eval_grille_next > utility_max) {
+				if (eval_grille_next >= utility_max && Math.abs(col-Constantes.NB_COLONNES/2) < Math.abs(coup-Constantes.NB_COLONNES/2)) {
 					utility_max = eval_grille_next;
 					coup = col;
 					//System.out.println("on a trouuvé mieux");

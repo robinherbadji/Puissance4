@@ -16,11 +16,21 @@ public class StrategieGlobale extends Strategie {
 		super(grille, symboleJoueurCourant);
 	}
 	
+	public StrategieGlobale(Grille grille, Case symboleJoueurCourant, int tourExplore) {
+		super(grille, symboleJoueurCourant, tourExplore);
+	}
+	
 	
 	public double getUtility() {
 		double attaque = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant);
 		double defense = Constantes.COEF_OTHER * evaluerJoueur(symboleJoueurAdverse);
 		double utility = attaque - defense;
+		//System.out.println("Attaque : "+attaque+" / Défense : "+defense);
+		return utility;
+	}
+	
+	public double getUtility2() {
+		double utility = evaluerJoueur2(symboleJoueurCourant);
 		//System.out.println("Attaque : "+attaque+" / Défense : "+defense);
 		return utility;
 	}
@@ -36,6 +46,92 @@ public class StrategieGlobale extends Strategie {
 		return tab_utility;
 	}
 	*/
+	
+	
+	private double evaluerJoueur2(Case symboleJoueur) {
+		double score = 0;
+		
+		//Vérification alignement horizontaux
+		// Parcourt des 6 lignes
+		for(int i=0; i < Constantes.NB_LIGNES; i++)
+		{
+			// Parcours de 4 possiblilités
+			for(int j=0; j < Constantes.NB_COLONNES-Constantes.NB_JETONS_VICTOIRE+1; j++)
+			{
+				Combinaison combinaison = new CombinaisonHorizontale(symboleJoueur);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symbole = grille.getCase(i, j+k);
+					combinaison.addSymbole(symbole);
+					//System.out.println("ligne : "+j+" et colonne : "+(i+k));
+				}
+				combinaison.addBonus(grille.getCase(i, j+Constantes.NB_JETONS_VICTOIRE));
+				return combinaison.getScore()*this.tourExplore;
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i+" / "+combinaison.toString());
+				//System.out.println(combinaison.toString());
+			}
+		}
+		
+		//Vérification alignement verticaux
+		//Parcours des 3 lignes
+		for(int i=0;i<Constantes.NB_LIGNES-Constantes.NB_JETONS_VICTOIRE+1;i++) {
+			
+			for(int j=0;j<Constantes.NB_COLONNES;j++)
+			{
+				Combinaison combinaison = new CombinaisonVerticale(symboleJoueur);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symbole = grille.getCase(i+k, j);
+					combinaison.addSymbole(symbole);
+				}
+				combinaison.addBonus(grille.getCase(i+Constantes.NB_JETONS_VICTOIRE, j));
+				return combinaison.getScore()*this.tourExplore;
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println(combinaison.toString());
+			}
+		}
+		
+		//Vérification alignement diagonaux (bas-gauche vers haut-droit)
+		//Parcours des 3 lignes
+		for(int i=0;i<Constantes.NB_LIGNES-Constantes.NB_JETONS_VICTOIRE+1;i++) {
+			// Parcours des 4 colonnes
+			for(int j=0; j < Constantes.NB_COLONNES-Constantes.NB_JETONS_VICTOIRE+1; j++) {				
+				Combinaison combinaison = new CombinaisonObliqueGaucheDroite(symboleJoueur);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symbole = grille.getCase(i+k, j+k);
+					combinaison.addSymbole(symbole);
+				}
+				combinaison.addBonus(grille.getCase(i+Constantes.NB_JETONS_VICTOIRE, j+Constantes.NB_JETONS_VICTOIRE));
+				return combinaison.getScore()*this.tourExplore;
+				//System.out.println("colonne : "+j+" et ligne : "+i+" / "+combinaison.toString());
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println(combinaison.toString());
+			}
+		}
+		
+
+		//Vérification alignement diagonaux (bas-droite vers haut-gauche)
+		// Parcours des 3 lignes possibles
+		for(int i=0;i<Constantes.NB_LIGNES-Constantes.NB_JETONS_VICTOIRE+1;i++)
+			// Parcours des 4 colonnes en sens inverse
+			for(int j=Constantes.NB_COLONNES-1;j>=Constantes.NB_COLONNES-Constantes.NB_JETONS_VICTOIRE;j--)
+			{
+				Combinaison combinaison = new CombinaisonObliqueDroiteGauche(symboleJoueur);
+				for (int k=0; k<Constantes.NB_JETONS_VICTOIRE; k++) {
+					Case symbole = grille.getCase(i+k, j-k);
+					combinaison.addSymbole(symbole);
+				}
+				combinaison.addBonus(grille.getCase(i+Constantes.NB_JETONS_VICTOIRE, j-Constantes.NB_JETONS_VICTOIRE));
+				return combinaison.getScore()*this.tourExplore;
+				//System.out.println("colonne : "+j+" et ligne : "+i+" / "+combinaison.toString());
+				//System.out.println(combinaison.getNbCombinaison());
+				//System.out.println("colonne : "+j+" et ligne : "+i);
+				//System.out.println(combinaison.toString());
+			}		
+		return score; 
+	}
+
 	
 	
 	private double evaluerJoueur(Case symboleJoueur) {

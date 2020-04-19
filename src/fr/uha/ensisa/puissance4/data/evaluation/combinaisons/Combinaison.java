@@ -98,6 +98,30 @@ public abstract class Combinaison {
 		double score = 0;
 		// Combinaison parfaite
 		if (getNbCurrent() == 4) {
+			score = 1;
+		}
+		/*
+		// Combinaison possible
+		if (getNbCurrent() == 3 && getNbVides() == 1) {
+			score = Constantes.SCORE_3;
+			if (this.combinaison.get(0)==Case.V && bonus==Case.V) {
+				score += Constantes.SCORE_BONUS;
+			}
+		}
+		if (getNbCurrent() == 2 && getNbVides() == 2) {
+			score = Constantes.SCORE_2;
+		}
+		if (getNbCurrent() == 1 && getNbVides() == 3) {
+			score = Constantes.SCORE_1;
+		}*/
+		return score;
+	}
+	
+	/*
+	public double getScore() {
+		double score = 0;
+		// Combinaison parfaite
+		if (getNbCurrent() == 4) {
 			score = Constantes.SCORE_4;
 		}
 		// Combinaison possible
@@ -115,4 +139,5 @@ public abstract class Combinaison {
 		}
 		return score;
 	}
+	*/
 }

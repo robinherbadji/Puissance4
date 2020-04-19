@@ -11,6 +11,9 @@ public abstract class Algorithm {
 	protected Grille grilleDepart;
 	protected int tourDepart;
 	protected int tourMax;
+	protected int tourExplore;
+	
+	protected Joueur joueurActuel;
 	/**
 	 * Symbole adversaire
 	 */
@@ -33,6 +36,7 @@ public abstract class Algorithm {
 		this.grilleDepart=grilleDepart;
 		this.tourDepart=tour;
 		this.tourMax= Math.min(tourDepart+levelIA, Constantes.NB_TOUR_MAX);
+		this.joueurActuel = joueurActuel;
 		if(joueurActuel.getOrder()==Constantes.JOUEUR_1)
 		{
 			symboleMax=Constantes.SYMBOLE_J1;
@@ -51,6 +55,11 @@ public abstract class Algorithm {
 	 */
 	public abstract int choisirCoup();
 	
+	
+	protected int[] classementColonnes() {
+		int[] colonnes = {3,2,4,1,5,0,6};
+		return colonnes;		
+	}
 	
 
 }

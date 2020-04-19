@@ -8,6 +8,7 @@ public abstract class Strategie {
 	protected Grille grille;
 	protected Case symboleJoueurCourant;
 	protected Case symboleJoueurAdverse;
+	protected int tourExplore;
 	
 	public Strategie(Grille grille, Case symboleJoueurCourant) {
 		this.grille = grille;
@@ -15,7 +16,15 @@ public abstract class Strategie {
 		this.symboleJoueurAdverse = getSymboleAdverse(symboleJoueurCourant);
 	}
 	
+	public Strategie(Grille grille, Case symboleJoueurCourant, int tourExplore) {
+		this.grille = grille;
+		this.symboleJoueurCourant = symboleJoueurCourant;
+		this.symboleJoueurAdverse = getSymboleAdverse(symboleJoueurCourant);
+		this.tourExplore = tourExplore;
+	}
+	
 	public abstract double getUtility();
+	public abstract double getUtility2();
 	
 	private Case getSymboleAdverse(Case symboleJoueurCourant) {
 		Case symboleJoueurAdverse=Constantes.SYMBOLE_J1;

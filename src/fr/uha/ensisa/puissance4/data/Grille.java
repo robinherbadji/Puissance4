@@ -6,22 +6,17 @@ import fr.uha.ensisa.puissance4.data.evaluation.strategies.StrategieGlobale;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class Grille extends Noeud {
+public class Grille {
 	
 	private Case[][] grille;
-	//private Noeud noeud;
-	
-	public Grille()
-	{
-		super();
-		grille= new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
-		for(int i=0;i<Constantes.NB_COLONNES;i++) {
-			for(int j=0;j<Constantes.NB_LIGNES;j++)
-			{
-				grille[i][j] = Case.V;				
+
+	public Grille() {
+		grille = new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
+		for (int i = 0; i < Constantes.NB_COLONNES; i++) {
+			for (int j = 0; j < Constantes.NB_LIGNES; j++) {
+				grille[i][j] = Case.V;
 			}
 		}
-		
 	}
 	
 	/**
@@ -31,9 +26,7 @@ public class Grille extends Noeud {
 	 * @author Yassine & Robin
 	 */
 	private Grille(Grille original)
-	{
-		super(original, original.getProfondeur()+1);
-		
+	{		
 		grille = new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
 		for(int i=0;i<Constantes.NB_COLONNES;i++) {
 			for(int j=0;j<Constantes.NB_LIGNES;j++)
@@ -194,6 +187,20 @@ public class Grille extends Noeud {
 	///////////////////////////////////////////////////////////////////////////
 	// EVALUATION
 	///////////////////////////////////////////////////////////////////////////
+	
+	
+	// VERSION 4
+	/**
+	 * Donne un score à la grille en fonction du joueur 
+	 * @param symboleJoueurCourant
+	 * @return
+	 */
+	public double evaluer(Case symboleJoueurCourant, int tourExplore)
+	{
+		Strategie strategie = new StrategieGlobale(this, symboleJoueurCourant, tourExplore);		
+		return strategie.getUtility2();
+	}
+	
 	
 	
 	// VERSION 3

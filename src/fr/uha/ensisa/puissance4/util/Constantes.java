@@ -75,7 +75,7 @@ public abstract class Constantes {
 	public static final double COEF_IA = 1;
 	public static final double COEF_OTHER = 1;
 	
-	public static final int SCORE_4 = 1000;
+	public static final int SCORE_4 = 10000;
 	public static final int SCORE_3 = 100;
 	public static final int SCORE_2 = 10;
 	public static final int SCORE_1 = 1;

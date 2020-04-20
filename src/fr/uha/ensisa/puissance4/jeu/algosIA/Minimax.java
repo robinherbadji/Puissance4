@@ -57,6 +57,7 @@ public class Minimax extends Algorithm {
 		// 3) Meilleur prendre 2 emplacement vides superposé : s'ils sont tous les 2 dans des combinaisons gagnantes non verticale : bloque l'adversaire => 10000 points
 		
 		//double utility = Constantes.SCORE_MAX_NON_DEFINI; // tourne à l'infini si décommenté
+		
 		double utility = 100000; // tend vers +inf
 		
 		// Parcours des successeurs

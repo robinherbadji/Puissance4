@@ -10,20 +10,12 @@ import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.CombinaisonVertical
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class StrategieGlobale extends Strategie {
-	
-	
-	public StrategieGlobale(Grille grille, Case symboleJoueurCourant) {
-		super(grille, symboleJoueurCourant);
-	}
-	
-	/*
-	public StrategieGlobale(Grille grille, Case symboleJoueurCourant, int tourDepart, int tourExplore) {
+public class StrategieAmelioree extends Strategie {
+
+	public StrategieAmelioree(Grille grille, Case symboleJoueurCourant, int tourDepart, int tourExplore) {
 		super(grille, symboleJoueurCourant, tourDepart, tourExplore);
 	}
-	*/
-	
-	@Override
+
 	public double getUtility() {
 		double attaque = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant);
 		double defense = Constantes.COEF_OTHER * evaluerJoueur(symboleJoueurAdverse);
@@ -31,19 +23,6 @@ public class StrategieGlobale extends Strategie {
 		//System.out.println("Attaque : "+attaque+" / Défense : "+defense);
 		return utility;
 	}
-	
-	
-	/*
-	public double[] getUtility_tab() {
-		double[] tab_utility = new double[3];
-		tab_utility[0] = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant);
-		tab_utility[1] = Constantes.COEF_OTHER * evaluerJoueur(symboleJoueurAdverse);
-		double utility = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant) - Constantes.COEF_OTHER * evaluerJoueur(symboleJoueurAdverse);
-		tab_utility[2] = utility;
-		System.out.println("Attaque : "+tab_utility[0]+" / Défense : "+tab_utility[1]);
-		return tab_utility;
-	}
-	*/
 	
 	
 	private double evaluerJoueur(Case symboleJoueur) {
@@ -129,6 +108,5 @@ public class StrategieGlobale extends Strategie {
 			}		
 		return score; 
 	}
-
-
+	
 }

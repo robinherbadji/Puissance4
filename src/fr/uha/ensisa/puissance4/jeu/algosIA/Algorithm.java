@@ -57,7 +57,11 @@ public abstract class Algorithm {
 	
 	
 	protected int[] classementColonnes() {
-		int[] colonnes = {3,2,4,1,5,0,6};
+		//int[] colonnes = {3,2,4,1,5,0,6};
+		int[] colonnes = new int [Constantes.NB_COLONNES];
+		for (int i=0; i<Constantes.NB_COLONNES; i++) {
+			colonnes[i] = Constantes.NB_COLONNES/2 + (1-2*(i%2))*(i+1)/2;
+		}		
 		return colonnes;		
 	}
 	

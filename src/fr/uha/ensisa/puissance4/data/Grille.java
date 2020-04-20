@@ -2,6 +2,7 @@ package fr.uha.ensisa.puissance4.data;
 
 
 import fr.uha.ensisa.puissance4.data.evaluation.Strategie;
+import fr.uha.ensisa.puissance4.data.evaluation.strategies.StrategieAmelioree;
 import fr.uha.ensisa.puissance4.data.evaluation.strategies.StrategieGlobale;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
@@ -188,20 +189,15 @@ public class Grille {
 	// EVALUATION
 	///////////////////////////////////////////////////////////////////////////
 	
-	
 	// VERSION 4
-	/**
-	 * Donne un score à la grille en fonction du joueur 
-	 * @param symboleJoueurCourant
-	 * @return
-	 */
-	public double evaluer(Case symboleJoueurCourant, int tourExplore)
+	/*
+	public double evaluer(Case symboleJoueurCourant, int tourDepart, int tourExploree)
 	{
-		Strategie strategie = new StrategieGlobale(this, symboleJoueurCourant, tourExplore);		
-		return strategie.getUtility2();
+		Strategie strategie = new StrategieAmelioree(this, symboleJoueurCourant, tourDepart, tourExploree);		
+		return strategie.getUtility();
 	}
-	
-	
+	*/
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// VERSION 3
 	/**
@@ -209,6 +205,7 @@ public class Grille {
 	 * @param symboleJoueurCourant
 	 * @return
 	 */
+	
 	public double evaluer(Case symboleJoueurCourant)
 	{
 		Strategie strategie = new StrategieGlobale(this, symboleJoueurCourant);		

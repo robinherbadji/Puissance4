@@ -34,7 +34,8 @@ public class Console extends Thread {
 		//j1 = new IA("Niveau 5", 1, Constantes.IA_MINIMAX, 5);
 		//j1 = new IA("Niveau 3", 2, Constantes.IA_MINIMAX, 2);
 		
-		j1 = new IA("Robocop", 1, Constantes.IA_MINIMAX, 2);
+		//j1 = new IA("Robocop", 1, Constantes.IA_ALPHABETA, 2);
+		j1 = new IA("Robocop", 1, Constantes.IA_MINIMAX, 6);
 		
 		Jeu jeu = new Jeu(j1, j2, this);
 		jeu.start();

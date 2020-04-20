@@ -44,6 +44,24 @@ public abstract class Constantes {
 	public static final int VICTOIRE_JOUEUR_1 = 2;
 	public static final int VICTOIRE_JOUEUR_2 = 3;
 	
+	public static final int NB_JETONS_VICTOIRE = 4;
+	
+	// Stratégies
+	/*
+	public static final int STRATEGIE_CIBLEE_IA = 0;
+	public static final int STRATEGIE_GLOBALE = 1;
+	public static final int STRATEGIE_ATTAQUANTE = 2;
+	public static final int STRATEGIE_DEFENSIVE = 3;
+	public static final int STRATEGIE_GAUSS = 4;
+	public static final int STRATEGIE_GLOBALE_GAUSS = 5;
+	*/
+	
+	//Directions de Parcours
+	public static final int DIRECTION_HORIZONTALE = 1;
+	public static final int DIRECTION_VERTICALE = 2;
+	public static final int DIRECTION_OBLIQUE_GAUCHE_DROITE = 3;
+	public static final int DIRECTION_OBLIQUE_DROITE_GAUCHE= 4;
+	
 
 	public static final double SCORE_MAX_NON_DEFINI = Double.NEGATIVE_INFINITY;
 	public static final double SCORE_MIN_NON_DEFINI = Double.POSITIVE_INFINITY;
@@ -52,6 +70,17 @@ public abstract class Constantes {
 	public static final int MIN = 0;
 	public static final int MAX = 1;
 	
+	
+	//Paramètres IA
+	public static final double COEF_IA = 1;
+	public static final double COEF_OTHER = 1;
+	
+	public static final int SCORE_4 = 10000;
+	public static final int SCORE_3 = 100;
+	public static final int SCORE_2 = 10;
+	public static final int SCORE_1 = 1;
+	public static final int SCORE_BONUS = 0;
+	//public static final int SCORE_BONUS = 100;
 	
 	
 }

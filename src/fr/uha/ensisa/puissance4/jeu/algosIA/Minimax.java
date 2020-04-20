@@ -17,12 +17,16 @@ public class Minimax extends Algorithm {
 	
 	@Override
 	public int choisirCoup() {
-		int coup = Constantes.COUP_NON_DEFINI;
-		double utility_max = -10000;
+		// Stratégie de départ
+		if (tourDepart <= 5) {
+			// On met au milieu les 5 premiers tours
+			return (Constantes.NB_COLONNES/2);
+		}
 		
+		int coup = Constantes.COUP_NON_DEFINI;
+		double utility_max = -1000000;
 		
 		for (int col : this.classementColonnes()) {
-		//for (int col = 0; col < Constantes.NB_COLONNES; col++) {			
 			Grille grille_next = grilleDepart.clone();
 			if (grille_next.isCoupPossible(col)) {				
 				grille_next.ajouterCoup(col, symboleMax);
@@ -43,6 +47,7 @@ public class Minimax extends Algorithm {
 	private double min_value(Grille state) {
 		int etatPartie = state.getEtatPartie(symboleMin, tourExplore);
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
+		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) ||
 				(this.tourExplore - this.tourDepart >= this.levelIA)) {
 			//System.out.println("On est dans Min Value");
@@ -56,20 +61,20 @@ public class Minimax extends Algorithm {
 		
 		// 3) Meilleur prendre 2 emplacement vides superposé : s'ils sont tous les 2 dans des combinaisons gagnantes non verticale : bloque l'adversaire => 10000 points
 		
-		//double utility = Constantes.SCORE_MAX_NON_DEFINI; // tourne à l'infini si décommenté
-		
+		//double utility = Constantes.SCORE_MAX_NON_DEFINI; // tourne à l'infini si décommenté		
 		double utility = 100000; // tend vers +inf
 		
 		// Parcours des successeurs
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
-		//for (int col = 0; col < Constantes.NB_COLONNES; col++) {
 			Grille grille_next = state.clone();
 			if (grille_next.isCoupPossible(col)) {				
 				grille_next.ajouterCoup(col, symboleMin);
 				tourExplore = tourRef + 1;
+				/*
 				double eval_grille_next = max_value(grille_next);
-				//System.out.println("colonne min "+(col+1)+" : "+eval_grille_next);
+				System.out.println("colonne min "+(col+1)+" : "+eval_grille_next);
+				*/
 				utility = Math.min(utility, max_value(grille_next));
 			}
 		}
@@ -79,19 +84,20 @@ public class Minimax extends Algorithm {
 	private double max_value(Grille state) {
 		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
+		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) ||
 				(this.tourExplore - this.tourDepart >= this.levelIA)) {
 			//System.out.println("On est dans Max Value");
 			//System.out.println(("profondeur : "+ (this.tourExplore - this.tourDepart)));
 			return state.evaluer(symboleMax);
 		}		
+		
 		//double utility = Constantes.SCORE_MIN_NON_DEFINI; // tourne à l'infini si décommenté
 		double utility = -100000; // tend vers -inf
 		
 		// Parcours des successeurs
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
-		//for (int col = 0; col < Constantes.NB_COLONNES; col++) {
 			Grille grille_next = state.clone();
 			if (grille_next.isCoupPossible(col)) {				
 				grille_next.ajouterCoup(col, symboleMax);
@@ -102,9 +108,4 @@ public class Minimax extends Algorithm {
 		return utility;		
 	}
 	
-
-	
-	
-	
-
 }

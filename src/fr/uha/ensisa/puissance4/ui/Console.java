@@ -30,12 +30,13 @@ public class Console extends Thread {
 		//j2 = choixJoueur(Constantes.JOUEUR_2, entry);
 		
 		//int difficulte = 2;
-		j2 = new Humain("Robin", 2);
+		//j2 = new Humain("Robin", 2);
+		j2 = new Humain("Hamza", 2);
 		//j1 = new IA("Niveau 5", 1, Constantes.IA_MINIMAX, 5);
-		//j1 = new IA("Niveau 3", 2, Constantes.IA_MINIMAX, 2);
+		j1 = new IA("Robin", 1, Constantes.IA_ALPHABETA, 8);
 		
 		//j1 = new IA("Robocop", 1, Constantes.IA_ALPHABETA, 2);
-		j1 = new IA("Robocop", 1, Constantes.IA_MINIMAX, 6);
+		//j1 = new IA("Robocop", 1, Constantes.IA_MINIMAX, 2);
 		
 		Jeu jeu = new Jeu(j1, j2, this);
 		jeu.start();

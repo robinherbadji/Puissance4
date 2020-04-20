@@ -9,23 +9,20 @@ import fr.uha.ensisa.puissance4.util.Constantes;
 */
 public class AlphaBeta extends Algorithm {
 	
-	private int noeudsExplores = 0;
-	
 	public AlphaBeta(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour) {
 		super(levelIA, grilleDepart, joueurActuel, tour);
-
 	}
 	
 	
 	@Override
 	public int choisirCoup() {
-		/*
-		if (tourDepart <= 2) {
-			return 3;
+		// Stratégie de départ
+		if (tourDepart <= 5) {
+			// On met au milieu les 5 premiers tours
+			return (Constantes.NB_COLONNES/2);
 		}
-		*/
+		
 		int coup = Constantes.COUP_NON_DEFINI;
-		//coup = 3;
 		/*
 		double utility = Constantes.SCORE_MIN_NON_DEFINI;
 		double beta = Constantes.SCORE_MAX_NON_DEFINI;
@@ -35,12 +32,10 @@ public class AlphaBeta extends Algorithm {
 		double beta = 100000;
 		
 		for (int col : this.classementColonnes()) {
-		//for (int col = 0; col < Constantes.NB_COLONNES; col++) {			
 			Grille grille_next = grilleDepart.clone();
 			if (grille_next.isCoupPossible(col)) {
 				grille_next.ajouterCoup(col, symboleMax);
 				tourExplore = this.tourDepart + 1;
-							
 				double eval_grille_next = min_value(grille_next, utility, beta);
 				System.out.println("COLONNE "+(col+1)+" : "+eval_grille_next);
 				//System.out.println(utility);
@@ -56,24 +51,16 @@ public class AlphaBeta extends Algorithm {
 	
 	
 	private double min_value(Grille state, double alpha, double beta) {
+		
 		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
+		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) || 
 				(this.tourExplore - this.tourDepart >= this.levelIA)) {
 			//System.out.println("MIN : JE SUIS PASSé PAR Là : "+(this.tourExplore - this.tourDepart));
-			return state.evaluer(symboleMax);			
-		}
-		
-		
-		/*
-		// Victoire du joueur courant
-		if (etatPartie == Constantes.VICTOIRE_JOUEUR_1 || etatPartie == Constantes.VICTOIRE_JOUEUR_2) {
-			//System.out.println("MIN: VICTOIRE !");
-			return -(Constantes.NB_COLONNES * Constantes.NB_LIGNES - tourExplore)/2;
-			//return state.evaluer(symboleMin);
-			//return 10000;
-		}
-		*/		
+			return state.evaluer(symboleMax);
+			//return state.evaluer(symboleMax,tourDepart,tourExplore);
+		}	
 		
 		//double utility = Constantes.SCORE_MAX_NON_DEFINI; // tourne à l'infini si décommenté
 		double utility = 100000; // tend vers +inf
@@ -81,17 +68,18 @@ public class AlphaBeta extends Algorithm {
 		// Parcours des successeurs
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
-		//for (int col = 0; col < Constantes.NB_COLONNES; col++) {
 			Grille grille_next = state.clone();
 			if (grille_next.isCoupPossible(col)) {
 				grille_next.ajouterCoup(col, symboleMin);
 				tourExplore = tourRef + 1;
+				/*
 				double eval_grille_next = max_value(grille_next, alpha, beta);
 				System.out.println("colonne min "+(col+1)+" : "+eval_grille_next);
+				 */
 				utility = Math.min(utility, max_value(grille_next, alpha, beta));
 				beta = Math.min(beta, utility);
 				if (alpha >= beta) {
-					System.out.println("Coupure : " + utility + " alpha : " + alpha);
+					//System.out.println("Coupure : " + utility + " alpha : " + alpha);
 					return utility;
 				}
 				
@@ -103,23 +91,13 @@ public class AlphaBeta extends Algorithm {
 	private double max_value(Grille state, double alpha, double beta) {
 		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
+		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) || 
 				(this.tourExplore - this.tourDepart >= this.levelIA)) {
 			//System.out.println("MAX : JE SUIS PASSé PAR Là : "+(this.tourExplore - this.tourDepart));
 			return state.evaluer(symboleMax);
-		}
-		
-		
-		/*
-		// Victoire du joueur courant
-		if (etatPartie == Constantes.VICTOIRE_JOUEUR_1 || etatPartie == Constantes.VICTOIRE_JOUEUR_2) {
-			//System.out.println("MIN: VICTOIRE !");
-			return (Constantes.NB_COLONNES * Constantes.NB_LIGNES - tourExplore)/2;
-			//return 10000;
-			//return state.evaluer(symboleMax);
-		}
-		*/
-		
+			//return state.evaluer(symboleMax,tourDepart,tourExplore);
+		}		
 			
 		//double utility = Constantes.SCORE_MIN_NON_DEFINI; // tourne à l'infini si décommenté
 		double utility = -100000; // tend vers -inf
@@ -127,7 +105,6 @@ public class AlphaBeta extends Algorithm {
 		// Parcours des successeurs
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
-		//for (int col = 0; col < Constantes.NB_COLONNES; col++) {
 			Grille grille_next = state.clone();
 			if (grille_next.isCoupPossible(col)) {				
 				grille_next.ajouterCoup(col, symboleMax);
@@ -136,8 +113,7 @@ public class AlphaBeta extends Algorithm {
 				alpha = Math.max(alpha, utility);
 				if (alpha >= beta) {
 					return utility;
-				}
-				
+				}				
 			}
 		}
 		return utility;		

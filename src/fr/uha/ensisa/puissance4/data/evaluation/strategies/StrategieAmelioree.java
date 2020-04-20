@@ -11,9 +11,13 @@ import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
 public class StrategieAmelioree extends Strategie {
-
+	protected int tourExplore;
+	protected int tourDepart;
+	
 	public StrategieAmelioree(Grille grille, Case symboleJoueurCourant, int tourDepart, int tourExplore) {
-		super(grille, symboleJoueurCourant, tourDepart, tourExplore);
+		super(grille, symboleJoueurCourant);
+		this.tourDepart = tourDepart;
+		this.tourExplore = tourExplore;
 	}
 
 	public double getUtility() {
@@ -26,6 +30,12 @@ public class StrategieAmelioree extends Strategie {
 	
 	
 	private double evaluerJoueur(Case symboleJoueur) {
+		/*
+		if (this.tourDepart <=3 ) {
+			System.out.println("tour <= 3");
+			return Constantes.SCORE_4;
+		}
+		*/
 		double score = 0;
 		
 		//Vérification alignement horizontaux

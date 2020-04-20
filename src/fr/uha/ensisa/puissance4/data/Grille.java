@@ -190,13 +190,12 @@ public class Grille {
 	///////////////////////////////////////////////////////////////////////////
 	
 	// VERSION 4
-	/*
 	public double evaluer(Case symboleJoueurCourant, int tourDepart, int tourExploree)
 	{
 		Strategie strategie = new StrategieAmelioree(this, symboleJoueurCourant, tourDepart, tourExploree);		
 		return strategie.getUtility();
 	}
-	*/
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// VERSION 3

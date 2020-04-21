@@ -16,54 +16,82 @@ public class AlphaBeta extends Algorithm {
 	
 	@Override
 	public int choisirCoup() {
+
 		// Stratégie de départ
-		if (tourDepart <= 5) {
-			// On met au milieu les 5 premiers tours
-			return (Constantes.NB_COLONNES/2);
+		// int coup = Constantes.COUP_NON_DEFINI;
+		int coup = coupDepartPartie();
+		if (coup != Constantes.COUP_NON_DEFINI) {
+			return coup;
 		}
-		
-		int coup = Constantes.COUP_NON_DEFINI;
-		/*
+
+		// Blocage de l'adversaire s'il gagne au prochain coup
+		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);
+		if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+			System.out.println("Blocage Victoire Adverse");
+			return victoireAdversaire;
+		}
+
+		// Choisir cette colonne ferait directement gagner l'adversaire
+		int colonneDefaite = Constantes.COUP_NON_DEFINI;
+
+		// Définition de Utility = Alpha et Beta utiles à l'algorithme
 		double utility = Constantes.SCORE_MIN_NON_DEFINI;
 		double beta = Constantes.SCORE_MAX_NON_DEFINI;
-		*/
-		
-		double utility = -100000;
-		double beta = 100000;
-		
+
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = grilleDepart.clone();
 			if (grille_next.isCoupPossible(col)) {
 				grille_next.ajouterCoup(col, symboleMax);
 				tourExplore = this.tourDepart + 1;
-				double eval_grille_next = min_value(grille_next, utility, beta);
+
+				// Si l'IA peut gagner en un coup : jouer ce coup
+				if (grille_next.isIAGagnante(symboleMax, tourDepart)) {
+					System.out.println("C'est gagné");
+					return col;
+				}
+				
+				// Si l'adversaire peut gagner après que l'on a joué : éviter ce coup
+				double eval_grille_next = Constantes.SCORE_MIN_NON_DEFINI;
+				victoireAdversaire = grille_next.isAdversaireGagnant(symboleMin, tourDepart);
+				if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+					System.out.println("IA perd si elle met dans la colonne suivante : ");
+					colonneDefaite = col;
+				}
+				else {
+					eval_grille_next = min_value(grille_next, utility, beta);
+				}
+				
 				System.out.println("COLONNE "+(col+1)+" : "+eval_grille_next);
-				//System.out.println(utility);
 				if (eval_grille_next > utility) {
 					utility = eval_grille_next;
 					coup = col;
 				}
 			}
 		}
+		
+		// On a perdu il faut bien renvoyer quelque chose ...
+		if (coup == Constantes.COUP_NON_DEFINI) {
+			System.out.println("Bon ben là plus aucune chance");
+			coup = colonneDefaite;
+		}
 		return coup;
 	}
 	
 	
-	
-	private double min_value(Grille state, double alpha, double beta) {
-		
+	private double min_value(Grille state, double alpha, double beta) {		
 		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
-		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
-		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
-		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) || 
-				(this.tourExplore - this.tourDepart >= this.levelIA)) {
-			//System.out.println("MIN : JE SUIS PASSé PAR Là : "+(this.tourExplore - this.tourDepart));
-			return state.evaluer(symboleMax);
-			//return state.evaluer(symboleMax,tourDepart,tourExplore);
-		}	
+		/*
+		if ((etatPartie != Constantes.PARTIE_EN_COURS) && (this.tourExplore - this.tourDepart == 1)) {
+			System.out.println("C'est gagné !");
+		}
+		*/
 		
-		//double utility = Constantes.SCORE_MAX_NON_DEFINI; // tourne à l'infini si décommenté
-		double utility = 100000; // tend vers +inf
+		// On regarde si l'IA a gagné, ou match nul ou la profondeur max de l'IA est atteinte
+		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
+			return state.evaluer(symboleMax);
+		}
+		
+		double utility = Constantes.SCORE_MAX_NON_DEFINI;
 		
 		// Parcours des successeurs
 		int tourRef = tourExplore;
@@ -72,51 +100,46 @@ public class AlphaBeta extends Algorithm {
 			if (grille_next.isCoupPossible(col)) {
 				grille_next.ajouterCoup(col, symboleMin);
 				tourExplore = tourRef + 1;
-				/*
-				double eval_grille_next = max_value(grille_next, alpha, beta);
-				System.out.println("colonne min "+(col+1)+" : "+eval_grille_next);
-				 */
 				utility = Math.min(utility, max_value(grille_next, alpha, beta));
 				beta = Math.min(beta, utility);
 				if (alpha >= beta) {
-					//System.out.println("Coupure : " + utility + " alpha : " + alpha);
 					return utility;
 				}
-				
 			}
 		}
 		return utility;
 	}
 	
 	private double max_value(Grille state, double alpha, double beta) {
-		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
-		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
-		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) || 
-				(this.tourExplore - this.tourDepart >= this.levelIA)) {
-			//System.out.println("MAX : JE SUIS PASSé PAR Là : "+(this.tourExplore - this.tourDepart));
+		/*
+		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) && (this.tourExplore - this.tourDepart <= 2)) {
+			System.out.println("C'est perdu par là !");
+		}
+		*/
+		
+		// On regarde si l'adversaire a gagné, ou match nul ou la profondeur max de l'IA est atteinte
+		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
-			//return state.evaluer(symboleMax,tourDepart,tourExplore);
-		}		
-			
-		//double utility = Constantes.SCORE_MIN_NON_DEFINI; // tourne à l'infini si décommenté
-		double utility = -100000; // tend vers -inf
+		}
+		
+		double utility = Constantes.SCORE_MIN_NON_DEFINI;
 		
 		// Parcours des successeurs
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = state.clone();
-			if (grille_next.isCoupPossible(col)) {				
+			if (grille_next.isCoupPossible(col)) {
 				grille_next.ajouterCoup(col, symboleMax);
-				tourExplore = tourRef + 1;				
+				tourExplore = tourRef + 1;
 				utility = Math.max(utility, min_value(grille_next, alpha, beta));
 				alpha = Math.max(alpha, utility);
 				if (alpha >= beta) {
 					return utility;
-				}				
+				}
 			}
 		}
-		return utility;		
+		return utility;
 	}
 	
 	

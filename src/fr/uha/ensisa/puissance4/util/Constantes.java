@@ -62,9 +62,10 @@ public abstract class Constantes {
 	public static final int DIRECTION_OBLIQUE_GAUCHE_DROITE = 3;
 	public static final int DIRECTION_OBLIQUE_DROITE_GAUCHE= 4;
 	
-
-	public static final double SCORE_MAX_NON_DEFINI = Double.NEGATIVE_INFINITY;
-	public static final double SCORE_MIN_NON_DEFINI = Double.POSITIVE_INFINITY;
+	public static final double SCORE_MAX_NON_DEFINI = 100000000;
+	public static final double SCORE_MIN_NON_DEFINI = -100000000;
+	//public static final double SCORE_MAX_NON_DEFINI = Double.NEGATIVE_INFINITY;
+	//public static final double SCORE_MIN_NON_DEFINI = Double.POSITIVE_INFINITY;
 	public static final int COUP_NON_DEFINI = -1;
 	
 	public static final int MIN = 0;
@@ -75,12 +76,14 @@ public abstract class Constantes {
 	public static final double COEF_IA = 1;
 	public static final double COEF_OTHER = 1;
 	
+	public static final int STRATEGIE_DEPART = 5;
+	
 	public static final int SCORE_4 = 10000;
 	public static final int SCORE_3 = 100;
 	public static final int SCORE_2 = 10;
 	public static final int SCORE_1 = 1;
-	public static final int SCORE_BONUS = 0;
-	//public static final int SCORE_BONUS = 100;
+	public static final int SCORE_BONUS = 100;
+	public static final int SCORE_STRATEGIE = 3000;
 	
 	
 }

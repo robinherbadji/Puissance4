@@ -5,8 +5,8 @@ import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
 /**
  * {@link Combinaison} de 4 {@link Case} de direction oblique de bas en haut de
- * gauche à droite: / <br/>
- * <br/>
+ * gauche à droite: / <br>
+ * <br>
  * <i>Note : Il y a 12 {@link CombinaisonObliqueGaucheDroite} différentes dans
  * une {@link fr.uha.ensisa.puissance4.data.Grille Grille}</i>
  * 

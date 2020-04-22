@@ -6,8 +6,8 @@ import java.util.Collections;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
 /**
- * Liste de 4 {@link Case} consécutives dans une des 4 directions possibles<br/>
- * <br/>
+ * Liste de 4 {@link Case} consécutives dans une des 4 directions possibles<br>
+ * <br>
  * <i>Note : Il y a 69 {@link Combinaison} différentes dans une
  * {@link fr.uha.ensisa.puissance4.data.Grille Grille}</i>
  * 

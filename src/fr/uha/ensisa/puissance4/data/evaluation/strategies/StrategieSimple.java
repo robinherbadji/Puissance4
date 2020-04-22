@@ -19,7 +19,7 @@ import fr.uha.ensisa.puissance4.util.Constantes.Case;
  * Ensuite il ne reste plus qu'à appeler la méthode
  * {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison#getScore()
  * getScore()} sur chacune des {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison
- * Combinaison} afin d'en déduire le score total pour le joueur courant<br/>
+ * Combinaison} afin d'en déduire le score total pour le joueur courant<br>
  * Ensuite
  * </p>
  * 

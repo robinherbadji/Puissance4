@@ -36,7 +36,7 @@ public class Console extends Thread {
 		String nom_adversaire = "L'Ennemi";
 		//int algo_IA = Constantes.IA_MINIMAX;
 		int algo_IA = Constantes.IA_ALPHABETA;
-		int niveauIA = 15;
+		int niveauIA = 12;
 		// _____________________________________
 		/////////////////////////////////////////////////////////////////////////////////
 		// l'IA Adverse commence :

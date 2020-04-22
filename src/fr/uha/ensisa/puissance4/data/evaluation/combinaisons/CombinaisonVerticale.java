@@ -5,8 +5,8 @@ import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
 /**
  * {@link Combinaison} de 4 {@link Case} de direction verticale de bas en haut : |
- * <br/>
- * <br/>
+ * <br>
+ * <br>
  * <i>Note : Il y a 21 {@link CombinaisonVerticale} différentes dans une
  * {@link fr.uha.ensisa.puissance4.data.Grille Grille}</i>
  * 

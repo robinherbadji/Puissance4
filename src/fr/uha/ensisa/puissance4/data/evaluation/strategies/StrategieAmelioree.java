@@ -10,6 +10,28 @@ import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Groupe3Combinaisons
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
+/**
+ * Stratégie améliorée pour le calcul des évaluations d'une
+ * {@link fr.uha.ensisa.puissance4.data.Grille Grille}
+ * <p>
+ * La stratégie consiste à extraire toutes les
+ * {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison
+ * Combinaison} de la {@link fr.uha.ensisa.puissance4.data.Grille Grille}.
+ * Ensuite il ne reste plus qu'à appeler la méthode
+ * {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison#getScore()
+ * getScore()} sur chacune des
+ * {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison
+ * Combinaison} afin d'en déduire le score total pour le joueur courant. En plus
+ * de cela, cette stratégie ajoute le score issue de la classe
+ * {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Groupe3Combinaisons
+ * Groupe3Combinaisons}<br>
+ * </p>
+ * 
+ * @author Robin
+ * @author Yassine
+ * @see Strategie
+ * @see StrategieAmelioree
+ */
 public class StrategieAmelioree extends Strategie {
 	/*
 	protected int tourExplore;
@@ -70,7 +92,7 @@ public class StrategieAmelioree extends Strategie {
 				// System.out.println(combinaison.toString());
 			}
 		}
-/*
+
 		// Vérification alignement verticaux
 		// Parcours des 3 lignes
 		for (int i = 0; i < Constantes.NB_LIGNES - Constantes.NB_JETONS_VICTOIRE + 1; i++) {
@@ -92,7 +114,7 @@ public class StrategieAmelioree extends Strategie {
 				// System.out.println(combinaison.toString());
 			}
 		}
-*/
+
 		// Vérification alignement diagonaux (bas-gauche vers haut-droit)
 		// Parcours des 3 lignes
 		for (int i = 0; i < Constantes.NB_LIGNES - Constantes.NB_JETONS_VICTOIRE + 1; i++) {

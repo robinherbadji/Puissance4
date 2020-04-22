@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Liste de toutes les {@link Combinaison} ayant 3 {@link Case} gagnantes et 1
- * {@link Case} vide
+ * Liste de toutes les {@link Combinaison} ayant 3 {@link fr.uha.ensisa.puissance4.util.Constantes.Case Case} gagnantes et 1
+ * {@link fr.uha.ensisa.puissance4.util.Constantes.Case Case} vide
  * <p>
  * Cette classe permettra de mettre en place une stratégie gagnante qui consiste
  * à avoir 2 cases vides superposées, chacune complétant 2 combinaisons

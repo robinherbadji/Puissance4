@@ -48,10 +48,10 @@ public class IA extends Joueur {
 		{
 			iA = new AlphaBeta(levelIA, grille, this, tour);
 		}
-		return iA.choisirCoup();
+		
+		//return iA.choisirCoup();
+		return ((Minimax) iA).choisirCoupThread();
 	}
-
-	
 
 
 }

@@ -55,7 +55,7 @@ public class Minimax extends Algorithm {
 						colonneDefaite = colonne;
 					}
 					else {
-						this.score = min_value(grille_next);
+						this.score = min_value(grille_next, tourExplore);
 					}
 					
 					//double eval_grille_next = min_value(grille_next);
@@ -82,8 +82,8 @@ public class Minimax extends Algorithm {
 	}
 	
 	
-	@Override
-	public int choisirCoup() {
+	
+	public int choisirCoupThread() {
 		// Stratégie de départ
 		int coup = Constantes.COUP_NON_DEFINI;
 
@@ -121,6 +121,11 @@ public class Minimax extends Algorithm {
 			//explorateur = explorateurItr.next();
 			Thread thread = threads.get(i);
 			
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			//thread.start();
 			
 			if (explorateur.getColonneVictoire() != Constantes.COUP_NON_DEFINI) {
@@ -128,15 +133,10 @@ public class Minimax extends Algorithm {
 			}
 			
 			
+			
 			if (explorateur.getScore() > utility_max) {
 				utility_max = explorateur.getScore();
 				coup = explorateur.getColonne();
-			}
-			
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 			i++;
 		}
@@ -149,11 +149,56 @@ public class Minimax extends Algorithm {
 	}
 	
 	
+	private double min_value(Grille state, int profondeur) {
+		int etatPartie = state.getEtatPartie(symboleMin, profondeur);
+		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
+		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (profondeur - this.tourDepart >= this.levelIA)) {
+			return state.evaluer(symboleMax);
+		}
+
+		double utility = Constantes.SCORE_MAX_NON_DEFINI;
+		
+		// Parcours des successeurs
+		int tourRef = profondeur;
+		for (int col : this.classementColonnes()) {
+			Grille grille_next = state.clone();
+			if (grille_next.isCoupPossible(col)) {
+				grille_next.ajouterCoup(col, symboleMin);
+				//profondeur = tourRef + 1;
+				utility = Math.min(utility, max_value(grille_next, tourRef + 1));
+			}
+		}
+		return utility;
+	}
+	
+	private double max_value(Grille state, int profondeur) {
+		int etatPartieAdverse = state.getEtatPartie(symboleMin, profondeur);
+		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
+		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (profondeur - this.tourDepart >= this.levelIA)) {
+			return state.evaluer(symboleMax);
+		}
+		
+		double utility = Constantes.SCORE_MIN_NON_DEFINI;
+		
+		// Parcours des successeurs
+		int tourRef = profondeur;
+		for (int col : this.classementColonnes()) {
+			Grille grille_next = state.clone();
+			if (grille_next.isCoupPossible(col)) {
+				grille_next.ajouterCoup(col, symboleMax);
+				//profondeur = tourRef + 1;
+				utility = Math.max(utility, min_value(grille_next, tourRef + 1));
+			}
+		}
+		return utility;
+	}
+	
+	
 
 	
 
 
-	/*
+	
 	@Override
 	public int choisirCoup() {
 
@@ -164,7 +209,7 @@ public class Minimax extends Algorithm {
 		if (coup != Constantes.COUP_NON_DEFINI) {
 			return coup;
 		}
-		
+		*/
 		
 
 		// Blocage de l'adversaire s'il gagne au prochain coup
@@ -216,10 +261,10 @@ public class Minimax extends Algorithm {
 		}
 		return coup;
 	}
-*/
+
 	
 	
-	private synchronized double min_value(Grille state) {
+	private double min_value(Grille state) {
 		int etatPartie = state.getEtatPartie(symboleMin, tourExplore);
 		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
@@ -241,7 +286,7 @@ public class Minimax extends Algorithm {
 		return utility;
 	}
 	
-	private synchronized double max_value(Grille state) {
+	private double max_value(Grille state) {
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
 		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {

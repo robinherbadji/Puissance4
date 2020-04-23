@@ -1,5 +1,8 @@
 package fr.uha.ensisa.puissance4.jeu.algosIA;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.util.Constantes;
@@ -61,6 +64,10 @@ public class Minimax extends Algorithm {
 			}
 		}
 		
+		public int getColonne() {
+			return this.colonne;
+		}
+		
 		public int getColonneVictoire() {
 			return this.colonneVictoire;
 		}
@@ -91,27 +98,47 @@ public class Minimax extends Algorithm {
 		int colonneDefaite = Constantes.COUP_NON_DEFINI;
 		
 		double utility_max = Constantes.SCORE_MIN_NON_DEFINI;
-		
+		ArrayList<Thread> threads = new ArrayList<Thread>();
+		ArrayList<ExploreColonne> explorateurs = new ArrayList<ExploreColonne>();
+
 		//double eval_grille_thread = Constantes.SCORE_MIN_NON_DEFINI;
 		for (int col : this.classementColonnes()) {
 			// Création de tous les Threads
 			ExploreColonne explorateur = new ExploreColonne(col);
+			explorateurs.add(explorateur);
+			
 			Thread thread = new Thread(explorateur);
+			threads.add(thread);
+			
 			thread.start();
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+				
+		}
+		
+		
+		int i = 0;
+		for (ExploreColonne explorateur : explorateurs) {
+			//Thread thread = threadItr.next();
+			//explorateur = explorateurItr.next();
+			Thread thread = threads.get(i);
+			
+			//thread.start();
 			
 			if (explorateur.getColonneVictoire() != Constantes.COUP_NON_DEFINI) {
 				return explorateur.getColonneVictoire();
 			}
 			
+			
 			if (explorateur.getScore() > utility_max) {
 				utility_max = explorateur.getScore();
-				coup = col;
+				coup = explorateur.getColonne();
 			}
+			
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			i++;
 		}
 		
 		if (coup == Constantes.COUP_NON_DEFINI) {
@@ -120,6 +147,7 @@ public class Minimax extends Algorithm {
 		}
 		return coup;
 	}
+	
 	
 
 	
@@ -136,6 +164,7 @@ public class Minimax extends Algorithm {
 		if (coup != Constantes.COUP_NON_DEFINI) {
 			return coup;
 		}
+		
 		
 
 		// Blocage de l'adversaire s'il gagne au prochain coup
@@ -187,9 +216,10 @@ public class Minimax extends Algorithm {
 		}
 		return coup;
 	}
-	*/
+*/
 	
-	private double min_value(Grille state) {
+	
+	private synchronized double min_value(Grille state) {
 		int etatPartie = state.getEtatPartie(symboleMin, tourExplore);
 		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
@@ -211,7 +241,7 @@ public class Minimax extends Algorithm {
 		return utility;
 	}
 	
-	private double max_value(Grille state) {
+	private synchronized double max_value(Grille state) {
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
 		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {

@@ -2,6 +2,7 @@ package fr.uha.ensisa.puissance4.jeu.algosIA;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.RecursiveTask;
 
 import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
@@ -19,8 +20,117 @@ public class Minimax extends Algorithm {
 	
 	
 	
+	public class ExploreColonneRecursive extends RecursiveTask<Double> {
+		double score;
+		int colonneDefaite;
+		int colonneVictoire;
+		int colonne;
+		
+		public ExploreColonneRecursive(int colonne) {
+			this.colonne = colonne;
+			this.score = Constantes.SCORE_MIN_NON_DEFINI;
+			this.colonneDefaite = Constantes.COUP_NON_DEFINI;
+			this.colonneVictoire = Constantes.COUP_NON_DEFINI;
+		}
+
+		@Override
+		protected Double compute() {
+			Grille grille_next = grilleDepart.clone();
+			if (grille_next.isCoupPossible(colonne)) {
+				grille_next.ajouterCoup(colonne, symboleMax);
+				tourExplore = tourDepart + 1;
+				
+				// Si l'IA peut gagner en un coup : jouer ce coup
+				if (grille_next.isIAGagnante(symboleMax, tourDepart)) {
+					System.out.println("C'est gagné");
+					this.colonneVictoire = colonne;
+					//return colonne;
+				}
+				else {
+					// Si l'adversaire peut gagner après que l'on a joué : éviter ce coup
+					//double score = Constantes.SCORE_MIN_NON_DEFINI;
+					int victoireAdversaire = grille_next.isAdversaireGagnant(symboleMin, tourDepart);
+					if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+						System.out.println("IA perd si elle met dans la colonne suivante : ");
+						this.colonneDefaite = colonne;
+					}
+					else {
+						this.score = min_value(grille_next, tourExplore);
+					}
+					
+					//double eval_grille_next = min_value(grille_next);
+					System.out.println("COLONNE "+(colonne+1)+" : "+score);
+				}				
+			}
+			return this.score;
+		}
+		
+	}
+	
+	
+	
+	public int choisirCoupThreadRecursive() {
+		// Stratégie de départ
+		int coup = Constantes.COUP_NON_DEFINI;
+
+		// Blocage de l'adversaire s'il gagne au prochain coup
+		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);
+		if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+			System.out.println("Blocage Victoire Adverse");
+			return victoireAdversaire;
+		}
+
+		// Choisir cette colonne ferait directement gagner l'adversaire		
+		double utility_max = Constantes.SCORE_MIN_NON_DEFINI;
+		ArrayList<Thread> threads = new ArrayList<Thread>();
+		ArrayList<ExploreColonne> explorateurs = new ArrayList<ExploreColonne>();
+
+		for (int col : this.classementColonnes()) {
+			// Création de tous les Threads
+			ExploreColonne explorateur = new ExploreColonne(col);
+			explorateurs.add(explorateur);
+			
+			Thread thread = new Thread(explorateur);
+			threads.add(thread);
+			
+			thread.start();
+				
+		}
+		
+		
+		int i = 0;
+		for (ExploreColonne explorateur : explorateurs) {
+			Thread thread = threads.get(i);
+			
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if (explorateur.getColonneVictoire() != Constantes.COUP_NON_DEFINI) {
+				return explorateur.getColonneVictoire();
+			}
+			
+			if (explorateur.getScore() > utility_max) {
+				utility_max = explorateur.getScore();
+				coup = explorateur.getColonne();
+			}
+			
+			if (coup == Constantes.COUP_NON_DEFINI) {
+				System.out.println("Bon ben là plus aucune chance");
+				coup = explorateur.getColonneDefaite();
+			}
+			i++;
+		}		
+		
+		return coup;
+	}
+	
+	
+	
 	public class ExploreColonne implements Runnable {
-		Thread t;
+		//Thread t;
 		double score;
 		int colonneDefaite;
 		int colonneVictoire;
@@ -52,7 +162,7 @@ public class Minimax extends Algorithm {
 					int victoireAdversaire = grille_next.isAdversaireGagnant(symboleMin, tourDepart);
 					if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
 						System.out.println("IA perd si elle met dans la colonne suivante : ");
-						colonneDefaite = colonne;
+						this.colonneDefaite = colonne;
 					}
 					else {
 						this.score = min_value(grille_next, tourExplore);
@@ -192,9 +302,6 @@ public class Minimax extends Algorithm {
 		}
 		return utility;
 	}
-	
-	
-
 	
 
 

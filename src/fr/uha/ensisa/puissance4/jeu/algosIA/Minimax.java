@@ -2,6 +2,7 @@ package fr.uha.ensisa.puissance4.jeu.algosIA;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 import fr.uha.ensisa.puissance4.data.Grille;
@@ -65,6 +66,18 @@ public class Minimax extends Algorithm {
 			return this.score;
 		}
 		
+		public int getColonne() {
+			return this.colonne;
+		}
+		
+		public int getColonneVictoire() {
+			return this.colonneVictoire;
+		}
+		
+		public int getColonneDefaite() {
+			return this.colonneDefaite;
+		}
+		
 	}
 	
 	
@@ -79,53 +92,55 @@ public class Minimax extends Algorithm {
 			System.out.println("Blocage Victoire Adverse");
 			return victoireAdversaire;
 		}
-
+		
+		
+		int processeurs = Runtime.getRuntime().availableProcessors();
+	    
+	    
+	    //Nous lançons le traitement de notre tâche principale via le pool
+	    
+	    
+	    
 		// Choisir cette colonne ferait directement gagner l'adversaire		
 		double utility_max = Constantes.SCORE_MIN_NON_DEFINI;
-		ArrayList<Thread> threads = new ArrayList<Thread>();
-		ArrayList<ExploreColonne> explorateurs = new ArrayList<ExploreColonne>();
+		ArrayList<ForkJoinPool> pools = new ArrayList<ForkJoinPool>();
+		ArrayList<ExploreColonneRecursive> explorateurs = new ArrayList<ExploreColonneRecursive>();
 
 		for (int col : this.classementColonnes()) {
 			// Création de tous les Threads
-			ExploreColonne explorateur = new ExploreColonne(col);
+			ExploreColonneRecursive explorateur = new ExploreColonneRecursive(col);
 			explorateurs.add(explorateur);
 			
-			Thread thread = new Thread(explorateur);
-			threads.add(thread);
-			
-			thread.start();
-				
+			//Nous créons notre pool de thread pour nos tâches de fond
+		    ForkJoinPool pool = new ForkJoinPool(processeurs);
+		    /*
+		    pool.invoke(explorateur);
+		    explorateur.fork();
+		    */
+		    pool.execute(explorateur);
+		    pools.add(pool);
+		    
 		}
 		
 		
-		int i = 0;
-		for (ExploreColonne explorateur : explorateurs) {
-			Thread thread = threads.get(i);
-			
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		for (ExploreColonneRecursive explorateur : explorateurs) {			
+			double score = explorateur.join();
 			
 			if (explorateur.getColonneVictoire() != Constantes.COUP_NON_DEFINI) {
 				return explorateur.getColonneVictoire();
 			}
-			
-			if (explorateur.getScore() > utility_max) {
-				utility_max = explorateur.getScore();
+			if (score > utility_max) {
+				utility_max = score;
 				coup = explorateur.getColonne();
 			}
-			
 			if (coup == Constantes.COUP_NON_DEFINI) {
 				System.out.println("Bon ben là plus aucune chance");
 				coup = explorateur.getColonneDefaite();
 			}
-			i++;
-		}		
-		
+		}
 		return coup;
 	}
+	
 	
 	
 	
@@ -242,19 +257,17 @@ public class Minimax extends Algorithm {
 				return explorateur.getColonneVictoire();
 			}
 			
-			
-			
 			if (explorateur.getScore() > utility_max) {
 				utility_max = explorateur.getScore();
 				coup = explorateur.getColonne();
 			}
+			
+			if (coup == Constantes.COUP_NON_DEFINI) {
+				System.out.println("Bon ben là plus aucune chance");
+				coup = explorateur.getColonneDefaite();
+			}
 			i++;
-		}
-		
-		if (coup == Constantes.COUP_NON_DEFINI) {
-			System.out.println("Bon ben là plus aucune chance");
-			coup = colonneDefaite;
-		}
+		}		
 		return coup;
 	}
 	

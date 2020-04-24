@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="682.0" prefWidth="969.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.uha.ensisa.puissance4.ui.sample.Controller">
+    <children>
+        <Pane layoutX="6.0" layoutY="32.0" prefHeight="645.0" prefWidth="961.0">
+            <children>
+                <ImageView fitHeight="500" fitWidth="600" layoutX="300" layoutY="100" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../resources/grid.png" />
+                    </image>
+                </ImageView>
+
+                <Button fx:id="startButton" layoutX="50" layoutY="550" mnemonicParsing="false" onAction="#handleStartButton" prefHeight="35" prefWidth="200" text="Jouer">
+                    <font>
+                        <Font size="20" />
+                    </font>
+                </Button>
+
+                <Label layoutX="20.0" layoutY="33.0" text="Puissance 4">
+                <font>
+                    <Font size="38" />
+                </font>
+                </Label>
+
+                <TextField id="name1" fx:id="nameplayer1" layoutX="60" layoutY="150.0" promptText="Nom du joueur Y" />
+                <TextField id="name2" fx:id="nameplayer2" layoutX="60" layoutY="210.0" promptText="Nom du joueur R" />
+                <TextField id="name3" fx:id="nameplayer3" layoutX="60" layoutY="270.0" promptText="Nom de l'IA" />
+                <Label layoutX="90" layoutY="125" text="Joueur jeton Yass" />
+                <Label layoutX="90" layoutY="185" text="Joueur jeton Badji" />
+                <Label layoutX="100" layoutY="250" text="Nom de l'IA" />
+                <Label layoutX="100" layoutY="310" text="Niveau de l'IA" />
+                <Label layoutX="100" layoutY="420" text="Qui commence?" />
+
+                <TextField id="niveau2" fx:id="niveauIA" layoutX="60" layoutY="330" promptText="Niveau IA" />
+
+                <CheckBox fx:id="checkB1" layoutX="100" layoutY="380" mnemonicParsing="false" onAction="#handleButton" text="IA 1 VS IA 2"/>
+
+                <CheckBox fx:id="checkB2" layoutX="100" layoutY="450" mnemonicParsing="false" onAction="#handleCheckButton" text="Joueur Y"/>
+                <CheckBox fx:id="checkB3" layoutX="100" layoutY="470" mnemonicParsing="false" onAction="#handleCheckButton" text="Joueur R"/>
+                <CheckBox fx:id="checkB4" layoutX="100" layoutY="490" mnemonicParsing="false" onAction="#handleCheckButton" text="IA"/>
+
+                <Button fx:id="button1" layoutX="315" layoutY="30" mnemonicParsing="false" onAction="#handleButton" text="1">
+                    <font>
+                        <Font size="30" />
+                    </font>
+                </Button>
+                <Button fx:id="button2" layoutX="397" layoutY="30" mnemonicParsing="false" onAction="#handleButton" text="2">
+                    <font>
+                        <Font size="30" />
+                    </font>
+                </Button>
+                <Button fx:id="button3" layoutX="479" layoutY="30" mnemonicParsing="false" onAction="#handleButton" text="3">
+                    <font>
+                        <Font size="30" />
+                    </font>
+                </Button>
+                <Button fx:id="button4" layoutX="565" layoutY="30" mnemonicParsing="false" onAction="#handleButton" text="4">
+                    <font>
+                        <Font size="30" />
+                    </font>
+                </Button>
+                <Button fx:id="button6" layoutX="645" layoutY="30" mnemonicParsing="false" onAction="#handleButton" text="6">
+                    <font>
+                        <Font size="30" />
+                    </font>
+                </Button>
+                <Button fx:id="button5" layoutX="730" layoutY="30" mnemonicParsing="false" onAction="#handleButton" text="5">
+                    <font>
+                        <Font size="30" />
+                    </font>
+                </Button>
+                <Button fx:id="button7" layoutX="815" layoutY="30" mnemonicParsing="false" onAction="#handleButton" text="7">
+                    <font>
+                        <Font size="30" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+      <MenuBar prefHeight="29.0" prefWidth="969.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" onAction="#handleButtonClose"/>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+    </children>
+</AnchorPane>

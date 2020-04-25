@@ -146,8 +146,135 @@ public class Minimax extends Algorithm {
 	}
 	
 	
+	public class ExploreColonneNegamaxRecursive extends RecursiveTask<Double> {
+		double score;
+		int colonneDefaite;
+		int colonneVictoire;
+		int colonne;
+		int profondeur;
+		
+		public ExploreColonneNegamaxRecursive(int colonne, int profondeur) {
+			this.colonne = colonne;
+			this.profondeur = profondeur;
+			this.score = Constantes.SCORE_MIN_NON_DEFINI;
+			this.colonneDefaite = Constantes.COUP_NON_DEFINI;
+			this.colonneVictoire = Constantes.COUP_NON_DEFINI;
+		}
+
+		@Override
+		protected Double compute() {
+			Grille grille_next = grilleDepart.clone();
+			if (grille_next.isCoupPossible(colonne)) {
+				if ((profondeur - tourDepart) % 2 == 1) {
+					grille_next.ajouterCoup(colonne, symboleMin);
+				}
+				else {
+					grille_next.ajouterCoup(colonne, symboleMax);
+				}
+				//tourExplore = tourDepart + 1;
+				
+				// Si l'IA peut gagner en un coup : jouer ce coup
+				if (grille_next.isIAGagnante(symboleMax, tourDepart)) {
+					System.out.println("C'est gagné");
+					this.colonneVictoire = colonne;
+					//return colonne;
+				}
+				else {
+					// Si l'adversaire peut gagner après que l'on a joué : éviter ce coup
+					//double score = Constantes.SCORE_MIN_NON_DEFINI;
+					int victoireAdversaire = grille_next.isAdversaireGagnant(symboleMin, tourDepart);
+					if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+						System.out.println("IA perd si elle met dans la colonne suivante : ");
+						this.colonneDefaite = colonne;
+					}
+					else {
+						this.score = -negamax(grille_next, profondeur+1);
+						//this.score = min_value(grille_next, profondeur+1);
+					}
+					
+					//double eval_grille_next = min_value(grille_next);
+					System.out.println("COLONNE "+(colonne+1)+" : "+score);
+				}				
+			}
+			return this.score;
+		}
+		
+		public int getColonne() {
+			return this.colonne;
+		}
+		
+		public int getColonneVictoire() {
+			return this.colonneVictoire;
+		}
+		
+		public int getColonneDefaite() {
+			return this.colonneDefaite;
+		}		
+	}
 	
-	/*
+	
+	public int choisirCoupNegamaxThread() {
+		// Stratégie de départ
+		int coup = Constantes.COUP_NON_DEFINI;
+
+		// Blocage de l'adversaire s'il gagne au prochain coup
+		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);
+		if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+			System.out.println("Blocage Victoire Adverse");
+			return victoireAdversaire;
+		}		
+		
+		int processeurs = Runtime.getRuntime().availableProcessors();
+	    
+	    //Nous lançons le traitement de notre tâche principale via le pool	    
+	    
+		// Choisir cette colonne ferait directement gagner l'adversaire		
+		double utility_max = Constantes.SCORE_MIN_NON_DEFINI;
+		ArrayList<ForkJoinPool> pools = new ArrayList<ForkJoinPool>();
+		ArrayList<ExploreColonneNegamaxRecursive> explorateurs = new ArrayList<ExploreColonneNegamaxRecursive>();
+
+		for (int col : this.classementColonnes()) {
+			// Création de tous les Threads
+			ExploreColonneNegamaxRecursive explorateur = new ExploreColonneNegamaxRecursive(col, this.tourDepart);
+			explorateurs.add(explorateur);
+			
+			//Nous créons notre pool de thread pour nos tâches de fond
+		    ForkJoinPool pool = new ForkJoinPool(processeurs);
+		    /*
+		    pool.invoke(explorateur);
+		    explorateur.fork();
+		    */
+		    pool.execute(explorateur);
+		    pools.add(pool);
+		}
+		
+		int colonneDefaite = Constantes.COUP_NON_DEFINI;
+		// Parcourir d'abord les threads finis
+		for (ExploreColonneNegamaxRecursive explorateur : explorateurs) {		
+			double score = explorateur.join();
+			
+			if (explorateur.getColonneVictoire() != Constantes.COUP_NON_DEFINI) {
+				return explorateur.getColonneVictoire();
+			}
+			if (explorateur.getColonneDefaite() != Constantes.COUP_NON_DEFINI) {
+				colonneDefaite = explorateur.getColonneDefaite();
+			}
+			if (score > utility_max) {
+				utility_max = score;
+				coup = explorateur.getColonne();
+			}
+			
+		}
+		if (coup == Constantes.COUP_NON_DEFINI) {
+			System.out.println("Bon ben là plus aucune chance");
+			coup = colonneDefaite;
+		}
+		return coup;
+	}
+	
+	
+	
+	
 	public class ExploreColonne implements Runnable {
 		//Thread t;
 		double score;
@@ -272,7 +399,7 @@ public class Minimax extends Algorithm {
 		}		
 		return coup;
 	}
-	*/
+	
 	
 	
 	

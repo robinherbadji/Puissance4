@@ -264,9 +264,9 @@ public class MinimaxThread extends Algorithm {
 	
 	
 	private double min_value(Grille state, int profondeur) {
-		int etatPartie = state.getEtatPartie(symboleMin, profondeur);
-		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
-		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (profondeur - this.tourDepart >= this.levelIA)) {
+		// On regarde si l'IA a gagné, ou match nul ou la profondeur max de l'IA est atteinte
+		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
+		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
 		}
 
@@ -290,8 +290,8 @@ public class MinimaxThread extends Algorithm {
 	}
 	
 	private double max_value(Grille state, int profondeur) {
+		// On regarde si l'adversaire a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, profondeur);
-		// On regarde si un des 2 joueurs a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (profondeur - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
 		}

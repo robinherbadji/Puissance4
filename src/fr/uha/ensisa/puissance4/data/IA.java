@@ -1,7 +1,8 @@
 package fr.uha.ensisa.puissance4.data;
 
 import fr.uha.ensisa.puissance4.jeu.algosIA.Algorithm;
-import fr.uha.ensisa.puissance4.jeu.algosIA.AlphaBeta;
+import fr.uha.ensisa.puissance4.jeu.algosIA.alphabeta.AlphaBeta;
+import fr.uha.ensisa.puissance4.jeu.algosIA.alphabeta.NegamaxAlphaBeta;
 import fr.uha.ensisa.puissance4.jeu.algosIA.minimax.Minimax;
 import fr.uha.ensisa.puissance4.jeu.algosIA.minimax.MinimaxThread;
 import fr.uha.ensisa.puissance4.jeu.algosIA.minimax.Negamax;
@@ -53,6 +54,7 @@ public class IA extends Joueur {
 		else
 		{
 			iA = new AlphaBeta(levelIA, grille, this, tour);
+			//iA = new NegamaxAlphaBeta(levelIA, grille, this, tour);
 		}
 		
 		return iA.choisirCoup();

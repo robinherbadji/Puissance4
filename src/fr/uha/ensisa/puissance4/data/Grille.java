@@ -2,6 +2,7 @@ package fr.uha.ensisa.puissance4.data;
 
 import fr.uha.ensisa.puissance4.data.evaluation.strategies.Strategie;
 import fr.uha.ensisa.puissance4.data.evaluation.strategies.StrategieAmelioree;
+import fr.uha.ensisa.puissance4.data.evaluation.strategies.StrategieSimple;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
@@ -175,8 +176,8 @@ public class Grille {
 	 * @return
 	 */
 	public double evaluer(Case symboleJoueurCourant) {
-		// Strategie strategie = new StrategieSimple(this, symboleJoueurCourant);
-		Strategie strategie = new StrategieAmelioree(this, symboleJoueurCourant);
+		Strategie strategie = new StrategieSimple(this, symboleJoueurCourant);
+		//Strategie strategie = new StrategieAmelioree(this, symboleJoueurCourant);
 		return strategie.getUtility();
 	}
 

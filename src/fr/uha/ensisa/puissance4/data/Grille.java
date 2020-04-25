@@ -169,7 +169,7 @@ public class Grille {
 
 	// VERSION 4
 	/**
-	 * Donne un score à la grille en fonction du joueur courant et d'une Stratégie
+	 * Donne un score à la grille en fonction du joueur courant et d'une {@link fr.uha.ensisa.puissance4.data.evaluation.strategies.Strategie Strategie}
 	 * 
 	 * @param symboleJoueurCourant
 	 * @return

@@ -122,28 +122,32 @@ public class Minimax extends Algorithm {
 		    
 		}
 		
-		
+		int colonneDefaite = Constantes.COUP_NON_DEFINI;
 		for (ExploreColonneRecursive explorateur : explorateurs) {			
 			double score = explorateur.join();
 			
 			if (explorateur.getColonneVictoire() != Constantes.COUP_NON_DEFINI) {
 				return explorateur.getColonneVictoire();
 			}
+			if (explorateur.getColonneDefaite() != Constantes.COUP_NON_DEFINI) {
+				colonneDefaite = explorateur.getColonneDefaite();
+			}
 			if (score > utility_max) {
 				utility_max = score;
 				coup = explorateur.getColonne();
 			}
-			if (coup == Constantes.COUP_NON_DEFINI) {
-				System.out.println("Bon ben là plus aucune chance");
-				coup = explorateur.getColonneDefaite();
-			}
+			
+		}
+		if (coup == Constantes.COUP_NON_DEFINI) {
+			System.out.println("Bon ben là plus aucune chance");
+			coup = colonneDefaite;
 		}
 		return coup;
 	}
 	
 	
 	
-	
+	/*
 	public class ExploreColonne implements Runnable {
 		//Thread t;
 		double score;
@@ -207,7 +211,6 @@ public class Minimax extends Algorithm {
 	}
 	
 	
-	
 	public int choisirCoupThread() {
 		// Stratégie de départ
 		int coup = Constantes.COUP_NON_DEFINI;
@@ -239,7 +242,6 @@ public class Minimax extends Algorithm {
 				
 		}
 		
-		
 		int i = 0;
 		for (ExploreColonne explorateur : explorateurs) {
 			//Thread thread = threadItr.next();
@@ -270,6 +272,8 @@ public class Minimax extends Algorithm {
 		}		
 		return coup;
 	}
+	*/
+	
 	
 	
 	private double min_value(Grille state, int profondeur) {
@@ -286,9 +290,13 @@ public class Minimax extends Algorithm {
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = state.clone();
 			if (grille_next.isCoupPossible(col)) {
+				//System.out.println("Prof : "+profondeur+"Depart : "+tourDepart);
 				grille_next.ajouterCoup(col, symboleMin);
 				//profondeur = tourRef + 1;
-				utility = Math.min(utility, max_value(grille_next, tourRef + 1));
+				double val = max_value(grille_next, tourRef + 1);
+				//System.out.println("Val Min : "+ val);
+				utility = Math.min(utility, val);
+				//utility = Math.min(utility, max_value(grille_next, tourRef + 1));
 			}
 		}
 		return utility;
@@ -308,15 +316,107 @@ public class Minimax extends Algorithm {
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = state.clone();
 			if (grille_next.isCoupPossible(col)) {
+				//System.out.println("Prof : "+profondeur+"Depart : "+tourDepart);
 				grille_next.ajouterCoup(col, symboleMax);
 				//profondeur = tourRef + 1;
-				utility = Math.max(utility, min_value(grille_next, tourRef + 1));
+				double val = min_value(grille_next, tourRef + 1);
+				//System.out.println("Val Max : "+ val);
+				utility = Math.max(utility, val);
+				//utility = Math.max(utility, min_value(grille_next, tourRef + 1));
 			}
 		}
 		return utility;
 	}
 	
+	
+	private double negamax(Grille state, int profondeur) {
+		int etatPartie = state.getEtatPartie(symboleMax, profondeur);
+		int etatPartieAdverse = state.getEtatPartie(symboleMin, profondeur);
+		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (profondeur - this.tourDepart >= this.levelIA)) {
+			if ((profondeur - tourDepart) % 2 == 1) {
+				return -state.evaluer(symboleMax);
+			}
+			else {
+				return state.evaluer(symboleMax);
+			}
+		}
+		
+		double utility = Constantes.SCORE_MIN_NON_DEFINI;
+		int tourRef = profondeur;
+		for (int col : this.classementColonnes()) {
+			Grille grille_next = state.clone();
+			if (grille_next.isCoupPossible(col)) {
+				if ((profondeur - tourDepart) % 2 == 1) {
+					grille_next.ajouterCoup(col, symboleMin);
+				}
+				else {
+					grille_next.ajouterCoup(col, symboleMax);
+				}
+				utility = Math.max(utility, -negamax(grille_next, tourRef+1));
+			}
+		}
+		return utility;		
+	}
+	
+	
+	public int choisirCoupNegamax() {
 
+		// Stratégie de départ
+		int coup = Constantes.COUP_NON_DEFINI;
+		
+
+		// Blocage de l'adversaire s'il gagne au prochain coup
+		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);
+		if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+			System.out.println("Blocage Victoire Adverse");
+			return victoireAdversaire;
+		}
+
+		// Choisir cette colonne ferait directement gagner l'adversaire
+		int colonneDefaite = Constantes.COUP_NON_DEFINI;
+		
+		double utility_max = Constantes.SCORE_MIN_NON_DEFINI;
+		for (int col : this.classementColonnes()) {
+			Grille grille_next = grilleDepart.clone();
+			if (grille_next.isCoupPossible(col)) {
+				grille_next.ajouterCoup(col, symboleMax);
+				//tourExplore = this.tourDepart + 1;
+				
+				// Si l'IA peut gagner en un coup : jouer ce coup
+				if (grille_next.isIAGagnante(symboleMax, tourDepart)) {
+					System.out.println("C'est gagné");
+					return col;
+				}
+				
+				// Si l'adversaire peut gagner après que l'on a joué : éviter ce coup
+				double eval_grille_next = Constantes.SCORE_MIN_NON_DEFINI;
+				victoireAdversaire = grille_next.isAdversaireGagnant(symboleMin, tourDepart);
+				if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
+					System.out.println("IA perd si elle met dans la colonne suivante : ");
+					colonneDefaite = col;
+				}
+				else {
+					eval_grille_next = -negamax(grille_next, this.tourDepart + 1);
+					//eval_grille_next = -min_value(grille_next, this.tourDepart + 1);
+				}
+				
+				//double eval_grille_next = min_value(grille_next);
+				System.out.println("COLONNE "+(col+1)+" : "+eval_grille_next);
+				if (eval_grille_next > utility_max) {
+					utility_max = eval_grille_next;
+					coup = col;
+				}
+			}
+		}
+		// On a perdu il faut bien renvoyer quelque chose ...
+		if (coup == Constantes.COUP_NON_DEFINI) {
+			System.out.println("Bon ben là plus aucune chance");
+			coup = colonneDefaite;
+		}
+		return coup;
+	}
+	
+	
 
 	
 	@Override
@@ -330,7 +430,6 @@ public class Minimax extends Algorithm {
 			return coup;
 		}
 		*/
-		
 
 		// Blocage de l'adversaire s'il gagne au prochain coup
 		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);
@@ -363,7 +462,7 @@ public class Minimax extends Algorithm {
 					colonneDefaite = col;
 				}
 				else {
-					eval_grille_next = min_value(grille_next);
+					eval_grille_next = min_value(grille_next, tourExplore);
 				}
 				
 				//double eval_grille_next = min_value(grille_next);

@@ -50,8 +50,10 @@ public class IA extends Joueur {
 		}
 		
 		//return iA.choisirCoup();
+		return ((Minimax) iA).choisirCoupNegamax();
+		
 		//return ((Minimax) iA).choisirCoupThread();
-		return ((Minimax) iA).choisirCoupThreadRecursive();
+		//return ((Minimax) iA).choisirCoupThreadRecursive();
 	}
 
 

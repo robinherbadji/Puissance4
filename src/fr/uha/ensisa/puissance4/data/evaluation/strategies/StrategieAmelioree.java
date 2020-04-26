@@ -70,7 +70,7 @@ public class StrategieAmelioree extends Strategie {
 				// System.out.println(combinaison.toString());
 			}
 		}
-/*
+
 		// Vérification alignement verticaux
 		// Parcours des 3 lignes
 		for (int i = 0; i < Constantes.NB_LIGNES - Constantes.NB_JETONS_VICTOIRE + 1; i++) {
@@ -92,7 +92,7 @@ public class StrategieAmelioree extends Strategie {
 				// System.out.println(combinaison.toString());
 			}
 		}
-*/
+
 		// Vérification alignement diagonaux (bas-gauche vers haut-droit)
 		// Parcours des 3 lignes
 		for (int i = 0; i < Constantes.NB_LIGNES - Constantes.NB_JETONS_VICTOIRE + 1; i++) {

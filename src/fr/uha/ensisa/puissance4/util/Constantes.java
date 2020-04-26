@@ -83,7 +83,7 @@ public abstract class Constantes {
 	public static final int SCORE_2 = 10;
 	public static final int SCORE_1 = 1;
 	public static final int SCORE_BONUS = 100;
-	public static final int SCORE_STRATEGIE = 3000;
+	public static final int SCORE_STRATEGIE = 1000;
 	
 	
 }

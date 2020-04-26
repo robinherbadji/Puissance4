@@ -23,13 +23,11 @@ public class Minimax extends Algorithm {
 	@Override
 	public int choisirCoup() {
 		// Stratégie de départ
-		int coup = Constantes.COUP_NON_DEFINI;
-		/*
+		//int coup = Constantes.COUP_NON_DEFINI;
 		int coup = coupDepartPartie();
 		if (coup != Constantes.COUP_NON_DEFINI) {
 			return coup;
 		}
-		*/
 
 		// Blocage de l'adversaire s'il gagne au prochain coup
 		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);

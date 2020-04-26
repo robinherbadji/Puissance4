@@ -10,18 +10,9 @@ import fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Groupe3Combinaisons
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class StrategieAmelioree extends Strategie {
-	/*
-	protected int tourExplore;
-	protected int tourDepart;
-	
-	public StrategieAmelioree(Grille grille, Case symboleJoueurCourant, int tourDepart, int tourExplore) {
-		super(grille, symboleJoueurCourant);
-		this.tourDepart = tourDepart;
-		this.tourExplore = tourExplore;
-	}
-	*/
-	public StrategieAmelioree(Grille grille, Case symboleJoueurCourant) {
+public class StrategieOddEven extends Strategie {
+
+	public StrategieOddEven(Grille grille, Case symboleJoueurCourant) {
 		super(grille, symboleJoueurCourant);
 	}
 
@@ -33,16 +24,6 @@ public class StrategieAmelioree extends Strategie {
 		return utility;
 	}
 	
-	/**
-	 * Renvoie le même score que
-	 * {@link StrategieSimple#evaluerJoueur(Case symboleJoueur)} en ajoutant le
-	 * score de la stratégie issue de
-	 * {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Groupe3Combinaisons
-	 * Groupe3Combinaisons}
-	 * 
-	 * @param symboleJoueur
-	 * @return
-	 */
 	private double evaluerJoueur(Case symboleJoueur) {
 		Groupe3Combinaisons groupe3 = new Groupe3Combinaisons();
 		double score = 0;
@@ -149,22 +130,37 @@ public class StrategieAmelioree extends Strategie {
 		}
 
 		// Stratégie:
-		for (int i = 0; i < Constantes.NB_LIGNES - 1; i++) {
-			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
-				if ((grille.getCase(i, j) == Case.V) && (grille.getCase(i + 1, j) == Case.V)) {
-					int[] coordVide1 = new int[2];
-					coordVide1[0] = i;
-					coordVide1[1] = j;
-					int[] coordVide2 = new int[2];
-					coordVide2[0] = i + 1;
-					coordVide2[1] = j;
-					if (groupe3.contains(coordVide1) && groupe3.contains(coordVide2)) {
-						score += Constantes.SCORE_STRATEGIE;
+		//for (int i = 0; i < Constantes.NB_LIGNES - 1; i++) {
+		// Le joueur 1 doit sécuriser la victoire sur les lignes paires (0,2,4)
+		if (symboleJoueur == Case.X) {
+			for (int i = 0; i < Constantes.NB_LIGNES - 1; i+=2) {
+				for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+					if (grille.getCase(i, j) == Case.V) {
+						int[] coordVide = new int[2]; // Ne pas confondre coordVide et Covid, cela peut prêter à confusion ces temps-ci ^^
+						coordVide[0] = i;
+						coordVide[1] = j;
+						if (groupe3.contains(coordVide)) {
+							score += Constantes.SCORE_ODD_EVEN;
+						}
+					}
+				}
+			}
+		}
+		// Le joueur 2 doit sécuriser la victoire sur les lignes impaires (1,3,5)
+		else {
+			for (int i = 1; i < Constantes.NB_LIGNES - 1; i+=2) {
+				for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+					if (grille.getCase(i, j) == Case.V) {
+						int[] coordVide = new int[2];
+						coordVide[0] = i;
+						coordVide[1] = j;
+						if (groupe3.contains(coordVide)) {
+							score += Constantes.SCORE_ODD_EVEN;
+						}
 					}
 				}
 			}
 		}
 		return score;
 	}
-
 }

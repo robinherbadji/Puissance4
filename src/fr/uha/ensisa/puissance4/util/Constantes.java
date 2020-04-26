@@ -84,6 +84,7 @@ public abstract class Constantes {
 	public static final int SCORE_1 = 1;
 	public static final int SCORE_BONUS = 100;
 	public static final int SCORE_STRATEGIE = 1000;
+	public static final int SCORE_ODD_EVEN = 100;
 	
 	
 }

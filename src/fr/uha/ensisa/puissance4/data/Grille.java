@@ -176,8 +176,8 @@ public class Grille {
 	 * @return
 	 */
 	public double evaluer(Case symboleJoueurCourant) {
-		Strategie strategie = new StrategieSimple(this, symboleJoueurCourant);
-		//Strategie strategie = new StrategieAmelioree(this, symboleJoueurCourant);
+		//Strategie strategie = new StrategieSimple(this, symboleJoueurCourant);
+		Strategie strategie = new StrategieAmelioree(this, symboleJoueurCourant);
 		return strategie.getUtility();
 	}
 

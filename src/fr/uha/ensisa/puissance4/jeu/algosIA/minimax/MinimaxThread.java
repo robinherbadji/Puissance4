@@ -76,6 +76,7 @@ public class MinimaxThread extends Algorithm {
 
 	}
 
+	/*
 	@Override
 	public int choisirCoup() {
 		// Stratégie de départ
@@ -125,7 +126,7 @@ public class MinimaxThread extends Algorithm {
 		}
 		return coup;
 	}
-	
+	*/
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -197,7 +198,6 @@ public class MinimaxThread extends Algorithm {
 	
 	
 	// Méthode associée à la création de Threads via Runnable
-	/*
 	@Override
 	public int choisirCoup() {
 		// Stratégie de départ
@@ -209,9 +209,6 @@ public class MinimaxThread extends Algorithm {
 			System.out.println("Blocage Victoire Adverse");
 			return victoireAdversaire;
 		}
-
-		// Choisir cette colonne ferait directement gagner l'adversaire
-		int colonneDefaite = Constantes.COUP_NON_DEFINI;
 
 		double utility_max = Constantes.SCORE_MIN_NON_DEFINI;
 		ArrayList<Thread> threads = new ArrayList<Thread>();
@@ -260,7 +257,6 @@ public class MinimaxThread extends Algorithm {
 		}
 		return coup;
 	}
-	*/
 	
 	
 	private double min_value(Grille state, int profondeur) {

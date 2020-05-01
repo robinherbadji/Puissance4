@@ -91,7 +91,7 @@ public abstract class Algorithm {
 	 * @return
 	 */
 	protected int coupDepartPartie() {
-		if (tourDepart <= Constantes.STRATEGIE_DEPART && grilleDepart.isSeulementRemplieMilieu()) {
+		if (tourDepart <= Constantes.NB_TOURS_DEPART && grilleDepart.isSeulementRemplieMilieu()) {
 			return (Constantes.NB_COLONNES / 2);
 		}
 		return Constantes.COUP_NON_DEFINI;

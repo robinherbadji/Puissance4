@@ -42,19 +42,8 @@ public abstract class Constantes {
 	public static final int PARTIE_EN_COURS = 0;
 	public static final int MATCH_NUL = 1;
 	public static final int VICTOIRE_JOUEUR_1 = 2;
-	public static final int VICTOIRE_JOUEUR_2 = 3;
+	public static final int VICTOIRE_JOUEUR_2 = 3;	
 	
-	public static final int NB_JETONS_VICTOIRE = 4;
-	
-	// Stratégies
-	/*
-	public static final int STRATEGIE_CIBLEE_IA = 0;
-	public static final int STRATEGIE_GLOBALE = 1;
-	public static final int STRATEGIE_ATTAQUANTE = 2;
-	public static final int STRATEGIE_DEFENSIVE = 3;
-	public static final int STRATEGIE_GAUSS = 4;
-	public static final int STRATEGIE_GLOBALE_GAUSS = 5;
-	*/
 	
 	//Directions de Parcours
 	public static final int DIRECTION_HORIZONTALE = 1;
@@ -72,12 +61,16 @@ public abstract class Constantes {
 	public static final int MAX = 1;
 	
 	
+	
 	//Paramètres IA
 	public static final double COEF_IA = 1;
 	public static final double COEF_OTHER = 1;
 	
-	public static final int STRATEGIE_DEPART = 5;
+	public static final int NB_TOURS_DEPART = 5;
 	
+	public static final int NB_JETONS_VICTOIRE = 4;
+	
+	// Scores
 	public static final int SCORE_4 = 10000;
 	public static final int SCORE_3 = 100;
 	public static final int SCORE_2 = 10;

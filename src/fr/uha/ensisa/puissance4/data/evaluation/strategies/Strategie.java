@@ -13,6 +13,7 @@ import fr.uha.ensisa.puissance4.util.Constantes.Case;
  * @author Yassine
  * @see StrategieSimple
  * @see StrategieAmelioree
+ * @see StrategieOddEven
  */
 public abstract class Strategie {
 

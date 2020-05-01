@@ -85,8 +85,8 @@ public abstract class Algorithm {
 
 	/**
 	 * Renvoie la colonne centrale pour les
-	 * {@link fr.uha.ensisa.puissance4.util.Constantes#STRATEGIE_DEPART
-	 * STRATEGIE_DEPART} premiers tours de la partie
+	 * {@link fr.uha.ensisa.puissance4.util.Constantes#NB_TOURS_DEPART
+	 * NB_TOURS_DEPART} premiers tours de la partie
 	 * 
 	 * @return
 	 */

@@ -5,11 +5,15 @@ import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
 /**
- * Classe qui permet de définir une stratégie pour le calcul des évaluations d'une {@link fr.uha.ensisa.puissance4.data.Grille Grille}
+ * Classe qui permet de définir une stratégie pour le calcul des évaluations
+ * d'une {@link fr.uha.ensisa.puissance4.data.Grille Grille}. Le résultat de
+ * l'évaluation est donné par la méthode {@link #getUtility()}.
+ * 
  * @author Robin
  * @author Yassine
  * @see StrategieSimple
  * @see StrategieAmelioree
+ * @see StrategieOddEven
  */
 public abstract class Strategie {
 

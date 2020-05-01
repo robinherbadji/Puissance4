@@ -19,14 +19,14 @@ import fr.uha.ensisa.puissance4.util.Constantes.Case;
  * Ensuite il ne reste plus qu'à appeler la méthode
  * {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison#getScore()
  * getScore()} sur chacune des {@link fr.uha.ensisa.puissance4.data.evaluation.combinaisons.Combinaison
- * Combinaison} afin d'en déduire le score total pour le joueur courant<br>
- * Ensuite
+ * Combinaison} afin d'en déduire le score total pour le joueur courant.
  * </p>
  * 
  * @author Robin
  * @author Yassine
  * @see Strategie
  * @see StrategieAmelioree
+ * @see StrategieOddEven
  */
 public class StrategieSimple extends Strategie {
 
@@ -42,7 +42,11 @@ public class StrategieSimple extends Strategie {
 		return utility;
 	}
 
-	/*
+	/**
+	 * [METHODE DEBUG]</br>
+	 * Affiche et revoie l'évaluation pour le joueur courant et le joueur adverse
+	 * @return
+	 */
 	public double[] getUtility_tab() {
 		double[] tab_utility = new double[3];
 		tab_utility[0] = Constantes.COEF_IA * evaluerJoueur(symboleJoueurCourant);
@@ -53,7 +57,7 @@ public class StrategieSimple extends Strategie {
 		System.out.println("Attaque : " + tab_utility[0] + " / Défense : " + tab_utility[1]);
 		return tab_utility;
 	}
-	*/
+	
 
 	/**
 	 * Renvoie le score d'un joueur en additionnant le score de chaque
@@ -66,30 +70,21 @@ public class StrategieSimple extends Strategie {
 	private double evaluerJoueur(Case symboleJoueur) {
 		double score = 0;
 
-		// Vérification alignement horizontaux
-		// Parcourt des 6 lignes
+		// Vérification alignement horizontaux -
 		for (int i = 0; i < Constantes.NB_LIGNES; i++) {
-			// Parcours de 4 possiblilités
 			for (int j = 0; j < Constantes.NB_COLONNES - Constantes.NB_JETONS_VICTOIRE + 1; j++) {
 				Combinaison combinaison = new CombinaisonHorizontale(symboleJoueur);
 				for (int k = 0; k < Constantes.NB_JETONS_VICTOIRE; k++) {
 					Case symbole = grille.getCase(i, j + k);
 					combinaison.addSymbole(symbole);
-					// System.out.println("ligne : "+j+" et colonne : "+(i+k));
 				}
 				combinaison.addBonus(grille.getCase(i, j + Constantes.NB_JETONS_VICTOIRE));
 				score += combinaison.getScore();
-				// System.out.println(combinaison.getNbCombinaison());
-				// System.out.println("colonne : "+j+" et ligne : "+i+" /
-				// "+combinaison.toString());
-				// System.out.println(combinaison.toString());
 			}
 		}
 
-		// Vérification alignement verticaux
-		// Parcours des 3 lignes
+		// Vérification alignement verticaux |
 		for (int i = 0; i < Constantes.NB_LIGNES - Constantes.NB_JETONS_VICTOIRE + 1; i++) {
-
 			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
 				Combinaison combinaison = new CombinaisonVerticale(symboleJoueur);
 				for (int k = 0; k < Constantes.NB_JETONS_VICTOIRE; k++) {
@@ -98,16 +93,11 @@ public class StrategieSimple extends Strategie {
 				}
 				combinaison.addBonus(grille.getCase(i + Constantes.NB_JETONS_VICTOIRE, j));
 				score += combinaison.getScore();
-				// System.out.println(combinaison.getNbCombinaison());
-				// System.out.println("colonne : "+j+" et ligne : "+i);
-				// System.out.println(combinaison.toString());
 			}
 		}
 
-		// Vérification alignement diagonaux (bas-gauche vers haut-droit)
-		// Parcours des 3 lignes
+		// Vérification alignement diagonaux (bas-gauche vers haut-droit) /
 		for (int i = 0; i < Constantes.NB_LIGNES - Constantes.NB_JETONS_VICTOIRE + 1; i++) {
-			// Parcours des 4 colonnes
 			for (int j = 0; j < Constantes.NB_COLONNES - Constantes.NB_JETONS_VICTOIRE + 1; j++) {
 				Combinaison combinaison = new CombinaisonObliqueGaucheDroite(symboleJoueur);
 				for (int k = 0; k < Constantes.NB_JETONS_VICTOIRE; k++) {
@@ -117,18 +107,11 @@ public class StrategieSimple extends Strategie {
 				combinaison
 						.addBonus(grille.getCase(i + Constantes.NB_JETONS_VICTOIRE, j + Constantes.NB_JETONS_VICTOIRE));
 				score += combinaison.getScore();
-				// System.out.println("colonne : "+j+" et ligne : "+i+" /
-				// "+combinaison.toString());
-				// System.out.println(combinaison.getNbCombinaison());
-				// System.out.println("colonne : "+j+" et ligne : "+i);
-				// System.out.println(combinaison.toString());
 			}
 		}
 
-		// Vérification alignement diagonaux (bas-droite vers haut-gauche)
-		// Parcours des 3 lignes possibles
+		// Vérification alignement diagonaux (bas-droite vers haut-gauche) \
 		for (int i = 0; i < Constantes.NB_LIGNES - Constantes.NB_JETONS_VICTOIRE + 1; i++)
-			// Parcours des 4 colonnes en sens inverse
 			for (int j = Constantes.NB_COLONNES - 1; j >= Constantes.NB_COLONNES - Constantes.NB_JETONS_VICTOIRE; j--) {
 				Combinaison combinaison = new CombinaisonObliqueDroiteGauche(symboleJoueur);
 				for (int k = 0; k < Constantes.NB_JETONS_VICTOIRE; k++) {
@@ -138,11 +121,6 @@ public class StrategieSimple extends Strategie {
 				combinaison
 						.addBonus(grille.getCase(i + Constantes.NB_JETONS_VICTOIRE, j - Constantes.NB_JETONS_VICTOIRE));
 				score += combinaison.getScore();
-				// System.out.println("colonne : "+j+" et ligne : "+i+" /
-				// "+combinaison.toString());
-				// System.out.println(combinaison.getNbCombinaison());
-				// System.out.println("colonne : "+j+" et ligne : "+i);
-				// System.out.println(combinaison.toString());
 			}
 		return score;
 	}

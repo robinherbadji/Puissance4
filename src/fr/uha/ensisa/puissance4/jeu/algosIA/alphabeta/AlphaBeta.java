@@ -1,24 +1,23 @@
-package fr.uha.ensisa.puissance4.jeu.algosIA;
+package fr.uha.ensisa.puissance4.jeu.algosIA.alphabeta;
 
 import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
+import fr.uha.ensisa.puissance4.jeu.algosIA.Algorithm;
 import fr.uha.ensisa.puissance4.util.Constantes;
 
 /**
 	Classe implémentant l'algorithme Alpha-Beta
 */
 public class AlphaBeta extends Algorithm {
-	
+
 	public AlphaBeta(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour) {
 		super(levelIA, grilleDepart, joueurActuel, tour);
 	}
-	
-	
+
 	@Override
 	public int choisirCoup() {
-
 		// Stratégie de départ
-		// int coup = Constantes.COUP_NON_DEFINI;
+		//int coup = Constantes.COUP_NON_DEFINI;
 		int coup = coupDepartPartie();
 		if (coup != Constantes.COUP_NON_DEFINI) {
 			return coup;
@@ -33,11 +32,7 @@ public class AlphaBeta extends Algorithm {
 
 		// Choisir cette colonne ferait directement gagner l'adversaire
 		int colonneDefaite = Constantes.COUP_NON_DEFINI;
-
-		// Définition de Utility = Alpha et Beta utiles à l'algorithme
 		double utility = Constantes.SCORE_MIN_NON_DEFINI;
-		double beta = Constantes.SCORE_MAX_NON_DEFINI;
-
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = grilleDepart.clone();
 			if (grille_next.isCoupPossible(col)) {
@@ -58,7 +53,7 @@ public class AlphaBeta extends Algorithm {
 					colonneDefaite = col;
 				}
 				else {
-					eval_grille_next = min_value(grille_next, utility, beta);
+					eval_grille_next = min_value(grille_next, Constantes.SCORE_MIN_NON_DEFINI, Constantes.SCORE_MAX_NON_DEFINI);
 				}
 				
 				System.out.println("COLONNE "+(col+1)+" : "+eval_grille_next);
@@ -78,22 +73,15 @@ public class AlphaBeta extends Algorithm {
 	}
 	
 	
-	private double min_value(Grille state, double alpha, double beta) {		
-		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
-		/*
-		if ((etatPartie != Constantes.PARTIE_EN_COURS) && (this.tourExplore - this.tourDepart == 1)) {
-			System.out.println("C'est gagné !");
-		}
-		*/
-		
+	private double min_value(Grille state, double alpha, double beta) {
 		// On regarde si l'IA a gagné, ou match nul ou la profondeur max de l'IA est atteinte
+		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);		
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
 		}
 		
-		double utility = Constantes.SCORE_MAX_NON_DEFINI;
-		
 		// Parcours des successeurs
+		double utility = Constantes.SCORE_MAX_NON_DEFINI;
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = state.clone();
@@ -103,7 +91,7 @@ public class AlphaBeta extends Algorithm {
 				utility = Math.min(utility, max_value(grille_next, alpha, beta));
 				beta = Math.min(beta, utility);
 				if (alpha >= beta) {
-					return utility;
+					break;
 				}
 			}
 		}
@@ -111,21 +99,14 @@ public class AlphaBeta extends Algorithm {
 	}
 	
 	private double max_value(Grille state, double alpha, double beta) {
-		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
-		/*
-		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) && (this.tourExplore - this.tourDepart <= 2)) {
-			System.out.println("C'est perdu par là !");
-		}
-		*/
-		
 		// On regarde si l'adversaire a gagné, ou match nul ou la profondeur max de l'IA est atteinte
+		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);		
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
 		}
 		
-		double utility = Constantes.SCORE_MIN_NON_DEFINI;
-		
 		// Parcours des successeurs
+		double utility = Constantes.SCORE_MIN_NON_DEFINI;
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = state.clone();
@@ -135,7 +116,7 @@ public class AlphaBeta extends Algorithm {
 				utility = Math.max(utility, min_value(grille_next, alpha, beta));
 				alpha = Math.max(alpha, utility);
 				if (alpha >= beta) {
-					return utility;
+					break;
 				}
 			}
 		}

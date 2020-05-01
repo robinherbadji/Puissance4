@@ -1,6 +1,7 @@
 package fr.uha.ensisa.puissance4.data;
 
 import fr.uha.ensisa.puissance4.ui.Console;
+import fr.uha.ensisa.puissance4.ui.sample.Controller;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
@@ -27,7 +28,7 @@ public abstract class Joueur {
 	public abstract int getType();
 	
 	/**
-	 * Renvoie "Humain" ou "IA" à des fins d'affichage
+	 * Renvoie "Humain" ou "IA" ï¿½ des fins d'affichage
 	 * @return
 	 */
 	public abstract String getTypeNom();
@@ -51,7 +52,7 @@ public abstract class Joueur {
 	}
 	
 	/**
-	 * Renvoie le symbole utilisé par le joueur (X ou O)
+	 * Renvoie le symbole utilisï¿½ par le joueur (X ou O)
 	 * @return Case symbole
 	 */
 	public Case getSymbole()
@@ -74,6 +75,7 @@ public abstract class Joueur {
 	 * @return
 	 */
 	public abstract int joue(Grille grille, Console console, int tour);
+	public abstract int joue(Grille grille, Controller controller, int tour);
 	
 
 }

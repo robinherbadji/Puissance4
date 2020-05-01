@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="682.0" prefWidth="969.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.uha.ensisa.puissance4.ui.sample.Controller">
+<AnchorPane prefHeight="680" prefWidth="970" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.uha.ensisa.puissance4.ui.sample.Controller">
     <children>
         <Pane layoutX="6.0" layoutY="32.0" prefHeight="645.0" prefWidth="961.0">
             <children>
@@ -30,11 +30,17 @@
                 <TextField id="name1" fx:id="nameplayer1" layoutX="60" layoutY="150.0" promptText="Nom du joueur Y" />
                 <TextField id="name2" fx:id="nameplayer2" layoutX="60" layoutY="210.0" promptText="Nom du joueur R" />
                 <TextField id="name3" fx:id="nameplayer3" layoutX="60" layoutY="270.0" promptText="Nom de l'IA" />
+
+
+
                 <Label layoutX="90" layoutY="125" text="Joueur jeton Yass" />
                 <Label layoutX="90" layoutY="185" text="Joueur jeton Badji" />
                 <Label layoutX="100" layoutY="250" text="Nom de l'IA" />
                 <Label layoutX="100" layoutY="310" text="Niveau de l'IA" />
                 <Label layoutX="100" layoutY="420" text="Qui commence?" />
+
+
+                <Label fx:id="turnId" layoutX="315" layoutY="610" text="C'est ton tour" />
 
                 <TextField id="niveau2" fx:id="niveauIA" layoutX="60" layoutY="330" promptText="Niveau IA" />
 

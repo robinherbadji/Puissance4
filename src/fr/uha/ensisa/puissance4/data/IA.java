@@ -4,10 +4,11 @@ import fr.uha.ensisa.puissance4.jeu.algosIA.Algorithm;
 import fr.uha.ensisa.puissance4.jeu.algosIA.AlphaBeta;
 import fr.uha.ensisa.puissance4.jeu.algosIA.Minimax;
 import fr.uha.ensisa.puissance4.ui.Console;
+import fr.uha.ensisa.puissance4.ui.sample.Controller;
 import fr.uha.ensisa.puissance4.util.Constantes;
 
 /**
- Classe permettant de gérer l'IA comme joueur	
+ Classe permettant de gï¿½rer l'IA comme joueur	
 */
 public class IA extends Joueur {
 	
@@ -49,6 +50,23 @@ public class IA extends Joueur {
 			iA = new AlphaBeta(levelIA, grille, this, tour);
 		}
 		
+		//return iA.choisirCoup();
+		//return ((Minimax) iA).choisirCoupThread();
+		return ((Minimax) iA).choisirCoupThreadRecursive();
+	}
+
+	@Override
+	public int joue(Grille grille, Controller controller, int tour) {
+		Algorithm iA;
+		if(algoIA==Constantes.IA_MINIMAX)
+		{
+			iA = new Minimax(levelIA, grille, this, tour);
+		}
+		else
+		{
+			iA = new AlphaBeta(levelIA, grille, this, tour);
+		}
+
 		//return iA.choisirCoup();
 		//return ((Minimax) iA).choisirCoupThread();
 		return ((Minimax) iA).choisirCoupThreadRecursive();

@@ -3,6 +3,7 @@ package fr.uha.ensisa.puissance4.jeu;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
 import fr.uha.ensisa.puissance4.ui.Console;
+import fr.uha.ensisa.puissance4.ui.sample.UIConnect4;
 
 public class Jeu extends Thread{
 	
@@ -14,7 +15,15 @@ public class Jeu extends Thread{
 		this.partie=new Partie(joueur1, joueur2);
 		this.console=console;
 	}
-	
+
+
+	public Jeu(Joueur joueur1, Joueur joueur2, Console console, UIConnect4 ui)
+	{
+		this.partie=new Partie(joueur1, joueur2);
+		this.console = console;
+	}
+
+
 	public void run()
 	{
 		console.lancementPartie(partie.getJoueur1(), partie.getJoueur2());		

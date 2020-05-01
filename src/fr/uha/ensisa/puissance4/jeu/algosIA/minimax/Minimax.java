@@ -17,7 +17,7 @@ public class Minimax extends Algorithm {
 	@Override
 	public int choisirCoup() {
 		// Stratégie de départ
-		//int coup = Constantes.COUP_NON_DEFINI;
+		// int coup = Constantes.COUP_NON_DEFINI;
 		int coup = coupDepartPartie();
 		if (coup != Constantes.COUP_NON_DEFINI) {
 			return coup;
@@ -56,7 +56,6 @@ public class Minimax extends Algorithm {
 					eval_grille_next = min_value(grille_next);
 				}
 
-				// double eval_grille_next = min_value(grille_next);
 				System.out.println("COLONNE " + (col + 1) + " : " + eval_grille_next);
 				if (eval_grille_next > utility_max) {
 					utility_max = eval_grille_next;
@@ -80,7 +79,7 @@ public class Minimax extends Algorithm {
 		}
 
 		// Parcours des successeurs
-		double utility = Constantes.SCORE_MAX_NON_DEFINI;		
+		double utility = Constantes.SCORE_MAX_NON_DEFINI;
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = state.clone();
@@ -95,13 +94,13 @@ public class Minimax extends Algorithm {
 
 	private double max_value(Grille state) {
 		// On regarde si l'adversaire a gagné, ou match nul ou la profondeur max de l'IA est atteinte
-		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);		
+		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
 		}
 
 		// Parcours des successeurs
-		double utility = Constantes.SCORE_MIN_NON_DEFINI;		
+		double utility = Constantes.SCORE_MIN_NON_DEFINI;
 		int tourRef = tourExplore;
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = state.clone();

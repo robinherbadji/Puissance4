@@ -6,8 +6,8 @@ import fr.uha.ensisa.puissance4.jeu.algosIA.Algorithm;
 import fr.uha.ensisa.puissance4.util.Constantes;
 
 /**
-	Classe implémentant l'algorithme Alpha-Beta
-*/
+ * Classe implémentant l'algorithme Alpha-Beta
+ */
 public class AlphaBeta extends Algorithm {
 
 	public AlphaBeta(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour) {
@@ -17,7 +17,7 @@ public class AlphaBeta extends Algorithm {
 	@Override
 	public int choisirCoup() {
 		// Stratégie de départ
-		//int coup = Constantes.COUP_NON_DEFINI;
+		// int coup = Constantes.COUP_NON_DEFINI;
 		int coup = coupDepartPartie();
 		if (coup != Constantes.COUP_NON_DEFINI) {
 			return coup;
@@ -44,26 +44,26 @@ public class AlphaBeta extends Algorithm {
 					System.out.println("C'est gagné");
 					return col;
 				}
-				
+
 				// Si l'adversaire peut gagner après que l'on a joué : éviter ce coup
 				double eval_grille_next = Constantes.SCORE_MIN_NON_DEFINI;
 				victoireAdversaire = grille_next.isAdversaireGagnant(symboleMin, tourDepart);
 				if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
 					System.out.println("IA perd si elle met dans la colonne suivante : ");
 					colonneDefaite = col;
+				} else {
+					eval_grille_next = min_value(grille_next, Constantes.SCORE_MIN_NON_DEFINI,
+							Constantes.SCORE_MAX_NON_DEFINI);
 				}
-				else {
-					eval_grille_next = min_value(grille_next, Constantes.SCORE_MIN_NON_DEFINI, Constantes.SCORE_MAX_NON_DEFINI);
-				}
-				
-				System.out.println("COLONNE "+(col+1)+" : "+eval_grille_next);
+
+				System.out.println("COLONNE " + (col + 1) + " : " + eval_grille_next);
 				if (eval_grille_next > utility) {
 					utility = eval_grille_next;
 					coup = col;
 				}
 			}
 		}
-		
+
 		// On a perdu il faut bien renvoyer quelque chose ...
 		if (coup == Constantes.COUP_NON_DEFINI) {
 			System.out.println("Bon ben là plus aucune chance");
@@ -71,15 +71,15 @@ public class AlphaBeta extends Algorithm {
 		}
 		return coup;
 	}
-	
-	
+
 	private double min_value(Grille state, double alpha, double beta) {
-		// On regarde si l'IA a gagné, ou match nul ou la profondeur max de l'IA est atteinte
-		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);		
+		// On regarde si l'IA a gagné, ou match nul ou la profondeur max de l'IA est
+		// atteinte
+		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
 		}
-		
+
 		// Parcours des successeurs
 		double utility = Constantes.SCORE_MAX_NON_DEFINI;
 		int tourRef = tourExplore;
@@ -97,14 +97,15 @@ public class AlphaBeta extends Algorithm {
 		}
 		return utility;
 	}
-	
+
 	private double max_value(Grille state, double alpha, double beta) {
-		// On regarde si l'adversaire a gagné, ou match nul ou la profondeur max de l'IA est atteinte
-		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);		
+		// On regarde si l'adversaire a gagné, ou match nul ou la profondeur max de l'IA
+		// est atteinte
+		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
 			return state.evaluer(symboleMax);
 		}
-		
+
 		// Parcours des successeurs
 		double utility = Constantes.SCORE_MIN_NON_DEFINI;
 		int tourRef = tourExplore;
@@ -122,6 +123,5 @@ public class AlphaBeta extends Algorithm {
 		}
 		return utility;
 	}
-	
-	
+
 }

@@ -17,30 +17,18 @@ public class NegamaxAlphaThread extends Algorithm {
 		super(levelIA, grilleDepart, joueurActuel, tour);
 		this.nbNoeuds = 0;
 	}
-	
-	
+
 	@SuppressWarnings("serial")
 	public class NegamaxAlphaRecursive extends RecursiveTask<Double> {
-		//private int limite_threads = 8;		
-		
+		private int limite_threads = 10;
+
 		private List<NegamaxAlphaRecursive> listNega = new ArrayList<NegamaxAlphaRecursive>();
 		private Grille grille;
 		private int profondeur;
 		private double score;
 		private double alpha;
 		private double beta;
-		/*
-		public NegamaxAlphaRecursive(Grille grille, double alpha, double beta, int profondeur, int nbNoeuds, int limite_threads) {
-			NegamaxAlphaThread.this.nbNoeuds = 0;
-			this.limite_threads = limite_threads;
-			this.grille = grille;
-			this.alpha = alpha;
-			this.beta = beta;
-			this.profondeur = profondeur;
-			this.score = Constantes.SCORE_MIN_NON_DEFINI;
-		}
-		*/
-		
+
 		public NegamaxAlphaRecursive(Grille grille, double alpha, double beta, int profondeur, int nbNoeuds) {
 			NegamaxAlphaThread.this.nbNoeuds = 0;
 			this.grille = grille;
@@ -49,10 +37,9 @@ public class NegamaxAlphaThread extends Algorithm {
 			this.profondeur = profondeur;
 			this.score = Constantes.SCORE_MIN_NON_DEFINI;
 		}
-		
+
 		public NegamaxAlphaRecursive(Grille grille, double alpha, double beta, int profondeur) {
-			NegamaxAlphaThread.this.nbNoeuds ++;
-			//System.out.println("Nb Threads : "+NegamaxAlphaThread.this.nbNoeuds);
+			NegamaxAlphaThread.this.nbNoeuds++;
 			this.grille = grille;
 			this.alpha = alpha;
 			this.beta = beta;
@@ -63,30 +50,27 @@ public class NegamaxAlphaThread extends Algorithm {
 		@Override
 		protected Double compute() {
 			// Si on dépasse un seuil de Threads, on passe en mono Thread
-			//if (NegamaxAlphaThread.this.nbNoeuds >= this.limite_threads) {
-				//System.out.println("Mono Threads : "+NegamaxThread.this.nbNoeuds);
+			if (NegamaxAlphaThread.this.nbNoeuds >= this.limite_threads) {
 				this.score = -alpha_negamax_mono_thread(this.grille, alpha, beta, profondeur);
-			/*}			
-			else {
-				//System.out.println("Multi Threads : "+NegamaxThread.this.nbNoeuds);
+			} else {
 				this.score = -alpha_negamax_multi_thread(this.grille, alpha, beta, profondeur);
 			}
-			*/
+
 			return score;
 		}
-		
+
 		private double alpha_negamax_mono_thread(Grille state, double alpha, double beta, int profondeur) {
 			int etatPartie = state.getEtatPartie(symboleMax, profondeur);
 			int etatPartieAdverse = state.getEtatPartie(symboleMin, profondeur);
-			if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (profondeur - tourDepart >= levelIA)) {
+			if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS)
+					|| (profondeur - tourDepart >= levelIA)) {
 				if ((profondeur - tourDepart) % 2 == 1) {
 					return -state.evaluer(symboleMax);
-				}
-				else {
+				} else {
 					return state.evaluer(symboleMax);
 				}
 			}
-			
+
 			double utility = Constantes.SCORE_MIN_NON_DEFINI;
 			int tourRef = profondeur;
 			for (int col : classementColonnes()) {
@@ -94,63 +78,57 @@ public class NegamaxAlphaThread extends Algorithm {
 				if (grille_next.isCoupPossible(col)) {
 					if ((profondeur - tourDepart) % 2 == 1) {
 						grille_next.ajouterCoup(col, symboleMin);
-					}
-					else {
+					} else {
 						grille_next.ajouterCoup(col, symboleMax);
 					}
-					utility = Math.max(utility, -alpha_negamax_mono_thread(grille_next, -beta, -alpha, tourRef+1));
+					utility = Math.max(utility, -alpha_negamax_mono_thread(grille_next, -beta, -alpha, tourRef + 1));
 					alpha = Math.max(alpha, utility);
 					if (alpha >= beta) {
 						break;
 					}
 				}
 			}
-			return utility;	
+			return utility;
 		}
-		
-		
+
 		private double alpha_negamax_multi_thread(Grille state, double alpha, double beta, int profondeur) {
 			int etatPartie = state.getEtatPartie(symboleMax, profondeur);
 			int etatPartieAdverse = state.getEtatPartie(symboleMin, profondeur);
-			if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (profondeur - tourDepart >= levelIA)) {
+			if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS)
+					|| (profondeur - tourDepart >= levelIA)) {
 				if ((profondeur - tourDepart) % 2 == 1) {
 					return -state.evaluer(symboleMax);
-				}
-				else {
+				} else {
 					return state.evaluer(symboleMax);
 				}
 			}
-			
-			//double utility = Constantes.SCORE_MIN_NON_DEFINI;
+
 			int tourRef = profondeur;
 			for (int col : classementColonnes()) {
 				Grille grille_next = state.clone();
 				if (grille_next.isCoupPossible(col)) {
 					if ((profondeur - tourDepart) % 2 == 1) {
 						grille_next.ajouterCoup(col, symboleMin);
-					}
-					else {
+					} else {
 						grille_next.ajouterCoup(col, symboleMax);
 					}
-					
-					NegamaxAlphaRecursive nega = new NegamaxAlphaRecursive(grille_next, -beta, -alpha, tourRef+1);
+
+					NegamaxAlphaRecursive nega = new NegamaxAlphaRecursive(grille_next, -beta, -alpha, tourRef + 1);
 					listNega.add(nega);
 					nega.fork();
-					
-					//utility = Math.max(utility, -negamax(grille_next, tourRef+1));
 				}
 			}
 			double utility = Constantes.SCORE_MIN_NON_DEFINI;
 			for (NegamaxAlphaRecursive nega : listNega) {
 				utility = Math.max(utility, nega.join());
 			}
-			return utility;	
+			return utility;
 		}
-		
+
 		public double getScore() {
 			return this.score;
 		}
-		
+
 	}
 
 	@Override
@@ -173,7 +151,6 @@ public class NegamaxAlphaThread extends Algorithm {
 		int colonneDefaite = Constantes.COUP_NON_DEFINI;
 		int processeurs = Runtime.getRuntime().availableProcessors();
 		double utility_max = Constantes.SCORE_MIN_NON_DEFINI;
-		int step = 0;
 		for (int col : this.classementColonnes()) {
 			Grille grille_next = grilleDepart.clone();
 			if (grille_next.isCoupPossible(col)) {
@@ -193,22 +170,13 @@ public class NegamaxAlphaThread extends Algorithm {
 					System.out.println("IA perd si elle met dans la colonne suivante : ");
 					colonneDefaite = col;
 				} else {
-					/*
-					NegamaxAlphaRecursive nega;
-					if (step == 0) {
-						nega = new NegamaxAlphaRecursive(grille_next, Constantes.SCORE_MIN_NON_DEFINI, Constantes.SCORE_MAX_NON_DEFINI, tourExplore, 0, 0);
-					}
-					else {
-						nega = new NegamaxAlphaRecursive(grille_next, Constantes.SCORE_MIN_NON_DEFINI, Constantes.SCORE_MAX_NON_DEFINI, tourExplore, 0);
-					}
-					*/
-					NegamaxAlphaRecursive nega = new NegamaxAlphaRecursive(grille_next, Constantes.SCORE_MIN_NON_DEFINI, Constantes.SCORE_MAX_NON_DEFINI, tourExplore, 0);
+					NegamaxAlphaRecursive nega = new NegamaxAlphaRecursive(grille_next, Constantes.SCORE_MIN_NON_DEFINI,
+							Constantes.SCORE_MAX_NON_DEFINI, tourExplore, 0);
 					ForkJoinPool pool = new ForkJoinPool(processeurs);
 					pool.invoke(nega);
 					eval_grille_next = nega.getScore();
 				}
 
-				// double eval_grille_next = min_value(grille_next);
 				System.out.println("COLONNE " + (col + 1) + " : " + eval_grille_next);
 				if (eval_grille_next > utility_max) {
 					utility_max = eval_grille_next;

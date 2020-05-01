@@ -181,7 +181,7 @@ public class StrategieAmelioree extends Strategie {
 					coordVide2[0] = i + 1;
 					coordVide2[1] = j;
 					if (groupe3.contains(coordVide1) && groupe3.contains(coordVide2)) {
-						score += Constantes.SCORE_STRATEGIE;
+						score += Constantes.SCORE_AMELIORATION;
 					}
 				}
 			}

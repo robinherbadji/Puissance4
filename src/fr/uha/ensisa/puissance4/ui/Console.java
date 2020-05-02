@@ -11,7 +11,7 @@ import fr.uha.ensisa.puissance4.jeu.Jeu;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class Console extends Thread {
+public class Console extends InterfaceCommande {
 
 	private Scanner entry;
 
@@ -36,7 +36,7 @@ public class Console extends Thread {
 		String nom_adversaire = "L'Ennemi";
 		//int algo_IA = Constantes.IA_MINIMAX;
 		int algo_IA = Constantes.IA_ALPHABETA;
-		int niveauIA = 10;
+		int niveauIA = 5;
 		// _____________________________________
 		/////////////////////////////////////////////////////////////////////////////////
 		// l'IA Adverse commence :
@@ -156,6 +156,7 @@ public class Console extends Thread {
 	}
 
 	public void afficherFinPartie(Partie partie) {
+		closeScanner();
 		String msg;
 		switch (partie.getEtatPartie()) {
 		case Constantes.VICTOIRE_JOUEUR_1:
@@ -176,27 +177,5 @@ public class Console extends Thread {
 
 	}
 
-	private String timeToString(long t) {
-		String s = "";
-		if (t > 3600000) {
-			long h = t / 3600000;
-			s += h + "h ";
-			t -= h * 3600000;
-		}
-		if (t > 60000) {
-			long m = t / 60000;
-			s += m + "m ";
-			t -= m * 60000;
-		}
-		if (t > 1000) {
-			long sec = t / 1000;
-			s += sec + "s ";
-			t -= sec * 1000;
-		}
-		if (t > 0) {
-			s += t + "ms";
-		}
-		return s;
-	}
 
 }

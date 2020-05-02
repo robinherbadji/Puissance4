@@ -3,9 +3,13 @@ package fr.uha.ensisa.puissance4.ui.graphique.controlleur;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Humain;
 import fr.uha.ensisa.puissance4.data.IA;
 import fr.uha.ensisa.puissance4.data.Joueur;
+import fr.uha.ensisa.puissance4.data.Partie;
+import fr.uha.ensisa.puissance4.jeu.Jeu;
+import fr.uha.ensisa.puissance4.ui.InterfaceCommande;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,8 +24,13 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 
-public class Controlleur implements Initializable {
+public class Controlleur extends InterfaceCommande implements Initializable {
 	
+	public Controlleur() {
+		super("interface graphique");
+	}
+
+
 	@FXML
 	private ToggleGroup optionToggleGroup1;
 	@FXML
@@ -74,6 +83,7 @@ public class Controlleur implements Initializable {
     private Joueur joueur1 = null;
     private Joueur joueur2 = null;
     private boolean isPartieActive = false;
+    
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -134,11 +144,12 @@ public class Controlleur implements Initializable {
 			else {
 				message_start.setText("C'est reparti !");
 			}			
-			
 			button_start.setText("Recommencer");
 			isPartieActive = true;
 			
-			System.out.println("Jeu démarré");
+			System.out.println("Démarrage du jeu");
+			Jeu jeu = new Jeu(joueur1, joueur2, this);
+			jeu.start();
 		}		
 		else {
 			//System.out.println("Les paramètres ne sont pas bons");
@@ -207,6 +218,56 @@ public class Controlleur implements Initializable {
 		}
 		algos.setValue("Alpha-Beta");
 	}
+
+
+
+	@Override
+	public void lancementPartie(Joueur joueur1, Joueur joueur2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void lancementTour(int tour, Joueur joueurCourant, Grille grille) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void afficherCoup(Joueur joueurCourant, int coup, long t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void afficherFinPartie(Partie partie) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public int getHumanCoup(String nom) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public void reflexionIA(String nom) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 	
 	/*

@@ -27,9 +27,6 @@ public abstract class Puissance4 {
 			console.start();
 			break;
 		}
-		
-		
-
 	}
 
 }

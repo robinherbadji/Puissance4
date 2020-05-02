@@ -1,6 +1,7 @@
 package fr.uha.ensisa.puissance4.data;
 
 import fr.uha.ensisa.puissance4.ui.Console;
+import fr.uha.ensisa.puissance4.ui.InterfaceCommande;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
@@ -73,7 +74,8 @@ public abstract class Joueur {
 	 * @param tour
 	 * @return
 	 */
-	public abstract int joue(Grille grille, Console console, int tour);
+	public abstract int joue(Grille grille, InterfaceCommande itface, int tour);
+	//public abstract int joue(Grille grille, Console console, int tour);
 	
 
 }

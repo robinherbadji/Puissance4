@@ -6,6 +6,7 @@ import fr.uha.ensisa.puissance4.jeu.algosIA.alphabeta.NegamaxAlphaThread;
 import fr.uha.ensisa.puissance4.jeu.algosIA.minimax.Minimax;
 import fr.uha.ensisa.puissance4.jeu.algosIA.minimax.NegamaxThread;
 import fr.uha.ensisa.puissance4.ui.Console;
+import fr.uha.ensisa.puissance4.ui.InterfaceCommande;
 import fr.uha.ensisa.puissance4.util.Constantes;
 
 /**
@@ -37,7 +38,28 @@ public class IA extends Joueur {
 	public String getTypeNom() {
 		return "IA";
 	}
+	
 
+	@Override
+	public int joue(Grille grille, InterfaceCommande itface, int tour) {
+		itface.reflexionIA(this.getNom());
+		Algorithm iA;
+		if(algoIA==Constantes.IA_MINIMAX)
+		{
+			//iA = new Minimax(levelIA, grille, this, tour);
+			iA = new NegamaxThread(levelIA, grille, this, tour); // Algorithme le plus rapide
+			
+		}
+		else
+		{
+			iA = new AlphaBeta(levelIA, grille, this, tour); // Algorithme le plus rapide
+			//iA = new NegamaxAlphaThread(levelIA, grille, this, tour);			
+		}
+		
+		return iA.choisirCoup();
+	}
+	
+	/*
 	@Override
 	public int joue(Grille grille, Console console, int tour) {
 		console.reflexionIA(this.getNom());
@@ -56,6 +78,7 @@ public class IA extends Joueur {
 		
 		return iA.choisirCoup();
 	}
+	*/
 
 
 }

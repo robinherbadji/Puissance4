@@ -100,6 +100,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
     private int coup = -1;
     private Jeu jeu = null;
     private Partie partie = null;
+    public boolean threadTermine = false;
     
     /*
     public ControlleurFXML getControlleurFXML() {
@@ -264,10 +265,12 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	
 	@Override
-	public void lancementTour(int tour, Joueur joueurCourant, Grille grille) {
+	public synchronized void lancementTour(int tour, Joueur joueurCourant, Grille grille) {
 		System.out.println("Tour " + tour);
 		message_start.setText("A " + joueurCourant.getNom() + " de jouer !");
 		message_tour.setText("Tour " + tour);
+		this.threadTermine = true;
+		notify();
 		//message_partie.setText(joueurCourant.getNom() + " a joué en colonne " + (coup+1) + " après " + timeToString(t));
 		//message_partie.setText("");
 		// Afficher la grille

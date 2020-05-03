@@ -54,6 +54,11 @@ public class Grille {
 			return null;
 		}
 	}
+	
+	
+	public void addCase(int ligne, int colonne, Case symbole) {
+		grille[colonne][ligne] = symbole;
+	}
 
 	/**
 	 * Indique s'il y a encore de la place dans la colonne indiquée
@@ -83,7 +88,6 @@ public class Grille {
 				break;
 			}
 		}
-
 	}
 
 	/**

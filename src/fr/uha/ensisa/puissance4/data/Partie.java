@@ -49,6 +49,12 @@ public class Partie {
 	public Joueur getJoueurCourant() {
 		return joueurCourant;
 	}
+	
+	
+
+	public void setJoueurCourant(Joueur joueurCourant) {
+		this.joueurCourant = joueurCourant;
+	}
 
 	/**
 	 * Renvoie le numéro du tour actuel
@@ -58,6 +64,11 @@ public class Partie {
 	public int getTour() {
 		return tour;
 	}
+	
+	public void nextTour() {
+		this.tour ++;
+	}
+	
 
 	/**
 	 * Renvoie la grille
@@ -103,6 +114,37 @@ public class Partie {
 		tour++;
 		return true;
 	}
+	
+	
+	/**
+	 * Joue le coup indiqué (colonne où mettre un symbole)
+	 * 
+	 * @param colonne
+	 * @param tempsReflexion
+	 * @return
+	 */
+	/*
+	public void jouerCoupGraphique(int colonne, long tempsReflexion) {
+		if (!grille.isCoupPossible(colonne)) {
+			return false;
+		}
+
+		if (joueurCourant == joueur1) {
+			grille.ajouterCoup(colonne, Constantes.SYMBOLE_J1);
+			tempsReflexionJoueur1 += tempsReflexion;
+			verificationFinPartie();
+			joueurCourant = joueur2;
+		} else {
+			grille.ajouterCoup(colonne, Constantes.SYMBOLE_J2);
+			tempsReflexionJoueur2 += tempsReflexion;
+			verificationFinPartie();
+			joueurCourant = joueur1;
+		}
+		tour++;
+		return true;
+	}
+	*/
+	
 
 	public long getTempsReflexionJ1() {
 		return tempsReflexionJoueur1;
@@ -111,11 +153,20 @@ public class Partie {
 	public long getTempsReflexionJ2() {
 		return tempsReflexionJoueur2;
 	}
+	
+
+	public void setTempsReflexionJoueur1(long tempsReflexionJoueur1) {
+		this.tempsReflexionJoueur1 = tempsReflexionJoueur1;
+	}
+
+	public void setTempsReflexionJoueur2(long tempsReflexionJoueur2) {
+		this.tempsReflexionJoueur2 = tempsReflexionJoueur2;
+	}
 
 	/**
 	 * Mets à jour l'état de la partie
 	 */
-	private void verificationFinPartie() {
+	public void verificationFinPartie() {
 		etatPartie = grille.getEtatPartie(joueurCourant.getSymbole(), tour);
 	}
 

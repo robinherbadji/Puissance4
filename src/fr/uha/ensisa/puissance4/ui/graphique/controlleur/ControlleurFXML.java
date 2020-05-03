@@ -174,6 +174,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			Button button = (Button) event.getSource();
 			//int newCoup = Integer.parseInt(button.getText());
 			this.coup = Integer.parseInt(button.getText());
+			System.out.println(coup);
 			System.out.println("On notifie");
 			notify();
 		}
@@ -316,13 +317,13 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	}
 	
 	
-	public void addJeton(String path_img_jeton, int i, int j) {
+	public void addJeton(String path_img_jeton, int ligne, int colonne) {
 		Image img_jeton = new Image(getClass().getClassLoader()
 						.getResource(path_img_jeton).toString(),true);
 		ImageView jeton = new ImageView(img_jeton);
 		jeton.setFitHeight(100.0);
 		jeton.setFitWidth(100.0);
-		gridP4_pane.add(jeton, j, Constantes.NB_LIGNES-1-i);
+		gridP4_pane.add(jeton, colonne, Constantes.NB_LIGNES-1-ligne);
 	}
 	
 	
@@ -349,7 +350,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 
 	@Override
-	synchronized public int getHumanCoup(String nom) {
+	public synchronized int getHumanCoup(String nom) {
 		//System.out.println("controlleur : "+ this.coup);
 		//message_partie.setText(nom + " réfléchit ...");
 		while(this.coup == -1) {
@@ -360,23 +361,56 @@ public class ControlleurFXML extends Controlleur implements Initializable {
                 ie.printStackTrace();
             }
         }
-		resetBouton();
-		System.out.println("On envoie la valeur !");
+		System.out.println("On envoie la valeur "+ coup);
 		return this.coup;
 	}
 
 
 	@Override
 	public void reflexionIA(String nom) {
-		message_partie.setText(nom + " réfléchit ...");		
+		message_partie.setText(nom + " réfléchit ...");
 	}
 
 
-	public void jouerCoupGraphique() {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	public void jouerCoupGraphique(int colonne, long tempsReflexion) {
+		Grille grille = this.partie.getGrille();
+		if (!grille.isCoupPossible(colonne)) {
+			message_partie.setText("Impossible de mettre le jeton dans cette colonne");
+			System.out.println("COUP INVALIDE !");
+		}
 
+		if (partie.getJoueurCourant() == joueur1) {
+			this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J1);
+			partie.setTempsReflexionJoueur1(partie.getTempsReflexionJ1() + tempsReflexion);
+			partie.verificationFinPartie();
+			partie.setJoueurCourant(joueur2);
+		} else {
+			this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J2);
+			partie.setTempsReflexionJoueur2(partie.getTempsReflexionJ2() + tempsReflexion);
+			partie.verificationFinPartie();
+			partie.setJoueurCourant(joueur1);
+		}
+		partie.nextTour();		
+	}
+	
+	
+	public void ajouterCoupGraphique(Grille grille, int colonne, Case symboleJoueur) {
+		for (int j = 0; j < Constantes.NB_LIGNES; j++) {
+			if (grille.getCase(j, colonne) == Case.V) {
+				grille.addCase(j, colonne, symboleJoueur);
+				switch (symboleJoueur) {
+				case X:
+					addJeton(Constantes.JETON_JOUEUR_1, j, colonne);
+					break;
+				case O:
+					addJeton(Constantes.JETON_JOUEUR_2, j, colonne);
+					break;
+				}
+				break;
+			}
+		}
+	}
 
 	
 

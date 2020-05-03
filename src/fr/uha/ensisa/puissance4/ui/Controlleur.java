@@ -16,7 +16,6 @@ public abstract class Controlleur extends Thread {
 	public abstract void afficherFinPartie(Partie partie);
 	public abstract int getHumanCoup(String nom);
 	public abstract void reflexionIA(String nom);
-	//protected abstract void afficheGrille(Grille grille);
 	
 	
 	protected String timeToString(long t) {

@@ -15,30 +15,38 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0" minWidth="0" prefHeight="810.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.uha.ensisa.puissance4.ui.graphique.controlleur.ControlleurFXML">
+<AnchorPane minHeight="0" minWidth="0" prefHeight="860.0" prefWidth="1300.0" stylesheets="@app_style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.uha.ensisa.puissance4.ui.graphique.controlleur.ControlleurFXML">
    <children>
       <HBox minHeight="100.0" minWidth="100.0" prefHeight="271.0" prefWidth="414.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="400.0">
+            <VBox id="paneParametres" fx:id="parametres_pane" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="470.0">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" text="Puissance 4" VBox.vgrow="NEVER">
                      <font>
-                        <Font name="System Bold" size="36.0" />
+                        <Font name="System Bold" size="42.0" />
                      </font>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <GridPane prefHeight="150.0" prefWidth="400.0">
+                  <HBox fx:id="icone_pane_1" prefHeight="30.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="25.0" />
+                     </padding>
+                  </HBox>
+                  <GridPane fx:id="joueur_pane1" prefHeight="130.0" prefWidth="400.0">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="121.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="229.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="129.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="321.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
@@ -46,14 +54,14 @@
                       <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Joueur 1 :">
+                        <Label prefHeight="38.0" prefWidth="121.0" text="Joueur 1 :">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="System Bold" size="26.0" />
                            </font>
                         </Label>
                         <Label fx:id="nom_label_j1" text="- Définissez un Joueur -" GridPane.columnIndex="1">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="System Bold" size="26.0" />
                            </font></Label>
                         <RadioButton fx:id="humain_j1" mnemonicParsing="false" selected="true" text="Humain" GridPane.columnIndex="0" GridPane.rowIndex="1">
 				          <toggleGroup>
@@ -74,13 +82,13 @@
                         <TextField fx:id="nom_field_j1" maxWidth="200.0" promptText="Nom du joueur 1" text="Robin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets />
                      </VBox.margin>
                   </GridPane>
                   <GridPane fx:id="ia_pane1" vgap="30.0" visible="false">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="121.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="229.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="129.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="344.0" minWidth="10.0" prefWidth="321.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -102,10 +110,18 @@
                         <Insets top="10.0" />
                      </padding>
                   </GridPane>
-                  <GridPane prefHeight="150.0" prefWidth="400.0">
+                  <HBox fx:id="icone_pane_2" prefHeight="30.0">
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="25.0" />
+                     </padding>
+                  </HBox>
+                  <GridPane fx:id="joueur_pane2" prefHeight="130.0" prefWidth="400.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="121.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="229.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="128.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="365.0" minWidth="10.0" prefWidth="322.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
@@ -115,12 +131,12 @@
                      <children>
                         <Label text="Joueur 2 :">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="System Bold" size="26.0" />
                            </font>
                         </Label>
                         <Label fx:id="nom_label_j2" text="- Définissez un Joueur -" GridPane.columnIndex="1">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="System Bold" size="26.0" />
                            </font>
                         </Label>
                         <RadioButton fx:id="humain_j2" mnemonicParsing="false" selected="true" text="Humain" GridPane.columnIndex="0" GridPane.rowIndex="1">
@@ -144,13 +160,13 @@
                         <TextField fx:id="nom_field_j2" maxWidth="200.0" promptText="Nom du joueur 2" text="IA" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
-                        <Insets top="70.0" />
+                        <Insets />
                      </VBox.margin>
                   </GridPane>
                   <GridPane fx:id="ia_pane2" vgap="30.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="121.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="10.0" prefWidth="229.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="128.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="322.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -182,7 +198,7 @@
                         <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="60.0" />
+                        <Insets top="70.0" />
                      </VBox.margin>
                   </Button>
                   <Label fx:id="message_start" text="Entrez les paramètres pour commencer">
@@ -190,22 +206,25 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                      <font>
-                        <Font size="18.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="message_tour" text="Blaba">
+                  <Label fx:id="message_tour">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="24.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
                </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <GridPane id="gridP4" fx:id="gridP4_pane" alignment="CENTER" hgap="4.0" maxWidth="772.0" minWidth="760.0" prefHeight="663.0" prefWidth="770.0" stylesheets="@grid.css" vgap="4.0">
+                  <GridPane id="gridP4" fx:id="gridP4_pane" alignment="CENTER" hgap="4.0" maxWidth="772.0" minWidth="760.0" prefHeight="652.0" prefWidth="760.0" vgap="4.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -224,59 +243,70 @@
                         <RowConstraints minHeight="10.0" percentHeight="16.6" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <padding>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                        <Insets bottom="4.0" left="6.0" right="3.0" top="4.0" />
                      </padding>
                   </GridPane>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox fx:id="buttons" prefHeight="70.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="button_1" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="50.0" prefWidth="110.0" text="1">
+                        <Button fx:id="button_1" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="60.0" prefWidth="110.0" text="1">
                            <font>
                               <Font size="24.0" />
                            </font></Button>
-                        <Button fx:id="button_2" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="50.0" prefWidth="110.0" text="2">
+                        <Button fx:id="button_2" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="60.0" prefWidth="110.0" text="2">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_3" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="50.0" prefWidth="110.0" text="3">
+                        <Button fx:id="button_3" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="60.0" prefWidth="110.0" text="3">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_4" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="50.0" prefWidth="110.0" text="4">
+                        <Button fx:id="button_4" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="60.0" prefWidth="110.0" text="4">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_5" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="50.0" prefWidth="110.0" text="5">
+                        <Button fx:id="button_5" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="60.0" prefWidth="110.0" text="5">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_7" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="50.0" prefWidth="110.0" text="6">
+                        <Button fx:id="button_7" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="60.0" prefWidth="110.0" text="6">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_7" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="50.0" prefWidth="110.0" text="7">
+                        <Button fx:id="button_7" mnemonicParsing="false" onAction="#jouerColonne" prefHeight="60.0" prefWidth="110.0" text="7">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Button>
                      </children>
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </HBox>
-                  <Label fx:id="message_partie" text="La partie n'a pas commencé" textAlignment="CENTER">
+                  <Label fx:id="message_partie_1" text="La partie n'a pas commencé" textAlignment="CENTER">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="message_partie_2" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
                      </font>
                   </Label>
                </children>
                <HBox.margin>
-                  <Insets left="70.0" />
+                  <Insets left="40.0" />
                </HBox.margin>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
             </VBox>
          </children>
       </HBox>

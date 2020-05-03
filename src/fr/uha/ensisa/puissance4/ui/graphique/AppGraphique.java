@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class InterfaceGraphique extends Application {
+public class AppGraphique extends Application {
 	ControlleurFXML controller;
 
 	@Override
@@ -36,13 +36,14 @@ public class InterfaceGraphique extends Application {
 		primaryStage.show();
 	}
 	
-	/*
+	
 	@Override
-	public void stop(){
+	public void stop() {		
 		this.controller.interrupt();
-	    System.out.println("Stage is closing");
+		//this.controller.getJeu().interrupt();
+	    System.out.println("Fermeture de l'application");
 	}
-	*/
+	
 
 	public static void main(String[] args) {
 		launch(args);

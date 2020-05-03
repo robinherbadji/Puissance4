@@ -1,0 +1,14 @@
+#gridP4 { 
+	-fx-background-image:url("grid.png");
+	-fx-background-size: contain;
+	-fx-background-repeat: no-repeat;
+}
+
+#paneParametres {
+	/*
+	-fx-background-color: green;
+ 	-fx-background-opacity: 0.1;
+ 	*/
+ 	-fx-background-color: rgba(51, 170, 51, .03);
+ 	
+}

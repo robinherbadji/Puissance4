@@ -171,8 +171,8 @@ public class Console extends Controlleur {
 		}
 		System.out.println("************ " + msg + " en " + (partie.getTour() - 1) + " tours ***************");
 		afficheGrille(partie.getGrille());
-		System.out.println(partie.getJoueur1().getNom() + " : " + timeToString(partie.getTempsReflexionJ1()) + "s");
-		System.out.println(partie.getJoueur2().getNom() + " : " + timeToString(partie.getTempsReflexionJ2()) + "ms");
+		System.out.println(partie.getJoueur1().getNom() + " : " + timeToString(partie.getTempsReflexionJ1()));
+		System.out.println(partie.getJoueur2().getNom() + " : " + timeToString(partie.getTempsReflexionJ2()));
 		System.out.println("******************************************************************");
 
 	}

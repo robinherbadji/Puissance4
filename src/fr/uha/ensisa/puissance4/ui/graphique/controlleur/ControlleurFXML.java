@@ -98,7 +98,8 @@ public class ControlleurFXML extends Controlleur implements Initializable {
     private Joueur joueur2 = null;
     private boolean isPartieActive = false;
     private int coup = -1;
-    //private boolean hasClicked = false;
+    private Jeu jeu = null;
+    private Partie partie = null;
     
     /*
     public ControlleurFXML getControlleurFXML() {
@@ -156,7 +157,8 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		
 		// Démarrage du jeu
 		if (joueur1 != null && joueur2 != null) {			
-			Jeu jeu = new Jeu(joueur1, joueur2, this);
+			this.jeu = new Jeu(joueur1, joueur2, this);
+			this.partie = jeu.getPartie();
 			jeu.start();
 		}
 		else {
@@ -167,9 +169,18 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	
 	
 	@FXML
-	private void jouerColonne(ActionEvent event) {
-		Button button = (Button) event.getSource();
-		this.coup = Integer.parseInt(button.getText());
+	private synchronized void jouerColonne(ActionEvent event) {
+		if (this.coup == -1) {
+			Button button = (Button) event.getSource();
+			//int newCoup = Integer.parseInt(button.getText());
+			this.coup = Integer.parseInt(button.getText());
+			System.out.println("On notifie");
+			notify();
+		}
+		/*
+		Partie partie = this.jeu.getPartie();
+		int etatPartie = partie.getEtatPartie();
+		*/
 	}
 	
 	
@@ -260,13 +271,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		//message_partie.setText("");
 		// Afficher la grille
 		//TODO
-		/*
-		Image img = new Image(getClass().getClassLoader().getResource("fr/uha/ensisa/puissance4/ui/graphique/vue/coffee-547490_640.png").toString(), true);
-	    ImageView jeton = new ImageView(img);
-	    jeton.setFitHeight(100.0);
-		jeton.setFitWidth(100.0);
-		gridP4_pane.add(jeton, 1, 2);
-		*/
+		
 		//afficherGrille(grille);
 	}
 	
@@ -321,58 +326,11 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	}
 	
 	
-	/*
-	private void afficheGrille(Grille grille) {
-		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
-			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
-				String symbol;
-				if (grille.getCase(i, j) == Case.V)
-					symbol = " ";
-				else
-					symbol = grille.getCase(i, j).toString();
-		
-		
-		
-		
-		String s = "";
-		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
-			s += "|";
-			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
-				String symbol;
-				if (grille.getCase(i, j) == Case.V)
-					symbol = " ";
-				else
-					symbol = grille.getCase(i, j).toString();
-
-				s += symbol + "|";
-			}
-			s += "\n";
-		}
-		s += "=";
-		for (int j = 0; j < Constantes.NB_COLONNES; j++) {
-			s += "==";
-		}
-		s += "\n";
-		for (int j = 0; j < Constantes.NB_COLONNES; j++) {
-			s += " " + (j + 1);
-		}
-		System.out.println(s);
-
-	}
-	*/
-	
 	
 	public void resetBouton() {
 		//this.hasClicked = false;
 		this.coup = -1;
 	}
-	
-	/*
-	public boolean hasJoueurClicked() {
-		return this.hasClicked;
-	}
-	*/
-	
 
 
 
@@ -391,9 +349,19 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 
 	@Override
-	public int getHumanCoup(String nom) {
+	synchronized public int getHumanCoup(String nom) {
 		//System.out.println("controlleur : "+ this.coup);
-		//message_partie.setText(nom + " réfléchit ...");	
+		//message_partie.setText(nom + " réfléchit ...");
+		while(this.coup == -1) {
+            try {
+                //attente passive
+                wait();
+            } catch(InterruptedException ie) {
+                ie.printStackTrace();
+            }
+        }
+		resetBouton();
+		System.out.println("On envoie la valeur !");
 		return this.coup;
 	}
 
@@ -401,6 +369,12 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	@Override
 	public void reflexionIA(String nom) {
 		message_partie.setText(nom + " réfléchit ...");		
+	}
+
+
+	public void jouerCoupGraphique() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

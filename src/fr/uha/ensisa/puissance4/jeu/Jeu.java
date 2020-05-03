@@ -28,6 +28,11 @@ public class Jeu extends Thread{
 	}
 	
 	
+	public Partie getPartie() {
+		return this.partie;		
+	}
+	
+	
 	public void run() {
 		if (controlleur instanceof Console) {
 			this.runConsole();
@@ -106,7 +111,7 @@ public class Jeu extends Thread{
 			long tempsReflexion=System.currentTimeMillis();
 			int coup = -1;
 			
-			
+			/*
 			if (partie.getJoueurCourant().getType() == Constantes.JOUEUR_HUMAN) {
 				while (coup <= -1) {
 					coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
@@ -116,21 +121,29 @@ public class Jeu extends Thread{
 			} else {
 				coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
 			}
+			*/
 			
+			coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
 			
 			System.out.println("Selectioné : "+coup);
 			tempsReflexion=System.currentTimeMillis()-tempsReflexion;
 			final int c = coup;
 			final long t = tempsReflexion;
 			//Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherCoup(partie.getJoueurCourant(), coup, tempsReflexion));
+			
+			Platform.runLater(() -> ((ControlleurFXML)controlleur).jouerCoupGraphique());
 			Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherCoup(partie.getJoueurCourant(), c, t));
+			
+			/*
+			Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherCoup(partie.getJoueurCourant(), c, t));
+			
 			if(!partie.jouerCoup(coup, tempsReflexion))
 			{
 				System.out.println("COUP INVALIDE : Recommencez !");
 			}
 			else {
 				Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherGrille(partie.getGrille()));
-			}
+			}*/
 			
 		}
 		

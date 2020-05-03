@@ -1,0 +1,4 @@
+#gridP4 { 
+	-fx-background-image:url("grid.png");
+	-fx-background-size: contain;
+}

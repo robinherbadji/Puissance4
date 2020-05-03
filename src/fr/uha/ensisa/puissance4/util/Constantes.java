@@ -29,7 +29,10 @@ public abstract class Constantes {
 	
 	//Affectation  des symboles aux joueurs
 	public static final Case SYMBOLE_J1 = Case.X;
-	public static final Case SYMBOLE_J2 = Case.O;
+	public static final Case SYMBOLE_J2 = Case.O;	
+	public static final String JETON_JOUEUR_1 = "fr/uha/ensisa/puissance4/ui/graphique/vue/coffee-547490_640.png";
+	public static final String JETON_JOUEUR_2 = "fr/uha/ensisa/puissance4/ui/graphique/vue/donut-3800659_640.png";
+	
 	
 	//Définition de la taille de la grille
 	public static final int NB_COLONNES = 7;

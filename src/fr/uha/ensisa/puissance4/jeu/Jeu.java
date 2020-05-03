@@ -3,69 +3,142 @@ package fr.uha.ensisa.puissance4.jeu;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
 import fr.uha.ensisa.puissance4.ui.Console;
-import fr.uha.ensisa.puissance4.ui.InterfaceCommande;
-import fr.uha.ensisa.puissance4.ui.graphique.controlleur.Controlleur;
+import fr.uha.ensisa.puissance4.ui.Controlleur;
+import fr.uha.ensisa.puissance4.ui.graphique.controlleur.ControlleurFXML;
+import fr.uha.ensisa.puissance4.util.Constantes;
+import javafx.application.Platform;
 
 public class Jeu extends Thread{
 	
 	private Partie partie;
-	private Console console;
-	private InterfaceCommande itface;
+	private Controlleur controlleur;
 	
-	public Jeu(Joueur joueur1, Joueur joueur2, Controlleur controlleur)
+	
+	public Jeu(Joueur joueur1, Joueur joueur2, ControlleurFXML controlleurFXML)
 	{
 		this.partie = new Partie(joueur1, joueur2);
-		this.itface = controlleur;
+		this.controlleur = controlleurFXML;
 	}
+	
 	
 	public Jeu(Joueur joueur1, Joueur joueur2, Console console)
 	{
 		this.partie = new Partie(joueur1, joueur2);
-		this.itface = console;
+		this.controlleur = console;
 	}
 	
 	
-	public void run()
-	{
-		itface.lancementPartie(partie.getJoueur1(), partie.getJoueur2());		
+	public void run() {
+		if (controlleur instanceof Console) {
+			this.runConsole();
+		}
+		if (controlleur instanceof ControlleurFXML) {
+			this.runFXMLControlleur();
+		}
+	}
+	
+	
+	public void runConsole() {
+		controlleur.lancementPartie(partie.getJoueur1(), partie.getJoueur2());		
 		while(!partie.isPartieFinie())
 		{
-			itface.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille());
+			controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille());
 			
 			long tempsReflexion=System.currentTimeMillis();
-			int coup= partie.getJoueurCourant().joue(partie.getGrille(), itface, partie.getTour());
+			int coup= partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
 			tempsReflexion=System.currentTimeMillis()-tempsReflexion;
-			itface.afficherCoup(partie.getJoueurCourant(), coup, tempsReflexion);
+			controlleur.afficherCoup(partie.getJoueurCourant(), coup, tempsReflexion);
 			if(!partie.jouerCoup(coup, tempsReflexion))
 			{
 				System.out.println("COUP INVALIDE : Recommencez !");
-			}
+			}			
 		}
 		
-		itface.afficherFinPartie(partie);
+		controlleur.afficherFinPartie(partie);
 	}
 	
-	/*
-	public void run()
-	{
-		console.lancementPartie(partie.getJoueur1(), partie.getJoueur2());		
-		while(!partie.isPartieFinie())
+	
+	public void runFXMLControlleur() {
+		Platform.runLater(() -> controlleur.lancementPartie(partie.getJoueur1(), partie.getJoueur2()));
+		
+		// TESTS /////////////////
+		/*
+		Platform.runLater(() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille()));
+		
+		int coup = 5;
+		if(!partie.jouerCoup(coup, 20))
 		{
-			console.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille());
+			System.out.println("COUP INVALIDE : Recommencez !");
+		}
+		else {
+			Platform.runLater(() -> ((ControlleurFXML)controlleur).afficher_grille(partie.getGrille(), partie.getJoueurCourant(), coup));
+		}
+		*/
+		
+		/*
+		long tempsReflexion=System.currentTimeMillis();
+		int coup = -1;
+		
+		
+		if (partie.getJoueurCourant().getType() == Constantes.JOUEUR_HUMAN) {
+			while (coup <= -1) {
+			//while (!((ControlleurFXML)controlleur).hasJoueurClicked()) {
+				//coup = partie.getJoueurCourant().joue(partie.getGrille(), Platform.runLater(() -> ((ControlleurFXML) controlleur).getControlleurFXML()), partie.getTour());
+				coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+
+				//System.out.println(coup);
+			}
+		}
+		else {
+			coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+		}
+		*/
+	
+		
+		
+		/////////////////////////////////////////
+		
+		
+		while(!partie.isPartieFinie() && !controlleur.interrupted())
+		{
+			Platform.runLater(() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille()));
 			
 			long tempsReflexion=System.currentTimeMillis();
-			int coup= partie.getJoueurCourant().joue(partie.getGrille(), console, partie.getTour());
+			int coup = -1;
+			
+			
+			if (partie.getJoueurCourant().getType() == Constantes.JOUEUR_HUMAN) {
+				while (coup <= -1) {
+					coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+					System.out.println("Jeu : "+coup);
+				}
+				((ControlleurFXML)controlleur).resetBouton();
+			} else {
+				coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+			}
+			
+			
+			System.out.println("Selectioné : "+coup);
 			tempsReflexion=System.currentTimeMillis()-tempsReflexion;
-			console.afficherCoup(partie.getJoueurCourant(), coup, tempsReflexion);
+			final int c = coup;
+			final long t = tempsReflexion;
+			//Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherCoup(partie.getJoueurCourant(), coup, tempsReflexion));
+			Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherCoup(partie.getJoueurCourant(), c, t));
 			if(!partie.jouerCoup(coup, tempsReflexion))
 			{
 				System.out.println("COUP INVALIDE : Recommencez !");
 			}
+			else {
+				Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherGrille(partie.getGrille()));
+			}
+			
 		}
-		console.closeScanner();
-		console.afficherFinPartie(partie);
+		
+		
+		
+		Platform.runLater(() -> controlleur.afficherFinPartie(partie));
+		
 	}
-	*/
 	
 
 }

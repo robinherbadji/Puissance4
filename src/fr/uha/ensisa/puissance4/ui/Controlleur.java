@@ -4,9 +4,9 @@ import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
 
-public abstract class InterfaceCommande extends Thread {
+public abstract class Controlleur extends Thread {
 	
-	public InterfaceCommande(String name) {
+	public Controlleur(String name) {
 		super(name);
 	}
 	

@@ -11,7 +11,7 @@ import fr.uha.ensisa.puissance4.jeu.Jeu;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
-public class Console extends InterfaceCommande {
+public class Console extends Controlleur {
 
 	private Scanner entry;
 

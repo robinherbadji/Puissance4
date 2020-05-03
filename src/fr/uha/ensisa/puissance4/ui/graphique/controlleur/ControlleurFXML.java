@@ -1,5 +1,9 @@
 package fr.uha.ensisa.puissance4.ui.graphique.controlleur;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -9,8 +13,9 @@ import fr.uha.ensisa.puissance4.data.IA;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
 import fr.uha.ensisa.puissance4.jeu.Jeu;
-import fr.uha.ensisa.puissance4.ui.InterfaceCommande;
+import fr.uha.ensisa.puissance4.ui.Controlleur;
 import fr.uha.ensisa.puissance4.util.Constantes;
+import fr.uha.ensisa.puissance4.util.Constantes.Case;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,12 +27,14 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-public class Controlleur extends InterfaceCommande implements Initializable {
-	
-	public Controlleur() {
-		super("interface graphique");
+public class ControlleurFXML extends Controlleur implements Initializable {
+
+	public ControlleurFXML() {
+		super("Controlleur Graphique");
 	}
 
 
@@ -75,7 +82,14 @@ public class Controlleur extends InterfaceCommande implements Initializable {
     
     @FXML
     private Label message_start;
-
+    @FXML
+    private Label message_tour;
+    @FXML
+    private Label message_partie;
+    
+    
+    @FXML
+    private GridPane gridP4_pane;
     
     
     private boolean is_j1_humain = true;
@@ -83,6 +97,14 @@ public class Controlleur extends InterfaceCommande implements Initializable {
     private Joueur joueur1 = null;
     private Joueur joueur2 = null;
     private boolean isPartieActive = false;
+    private int coup = -1;
+    //private boolean hasClicked = false;
+    
+    /*
+    public ControlleurFXML getControlleurFXML() {
+    	return this;
+    }
+    */
     
     
 	@Override
@@ -113,7 +135,7 @@ public class Controlleur extends InterfaceCommande implements Initializable {
 	}
 	
 	
-	
+	@FXML
 	public void commencerPartie(ActionEvent event) {
 		// Création Joueur 1
 		if (is_j1_humain) {
@@ -124,9 +146,7 @@ public class Controlleur extends InterfaceCommande implements Initializable {
 		}
 		
 		// Création Joueur 2
-		if (joueur1 != null) {
-			nom_label_j1.setText(joueur1.getNom()+" ("+joueur1.getTypeNom()+")");
-			
+		if (joueur1 != null) {			
 			if (is_j2_humain) {
 				joueur2 = creerHumain(nom_field_j2.getText(), 2);
 			} else {
@@ -134,27 +154,25 @@ public class Controlleur extends InterfaceCommande implements Initializable {
 			}
 		}
 		
-		// Affichage Paramètres Joueurs
-		if (joueur1 != null && joueur2 != null) {
-			nom_label_j1.setText(joueur1.getNom()+" ("+joueur1.getTypeNom()+")");
-			nom_label_j2.setText(joueur2.getNom()+" ("+joueur2.getTypeNom()+")");
-			if (!isPartieActive) {
-				message_start.setText("C'est parti !");
-			}
-			else {
-				message_start.setText("C'est reparti !");
-			}			
-			button_start.setText("Recommencer");
-			isPartieActive = true;
-			
-			System.out.println("Démarrage du jeu");
+		// Démarrage du jeu
+		if (joueur1 != null && joueur2 != null) {			
 			Jeu jeu = new Jeu(joueur1, joueur2, this);
 			jeu.start();
-		}		
+		}
 		else {
 			//System.out.println("Les paramètres ne sont pas bons");
 		}		
-	}	
+	}
+
+	
+	
+	@FXML
+	private void jouerColonne(ActionEvent event) {
+		Button button = (Button) event.getSource();
+		this.coup = Integer.parseInt(button.getText());
+	}
+	
+	
 	
 	
 	public Joueur creerHumain(String nom_joueur, int order) {
@@ -176,11 +194,10 @@ public class Controlleur extends InterfaceCommande implements Initializable {
 		if (!nom_joueur.isEmpty()) {
 			int intLevel = isNiveauOK(level);
 			if (intLevel < 1 || intLevel > 42) {
-				System.out.println("Niveau entre 1 et 42");
 				message_start.setText("Joueur "+order+" : Nombre dans [1,42]");
 				return null;
 			}
-			else {				
+			else {
 				for (int j = 0; j < Constantes.IA_ALGOS.length; j++) {
 					if (algo == Constantes.IA_ALGOS[j]) {
 						algo_id = j;
@@ -218,31 +235,152 @@ public class Controlleur extends InterfaceCommande implements Initializable {
 		}
 		algos.setValue("Alpha-Beta");
 	}
-
-
-
+	
+	
 	@Override
 	public void lancementPartie(Joueur joueur1, Joueur joueur2) {
-		// TODO Auto-generated method stub
-		
+		nom_label_j1.setText(joueur1.getNom()+" ("+joueur1.getTypeNom()+")");
+		nom_label_j2.setText(joueur2.getNom()+" ("+joueur2.getTypeNom()+")");
+		if (!isPartieActive) {
+			message_start.setText("C'est parti !");
+		}
+		else {
+			message_start.setText("C'est reparti !");
+		}			
+		button_start.setText("Recommencer");
+		isPartieActive = true;		
 	}
 
-
-
+	
 	@Override
 	public void lancementTour(int tour, Joueur joueurCourant, Grille grille) {
-		// TODO Auto-generated method stub
-		
+		message_start.setText("A " + joueurCourant.getNom() + " de jouer !");
+		message_tour.setText("Tour " + tour);
+		//message_partie.setText(joueurCourant.getNom() + " a joué en colonne " + (coup+1) + " après " + timeToString(t));
+		//message_partie.setText("");
+		// Afficher la grille
+		//TODO
+		/*
+		Image img = new Image(getClass().getClassLoader().getResource("fr/uha/ensisa/puissance4/ui/graphique/vue/coffee-547490_640.png").toString(), true);
+	    ImageView jeton = new ImageView(img);
+	    jeton.setFitHeight(100.0);
+		jeton.setFitWidth(100.0);
+		gridP4_pane.add(jeton, 1, 2);
+		*/
+		//afficherGrille(grille);
 	}
+	
+	
+	/*
+	public void afficherGrille(Grille grille, Joueur joueurCourant, int coup) {
+		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
+			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+				Case symbole = grille.getCase(i, j);
+				Image img_jeton = null;
+				switch (symbole) {
+				case X:
+					System.out.println("1");
+					addJeton(Constantes.JETON_JOUEUR_1, i, j);
+					break;
+				case O:
+					System.out.println("2");
+					addJeton(Constantes.JETON_JOUEUR_2, i, j);
+					break;
+				}
+			}			
+		}
+	}
+	*/
+	
+	public void afficherGrille(Grille grille) {
+		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
+			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+				Case symbole = grille.getCase(i, j);
+				switch (symbole) {
+				case X:
+					//System.out.println("1");
+					addJeton(Constantes.JETON_JOUEUR_1, i, j);
+					break;
+				case O:
+					//System.out.println("2");
+					addJeton(Constantes.JETON_JOUEUR_2, i, j);
+					break;
+				}
+			}			
+		}
+	}
+	
+	
+	public void addJeton(String path_img_jeton, int i, int j) {
+		Image img_jeton = new Image(getClass().getClassLoader()
+						.getResource(path_img_jeton).toString(),true);
+		ImageView jeton = new ImageView(img_jeton);
+		jeton.setFitHeight(100.0);
+		jeton.setFitWidth(100.0);
+		gridP4_pane.add(jeton, j, Constantes.NB_LIGNES-1-i);
+	}
+	
+	
+	/*
+	private void afficheGrille(Grille grille) {
+		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
+			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+				String symbol;
+				if (grille.getCase(i, j) == Case.V)
+					symbol = " ";
+				else
+					symbol = grille.getCase(i, j).toString();
+		
+		
+		
+		
+		String s = "";
+		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
+			s += "|";
+			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+				String symbol;
+				if (grille.getCase(i, j) == Case.V)
+					symbol = " ";
+				else
+					symbol = grille.getCase(i, j).toString();
+
+				s += symbol + "|";
+			}
+			s += "\n";
+		}
+		s += "=";
+		for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+			s += "==";
+		}
+		s += "\n";
+		for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+			s += " " + (j + 1);
+		}
+		System.out.println(s);
+
+	}
+	*/
+	
+	
+	public void resetBouton() {
+		//this.hasClicked = false;
+		this.coup = -1;
+	}
+	
+	/*
+	public boolean hasJoueurClicked() {
+		return this.hasClicked;
+	}
+	*/
+	
 
 
 
 	@Override
 	public void afficherCoup(Joueur joueurCourant, int coup, long t) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(joueurCourant.getNom() + " a joué en colonne " + (coup+1) + " après " + timeToString(t));
+		message_partie.setText(joueurCourant.getNom() + " a joué en colonne " + (coup+1) + " après " + timeToString(t));
 	}
-
 
 
 	@Override
@@ -252,21 +390,21 @@ public class Controlleur extends InterfaceCommande implements Initializable {
 	}
 
 
-
 	@Override
 	public int getHumanCoup(String nom) {
-		// TODO Auto-generated method stub
-		return 0;
+		//System.out.println("controlleur : "+ this.coup);
+		//message_partie.setText(nom + " réfléchit ...");	
+		return this.coup;
 	}
-
 
 
 	@Override
 	public void reflexionIA(String nom) {
-		// TODO Auto-generated method stub
-		
+		message_partie.setText(nom + " réfléchit ...");		
 	}
 
+
+	
 
 	
 	

@@ -71,7 +71,7 @@
                            <font>
                               <Font size="18.0" />
                            </font></Label>
-                        <TextField fx:id="nom_field_j1" maxWidth="200.0" promptText="Nom du joueur 1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="nom_field_j1" maxWidth="200.0" promptText="Nom du joueur 1" text="Robin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
                         <Insets top="20.0" />
@@ -141,7 +141,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="nom_field_j2" maxWidth="200.0" promptText="Nom du joueur 2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="nom_field_j2" maxWidth="200.0" promptText="Nom du joueur 2" text="IA" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
                         <Insets top="70.0" />
@@ -168,7 +168,7 @@
                            </font>
                         </Label>
                         <ComboBox fx:id="algobox_j2" prefWidth="150.0" GridPane.columnIndex="1" />
-                        <TextField fx:id="niveau_field_j2" maxWidth="65.0" promptText="[1 , 42]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="niveau_field_j2" maxWidth="65.0" promptText="[1 , 42]" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                      <padding>
                         <Insets top="10.0" />

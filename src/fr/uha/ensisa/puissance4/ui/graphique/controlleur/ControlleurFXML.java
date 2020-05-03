@@ -106,6 +106,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
     	return this;
     }
     */
+   
     
     
 	@Override
@@ -174,8 +175,6 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			Button button = (Button) event.getSource();
 			//int newCoup = Integer.parseInt(button.getText());
 			this.coup = Integer.parseInt(button.getText());
-			System.out.println(coup);
-			System.out.println("On notifie");
 			notify();
 		}
 		/*
@@ -266,6 +265,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	
 	@Override
 	public void lancementTour(int tour, Joueur joueurCourant, Grille grille) {
+		System.out.println("Tour " + tour);
 		message_start.setText("A " + joueurCourant.getNom() + " de jouer !");
 		message_tour.setText("Tour " + tour);
 		//message_partie.setText(joueurCourant.getNom() + " a joué en colonne " + (coup+1) + " après " + timeToString(t));
@@ -344,7 +344,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	@Override
 	public void afficherFinPartie(Partie partie) {
-		// TODO Auto-generated method stub
+		message_partie.setText("Fin de Partie");
 		
 	}
 
@@ -368,7 +368,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	@Override
 	public void reflexionIA(String nom) {
-		message_partie.setText(nom + " réfléchit ...");
+		//message_partie.setText(nom + " réfléchit ...");
 	}
 
 
@@ -379,23 +379,29 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			message_partie.setText("Impossible de mettre le jeton dans cette colonne");
 			System.out.println("COUP INVALIDE !");
 		}
-
-		if (partie.getJoueurCourant() == joueur1) {
-			this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J1);
-			partie.setTempsReflexionJoueur1(partie.getTempsReflexionJ1() + tempsReflexion);
-			partie.verificationFinPartie();
-			partie.setJoueurCourant(joueur2);
-		} else {
-			this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J2);
-			partie.setTempsReflexionJoueur2(partie.getTempsReflexionJ2() + tempsReflexion);
-			partie.verificationFinPartie();
-			partie.setJoueurCourant(joueur1);
-		}
-		partie.nextTour();		
+		else {
+			System.out.println("JouerGraphqiue : "+partie.getJoueurCourant().getNom());
+			if (partie.getJoueurCourant() == partie.getJoueur1()) {
+				this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J1);
+				partie.setTempsReflexionJoueur1(partie.getTempsReflexionJ1() + tempsReflexion);
+				partie.verificationFinPartie();
+				partie.setJoueurCourant(partie.getJoueur2());
+			} else {
+				this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J2);
+				partie.setTempsReflexionJoueur2(partie.getTempsReflexionJ2() + tempsReflexion);
+				partie.verificationFinPartie();
+				partie.setJoueurCourant(partie.getJoueur1());
+			}
+			partie.nextTour();
+			System.out.println("Next person");
+			System.out.println("Etat Partie : "+ partie.getEtatPartie());
+		}	
 	}
 	
 	
+	
 	public void ajouterCoupGraphique(Grille grille, int colonne, Case symboleJoueur) {
+		System.out.println("Ajouter coup graphique "+symboleJoueur);
 		for (int j = 0; j < Constantes.NB_LIGNES; j++) {
 			if (grille.getCase(j, colonne) == Case.V) {
 				grille.addCase(j, colonne, symboleJoueur);
@@ -412,7 +418,25 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		}
 	}
 
+
+	/*
+	public void jouerTour(Grille grille, Controlleur controlleur, int tour) {
+		int coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+		resetBouton();
+		System.out.println("Coup tour :"+coup);
+	}
+	*/
 	
+	/*
+	final int coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+	((ControlleurFXML)controlleur).resetBouton();
+	
+	System.out.println("Selectioné : "+coup);
+	final long tempsReflexion=System.currentTimeMillis()-tempsDebut;			
+	
+	Platform.runLater(() -> ((ControlleurFXML)controlleur).jouerCoupGraphique(coup, tempsReflexion));
+	Platform.runLater(() -> ((ControlleurFXML)controlleur).afficherCoup(partie.getJoueurCourant(), coup, tempsReflexion));
+	*/
 
 	
 	

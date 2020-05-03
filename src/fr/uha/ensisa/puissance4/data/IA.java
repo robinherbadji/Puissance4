@@ -47,15 +47,13 @@ public class IA extends Joueur {
 		if(algoIA==Constantes.IA_MINIMAX)
 		{
 			//iA = new Minimax(levelIA, grille, this, tour);
-			iA = new NegamaxThread(levelIA, grille, this, tour); // Algorithme le plus rapide
-			
+			iA = new NegamaxThread(levelIA, grille, this, tour); // Algorithme le plus rapide			
 		}
 		else
 		{
 			iA = new AlphaBeta(levelIA, grille, this, tour); // Algorithme le plus rapide
 			//iA = new NegamaxAlphaThread(levelIA, grille, this, tour);			
 		}
-		
 		return iA.choisirCoup();
 	}
 	

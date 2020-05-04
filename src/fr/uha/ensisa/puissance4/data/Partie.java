@@ -116,35 +116,6 @@ public class Partie {
 	}
 	
 	
-	/**
-	 * Joue le coup indiqué (colonne où mettre un symbole)
-	 * 
-	 * @param colonne
-	 * @param tempsReflexion
-	 * @return
-	 */
-	/*
-	public void jouerCoupGraphique(int colonne, long tempsReflexion) {
-		if (!grille.isCoupPossible(colonne)) {
-			return false;
-		}
-
-		if (joueurCourant == joueur1) {
-			grille.ajouterCoup(colonne, Constantes.SYMBOLE_J1);
-			tempsReflexionJoueur1 += tempsReflexion;
-			verificationFinPartie();
-			joueurCourant = joueur2;
-		} else {
-			grille.ajouterCoup(colonne, Constantes.SYMBOLE_J2);
-			tempsReflexionJoueur2 += tempsReflexion;
-			verificationFinPartie();
-			joueurCourant = joueur1;
-		}
-		tour++;
-		return true;
-	}
-	*/
-	
 
 	public long getTempsReflexionJ1() {
 		return tempsReflexionJoueur1;

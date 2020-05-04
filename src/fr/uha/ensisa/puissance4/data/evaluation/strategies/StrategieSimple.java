@@ -43,7 +43,7 @@ public class StrategieSimple extends Strategie {
 	}
 
 	/**
-	 * [METHODE DEBUG]</br>
+	 * [METHODE DEBUG]<br><br>
 	 * Affiche et revoie l'évaluation pour le joueur courant et le joueur adverse
 	 * @return
 	 */

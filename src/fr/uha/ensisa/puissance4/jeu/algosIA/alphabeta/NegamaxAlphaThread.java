@@ -139,6 +139,7 @@ public class NegamaxAlphaThread extends Algorithm {
 		if (coup != Constantes.COUP_NON_DEFINI) {
 			return coup;
 		}
+		System.out.println("PROUUT");
 
 		// Blocage de l'adversaire s'il gagne au prochain coup
 		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);

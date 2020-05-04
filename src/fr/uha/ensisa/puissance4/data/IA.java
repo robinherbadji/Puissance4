@@ -5,7 +5,6 @@ import fr.uha.ensisa.puissance4.jeu.algosIA.alphabeta.AlphaBeta;
 import fr.uha.ensisa.puissance4.jeu.algosIA.alphabeta.NegamaxAlphaThread;
 import fr.uha.ensisa.puissance4.jeu.algosIA.minimax.Minimax;
 import fr.uha.ensisa.puissance4.jeu.algosIA.minimax.NegamaxThread;
-import fr.uha.ensisa.puissance4.ui.Console;
 import fr.uha.ensisa.puissance4.ui.Controlleur;
 import fr.uha.ensisa.puissance4.util.Constantes;
 
@@ -43,40 +42,26 @@ public class IA extends Joueur {
 	@Override
 	public int joue(Grille grille, Controlleur itface, int tour) {
 		itface.reflexionIA(this.getNom());
-		Algorithm iA;
-		if(algoIA==Constantes.IA_MINIMAX)
-		{
-			//iA = new Minimax(levelIA, grille, this, tour);
-			iA = new NegamaxThread(levelIA, grille, this, tour); // Algorithme le plus rapide			
-		}
-		else
-		{
-			iA = new AlphaBeta(levelIA, grille, this, tour); // Algorithme le plus rapide
-			//iA = new NegamaxAlphaThread(levelIA, grille, this, tour);			
-		}
-		return iA.choisirCoup();
-	}
-	
-	/*
-	@Override
-	public int joue(Grille grille, Console console, int tour) {
-		console.reflexionIA(this.getNom());
-		Algorithm iA;
-		if(algoIA==Constantes.IA_MINIMAX)
-		{
-			//iA = new Minimax(levelIA, grille, this, tour);
-			iA = new NegamaxThread(levelIA, grille, this, tour); // Algorithme le plus rapide
-			
-		}
-		else
-		{
-			iA = new AlphaBeta(levelIA, grille, this, tour); // Algorithme le plus rapide
-			//iA = new NegamaxAlphaThread(levelIA, grille, this, tour);			
+		Algorithm iA = null;
+		switch (algoIA) {
+		case Constantes.IA_MINIMAX:
+			iA = new Minimax(levelIA, grille, this, tour);
+			break;
+		case Constantes.IA_ALPHABETA:
+			iA = new AlphaBeta(levelIA, grille, this, tour); // Le + rapide des AlphaBeta
+			break;
+		case Constantes.IA_NEGAMAX_THREAD:
+			iA = new NegamaxThread(levelIA, grille, this, tour); // Le + rapide des Minimax
+			break;
+		case Constantes.IA_NEGAMAX_ALPHA_THREAD:
+			iA = new NegamaxAlphaThread(levelIA, grille, this, tour);
+			break;
+		default:
+			break;			
 		}
 		
 		return iA.choisirCoup();
 	}
-	*/
 
 
 }

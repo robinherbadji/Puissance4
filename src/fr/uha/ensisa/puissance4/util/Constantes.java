@@ -13,8 +13,10 @@ public abstract class Constantes {
 	
 	public static final int IA_MINIMAX = 0;
 	public static final int IA_ALPHABETA = 1;
+	public static final int IA_NEGAMAX_THREAD = 2;
+	public static final int IA_NEGAMAX_ALPHA_THREAD = 3;
 	
-	public static final String[] IA_ALGOS = {"Minimax", "Alpha-Beta"};
+	public static final String[] IA_ALGOS = {"Minimax", "Alpha-Beta", "NegamaxThread", "NegamaxAlphaThread"};
 	
 	public static final String[] IA_NAMES = {"HAL", "Skynet", "Ultron", "R2-D2", "Rick Deckard", "IDA"};
 	

@@ -299,8 +299,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	public void cleanGrille() {
 		gridP4_pane.getChildren().removeAll(gridP4_pane.getChildren());
 	}
-
-	/*
+	
 	public void addJeton(String path_img_jeton, int ligne, int colonne) {
 		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
 		ImageView jeton = new ImageView(img_jeton);
@@ -308,16 +307,6 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		jeton.setFitWidth(100.0);
 		gridP4_pane.add(jeton, colonne, Constantes.NB_LIGNES - 1 - ligne);
 	}
-	*/
-	/*
-	public void initialiserIcone(HBox paneIcone, String path_img_jeton) {
-		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
-		ImageView jeton = new ImageView(img_jeton);
-		jeton.setFitHeight(25.0);
-		jeton.setFitWidth(25.0);
-		paneIcone.getChildren().add(jeton);
-	}
-	*/
 	
 	public void initialiserIcone(HBox paneIcone, String path_img_jeton) {
 		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
@@ -360,10 +349,10 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		message_start.setText(msgVainqueur.toString());
 		message_tour.setFont(Font.font(28));
 		message_tour.setText(" en " + (partie.getTour() - 1) + " tours");
-
-		message_partie_2.setFont(Font.font(30));
+		
 		message_partie_1.setText("Temps de reflexion de " + partie.getJoueur1().getNom() + " : "
 				+ timeToString(partie.getTempsReflexionJ1()));
+		message_partie_2.setFont(Font.font(30));
 		message_partie_2.setText("Temps de reflexion de " + partie.getJoueur2().getNom() + " : "
 				+ timeToString(partie.getTempsReflexionJ2()));
 
@@ -393,7 +382,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		Grille grille = this.partie.getGrille();
 		if (!grille.isCoupPossible(colonne)) {
 			message_partie_1.setText("Impossible de mettre le jeton dans cette colonne");
-			System.out.println("COUP INVALIDE !");
+			//System.out.println("COUP INVALIDE !");
 		} else {
 			if (partie.getJoueurCourant() == partie.getJoueur1()) {
 				this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J1);
@@ -416,10 +405,10 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 				grille.addCase(j, colonne, symboleJoueur);
 				switch (symboleJoueur) {
 				case X:
-					//addJeton(Constantes.JETON_JOUEUR_1, j, colonne);
+					addJeton(Constantes.JETON_JOUEUR_1, j, colonne);
 					break;
 				case O:
-					//addJeton(Constantes.JETON_JOUEUR_2, j, colonne);
+					addJeton(Constantes.JETON_JOUEUR_2, j, colonne);
 					break;
 				default:
 					break;

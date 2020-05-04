@@ -13,8 +13,6 @@ public abstract class Algorithm {
 	protected int tourMax;
 	protected int tourExplore;
 
-	// protected Joueur joueurActuel;
-
 	/**
 	 * Symbole adversaire
 	 */
@@ -37,7 +35,6 @@ public abstract class Algorithm {
 		this.grilleDepart = grilleDepart;
 		this.tourDepart = tour;
 		this.tourMax = Math.min(tourDepart + levelIA, Constantes.NB_TOUR_MAX);
-		// this.joueurActuel = joueurActuel;
 		if (joueurActuel.getOrder() == Constantes.JOUEUR_1) {
 			symboleMax = Constantes.SYMBOLE_J1;
 			symboleMin = Constantes.SYMBOLE_J2;

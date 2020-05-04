@@ -28,6 +28,7 @@ public class AppGraphique extends Application {
 			System.err.println("Erreur au chargement: " + ex);
 		}
 		
+		primaryStage.setResizable(false);
 		primaryStage.setTitle("Puissance 4 - Yassine & Robin");
 		primaryStage.show();
 	}

@@ -26,7 +26,6 @@ public class Minimax extends Algorithm {
 		// Blocage de l'adversaire s'il gagne au prochain coup
 		int victoireAdversaire = grilleDepart.isAdversaireGagnant(symboleMin, tourDepart);
 		if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
-			System.out.println("Blocage Victoire Adverse");
 			return victoireAdversaire;
 		}
 
@@ -42,7 +41,6 @@ public class Minimax extends Algorithm {
 
 				// Si l'IA peut gagner en un coup : jouer ce coup
 				if (grille_next.isIAGagnante(symboleMax, tourDepart)) {
-					System.out.println("C'est gagné");
 					return col;
 				}
 
@@ -50,13 +48,12 @@ public class Minimax extends Algorithm {
 				double eval_grille_next = Constantes.SCORE_MIN_NON_DEFINI;
 				victoireAdversaire = grille_next.isAdversaireGagnant(symboleMin, tourDepart);
 				if (victoireAdversaire != Constantes.COUP_NON_DEFINI) {
-					System.out.println("IA perd si elle met dans la colonne suivante : ");
 					colonneDefaite = col;
 				} else {
 					eval_grille_next = min_value(grille_next);
 				}
 
-				System.out.println("COLONNE " + (col + 1) + " : " + eval_grille_next);
+				//System.out.println("COLONNE " + (col + 1) + " : " + eval_grille_next);
 				if (eval_grille_next > utility_max) {
 					utility_max = eval_grille_next;
 					coup = col;
@@ -65,7 +62,6 @@ public class Minimax extends Algorithm {
 		}
 		// On a perdu il faut bien renvoyer quelque chose ...
 		if (coup == Constantes.COUP_NON_DEFINI) {
-			System.out.println("Bon ben là plus aucune chance");
 			coup = colonneDefaite;
 		}
 		return coup;

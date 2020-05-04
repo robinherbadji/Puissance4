@@ -16,15 +16,11 @@ public class AppGraphique extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-		      // Localisation du fichier FXML.
 		      final URL url = getClass().getResource("vue/VuePuissance4.fxml");
-		      // Création du loader.
 		      final FXMLLoader fxmlLoader = new FXMLLoader(url);
-		      // Chargement du FXML.
 		      final AnchorPane root = (AnchorPane) fxmlLoader.load();
-		      // Récupération du Controller
 		      this.controller = (ControlleurFXML) fxmlLoader.getController();
-		      // Création de la scène.
+		      
 		      final Scene scene = new Scene(root);
 		      primaryStage.setScene(scene);
 		      

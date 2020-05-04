@@ -11,7 +11,7 @@ public abstract class Puissance4 {
 		Console console;
 
 		int mode = Constantes.MODE_INTERFACE_GRAPHIQUE;
-		mode = Constantes.MODE_CONSOLE;
+		//mode = Constantes.MODE_CONSOLE;
 		
 		//Indique la bonne interface et la lance dans un thread différent
 		switch (mode) {

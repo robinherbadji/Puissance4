@@ -22,21 +22,24 @@ public class Console extends Controlleur {
 
 	public void run() {
 		Joueur j1, j2;
-		// Scanner entry = new Scanner(System.in);
+		Scanner entry = new Scanner(System.in);
 		System.out.println("************* PUISSANCE 4 *************");
-		// j1 = choixJoueur(Constantes.JOUEUR_1, entry);
-		// j2 = choixJoueur(Constantes.JOUEUR_2, entry);
+		j1 = choixJoueur(Constantes.JOUEUR_1, entry);
+		
+		j2 = choixJoueur(Constantes.JOUEUR_2, entry);
 
 		/////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////// \ OCTOGONE DES IAs /\/////////////////////////////
 
 		// PARAMETRES
 		// _____________________________________
+		/*
 		String nom_IA = "Robin & Yassine";
 		String nom_adversaire = "L'Ennemi";
 		//int algo_IA = Constantes.IA_MINIMAX;
 		int algo_IA = Constantes.IA_ALPHABETA;
 		int niveauIA = 5;
+		*/
 		// _____________________________________
 		/////////////////////////////////////////////////////////////////////////////////
 		// l'IA Adverse commence :
@@ -46,9 +49,10 @@ public class Console extends Controlleur {
 		*/
 
 		// Cette IA commence :
+		/*
 		j1 = new IA(nom_IA, 1, algo_IA, niveauIA);
 		j2 = new Humain(nom_adversaire, 2);
-
+		*/
 		/////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////
 

@@ -349,9 +349,9 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		message_tour.setText(" en " + (partie.getTour() - 1) + " tours");
 
 		message_partie_2.setFont(Font.font(30));
-		message_partie_1.setText("Temps total de reflexion de " + partie.getJoueur1().getNom() + " : "
+		message_partie_1.setText("Temps de reflexion de " + partie.getJoueur1().getNom() + " : "
 				+ timeToString(partie.getTempsReflexionJ1()));
-		message_partie_2.setText("Temps total de reflexion de " + partie.getJoueur2().getNom() + " : "
+		message_partie_2.setText("Temps de reflexion de " + partie.getJoueur2().getNom() + " : "
 				+ timeToString(partie.getTempsReflexionJ2()));
 
 	}
@@ -394,8 +394,6 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 				partie.setJoueurCourant(partie.getJoueur1());
 			}
 			partie.nextTour();
-			System.out.println("Next person");
-			System.out.println("Etat Partie : " + partie.getEtatPartie());
 		}
 	}
 

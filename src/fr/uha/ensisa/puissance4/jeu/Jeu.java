@@ -63,7 +63,7 @@ public class Jeu extends Thread {
 		while (!partie.isPartieFinie() && !this.isInterrupted()) {
 			Platform.runLater(
 					() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille()));
-			wait(25);
+			wait(30);
 
 			long tempsDebut = System.currentTimeMillis();
 			((ControlleurFXML) controlleur).resetBouton();
@@ -75,7 +75,7 @@ public class Jeu extends Thread {
 			Platform.runLater(() -> ((ControlleurFXML) controlleur).afficherCoup(partie.getJoueurCourant(), coup,
 					tempsReflexion));
 			Platform.runLater(() -> ((ControlleurFXML) controlleur).jouerCoupGraphique(coup, tempsReflexion));
-			wait(25);
+			wait(30);
 		}
 		Platform.runLater(() -> controlleur.afficherFinPartie(partie));
 	}

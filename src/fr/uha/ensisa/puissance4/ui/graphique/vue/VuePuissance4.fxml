@@ -79,7 +79,7 @@
                            <font>
                               <Font size="18.0" />
                            </font></Label>
-                        <TextField fx:id="nom_field_j1" maxWidth="200.0" promptText="Nom du joueur 1" text="Robin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="nom_field_j1" maxWidth="200.0" promptText="Nom du joueur 1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -157,7 +157,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="nom_field_j2" maxWidth="200.0" promptText="Nom du joueur 2" text="IA" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="nom_field_j2" maxWidth="200.0" promptText="Nom du joueur 2" text="IA Robin &amp; Yass" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
                         <Insets />

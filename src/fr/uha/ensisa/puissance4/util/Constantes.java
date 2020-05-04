@@ -27,15 +27,19 @@ public abstract class Constantes {
 	 * @author weber
 	 *
 	 */
-	public enum Case {V, X, O};
-	
-	//Affectation  des symboles aux joueurs
+	public enum Case {
+		V, X, O
+	};
+
+	// Affectation des symboles aux joueurs
 	public static final Case SYMBOLE_J1 = Case.X;
-	public static final Case SYMBOLE_J2 = Case.O;	
-	public static final String JETON_JOUEUR_1 = "fr/uha/ensisa/puissance4/ui/graphique/vue/coffee-547490_640.png";	
-	public static final String JETON_JOUEUR_2 = "fr/uha/ensisa/puissance4/ui/graphique/vue/robot-2192617_640.png";
-	//public static final String JETON_JOUEUR_2 = "fr/uha/ensisa/puissance4/ui/graphique/vue/superman.jpg";
-	//public static final String JETON_JOUEUR_2 = "fr/uha/ensisa/puissance4/ui/graphique/vue/donut-3800659_640.png";
+	public static final Case SYMBOLE_J2 = Case.O;
+	public static final String JETON_JOUEUR_1 = "images/coffee.png";
+	public static final String JETON_JOUEUR_2 = "images/robot.png";
+	//public static final String JETON_JOUEUR_1 = "images/donut.png";
+	//public static final String JETON_JOUEUR_2 = "images/superman.jpg";
+	
+	
 	
 	
 	//Définition de la taille de la grille

@@ -294,7 +294,13 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		message_start.setText("A " + joueurCourant.getNom() + " de jouer !");
 		message_tour.setText("Tour " + tour);
 	}
+	
+	
+	public void cleanGrille() {
+		gridP4_pane.getChildren().removeAll(gridP4_pane.getChildren());
+	}
 
+	/*
 	public void addJeton(String path_img_jeton, int ligne, int colonne) {
 		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
 		ImageView jeton = new ImageView(img_jeton);
@@ -302,11 +308,17 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		jeton.setFitWidth(100.0);
 		gridP4_pane.add(jeton, colonne, Constantes.NB_LIGNES - 1 - ligne);
 	}
-
-	public void cleanGrille() {
-		gridP4_pane.getChildren().removeAll(gridP4_pane.getChildren());
+	*/
+	/*
+	public void initialiserIcone(HBox paneIcone, String path_img_jeton) {
+		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
+		ImageView jeton = new ImageView(img_jeton);
+		jeton.setFitHeight(25.0);
+		jeton.setFitWidth(25.0);
+		paneIcone.getChildren().add(jeton);
 	}
-
+	*/
+	
 	public void initialiserIcone(HBox paneIcone, String path_img_jeton) {
 		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
 		ImageView jeton = new ImageView(img_jeton);
@@ -315,6 +327,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		paneIcone.getChildren().add(jeton);
 	}
 
+	
 	public void resetBouton() {
 		this.coup = -1;
 	}
@@ -403,10 +416,10 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 				grille.addCase(j, colonne, symboleJoueur);
 				switch (symboleJoueur) {
 				case X:
-					addJeton(Constantes.JETON_JOUEUR_1, j, colonne);
+					//addJeton(Constantes.JETON_JOUEUR_1, j, colonne);
 					break;
 				case O:
-					addJeton(Constantes.JETON_JOUEUR_2, j, colonne);
+					//addJeton(Constantes.JETON_JOUEUR_2, j, colonne);
 					break;
 				default:
 					break;

@@ -53,7 +53,7 @@ public class AlphaBeta extends Algorithm {
 							Constantes.SCORE_MAX_NON_DEFINI);
 				}
 
-				//System.out.println("COLONNE " + (col + 1) + " : " + eval_grille_next);
+				System.out.println("COLONNE " + (col + 1) + " : " + eval_grille_next);
 				if (eval_grille_next > utility) {
 					utility = eval_grille_next;
 					coup = col;

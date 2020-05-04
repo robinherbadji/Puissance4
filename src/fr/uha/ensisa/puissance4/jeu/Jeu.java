@@ -60,22 +60,35 @@ public class Jeu extends Thread {
 
 	public synchronized void runFXMLControlleur() throws InterruptedException {
 		Platform.runLater(() -> controlleur.lancementPartie(partie.getJoueur1(), partie.getJoueur2()));
-		while (!partie.isPartieFinie() && !this.isInterrupted()) {
-			Platform.runLater(
-					() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille()));
-			wait(30);
+		while (!partie.isPartieFinie() && !((ControlleurFXML)controlleur).interruptJeu) {
+			try {
+				Platform.runLater(() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(),
+						partie.getGrille()));
+				wait(30);
 
-			long tempsDebut = System.currentTimeMillis();
-			((ControlleurFXML) controlleur).resetBouton();
-			int coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
-			((ControlleurFXML) controlleur).resetBouton();
+				long tempsDebut = System.currentTimeMillis();
+				((ControlleurFXML) controlleur).resetBouton();
+				int coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+				((ControlleurFXML) controlleur).resetBouton();
+				if (((ControlleurFXML)controlleur).interruptJeu) {
+					System.out.println("Interrupetion");
+					wait(30);
+					Thread.currentThread().interrupt();
+					return;
+				}
 
-			final long tempsReflexion = System.currentTimeMillis() - tempsDebut;
-			wait(30);
-			Platform.runLater(() -> ((ControlleurFXML) controlleur).afficherCoup(partie.getJoueurCourant(), coup,
-					tempsReflexion));
-			Platform.runLater(() -> ((ControlleurFXML) controlleur).jouerCoupGraphique(coup, tempsReflexion));
-			wait(30);
+				final long tempsReflexion = System.currentTimeMillis() - tempsDebut;
+				wait(30);
+				Platform.runLater(() -> ((ControlleurFXML) controlleur).afficherCoup(partie.getJoueurCourant(), coup,
+						tempsReflexion));
+				Platform.runLater(() -> ((ControlleurFXML) controlleur).jouerCoupGraphique(coup, tempsReflexion));
+				wait(30);
+
+			} catch (InterruptedException e) {
+				//this.interrupt();
+				Thread.currentThread().interrupt();
+				return;
+			}
 		}
 		Platform.runLater(() -> controlleur.afficherFinPartie(partie));
 	}

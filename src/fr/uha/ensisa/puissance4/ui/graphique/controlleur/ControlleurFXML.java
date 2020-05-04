@@ -112,6 +112,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	private Joueur joueur1 = null;
 	private Joueur joueur2 = null;
 	private boolean isPartieActive = false;
+	public volatile boolean interruptJeu = false;
 	private int coup = -1;
 	private Jeu jeu = null;
 	private Partie partie = null;
@@ -178,12 +179,20 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 		// Démarrage du jeu
 		if (joueur1 != null && joueur2 != null) {
+			disableButtons(buttons);
+			//disableParametres(parametres_pane);
 			message_start.setFont(Font.font("System", FontWeight.BOLD, 30));
 			message_partie_1.setText("");
-			disableParametres(parametres_pane);
+			message_partie_2.setText("");			
+			if (this.jeu != null) {
+				//this.jeu.interrupt();
+				interruptJeu = true;
+			}
 			this.jeu = new Jeu(joueur1, joueur2, this);
 			this.partie = jeu.getPartie();
+			interruptJeu = false;
 			jeu.start();
+			System.out.println(this.jeu.getPartie().getJoueur1().getNom());
 		} else {
 			// System.out.println("Les paramètres ne sont pas bons");
 		}
@@ -362,13 +371,15 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	public synchronized int getHumanCoup(String nom) {
 		// message_partie.setText(nom + " réfléchit ...");
 		enableButtons(buttons);
-		while (this.coup == -1) {
+		System.out.println("Coucou");
+		while (this.coup == -1 && !interruptJeu) {
 			try {
 				wait();
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
 		}
+		if (interruptJeu) System.out.println("interruption controlleur");
 		disableButtons(buttons);
 		return this.coup;
 	}

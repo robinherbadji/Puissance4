@@ -1,5 +1,7 @@
 package fr.uha.ensisa.puissance4.ui.graphique.controlleur;
 
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -79,6 +81,8 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	@FXML
 	private Button button_start;
+	@FXML
+	private Button button_reset;
 
 	@FXML
 	private VBox parametres_pane;
@@ -111,8 +115,9 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	private boolean is_j2_humain = false;
 	private Joueur joueur1 = null;
 	private Joueur joueur2 = null;
-	private boolean isPartieActive = false;
 	public volatile boolean interruptJeu = false;
+	private boolean isJoueurCourant1 = true;
+	
 	private int coup = -1;
 	private Jeu jeu = null;
 	private Partie partie = null;
@@ -127,7 +132,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		disableButtons(buttons);
+		disableButtonsColonne(buttons);
 		initialiserAlgos(algobox_j1);
 		initialiserAlgos(algobox_j2);
 		initialiserIcone(icone_pane_1, Constantes.JETON_JOUEUR_1);
@@ -154,11 +159,11 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 					}
 				});
 	}
+	
 
 	// GESTION DES BOUTONS
 	@FXML
-	public void commencerPartie(ActionEvent event) {
-		cleanGrille();
+	synchronized public void commencerPartie(ActionEvent event) {
 
 		// Création Joueur 1
 		if (is_j1_humain) {
@@ -177,24 +182,53 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			}
 		}
 
-		// Démarrage du jeu
+		
 		if (joueur1 != null && joueur2 != null) {
-			disableButtons(buttons);
-			//disableParametres(parametres_pane);
-			message_start.setFont(Font.font("System", FontWeight.BOLD, 30));
-			message_partie_1.setText("");
-			message_partie_2.setText("");			
+			// Rechargement du jeu avec des nouveaux paramètres
 			if (this.jeu != null) {
-				//this.jeu.interrupt();
-				interruptJeu = true;
+				if (joueur1 != this.partie.getJoueur1()) {
+					this.partie.setJoueur1(joueur1, this.isJoueurCourant1);
+				}
+				
+				if (joueur2 != this.partie.getJoueur2()) {
+					this.partie.setJoueur2(joueur2, this.isJoueurCourant1);
+				}
 			}
-			this.jeu = new Jeu(joueur1, joueur2, this);
-			this.partie = jeu.getPartie();
-			interruptJeu = false;
-			jeu.start();
-			System.out.println(this.jeu.getPartie().getJoueur1().getNom());
-		} else {
-			// System.out.println("Les paramètres ne sont pas bons");
+			// Création du jeu
+			else {
+				this.jeu = new Jeu(joueur1, joueur2, this);
+				this.partie = jeu.getPartie();
+				interruptJeu = false;
+				message_partie_1.setText("");
+				message_partie_2.setText("");
+				button_start.setText("Recharger les paramètres");
+				jeu.start();
+			}
+			nom_label_j1.setText(joueur1.getNom() + " (" + joueur1.getTypeNom() + ")");
+			nom_label_j2.setText(joueur2.getNom() + " (" + joueur2.getTypeNom() + ")");
+			message_start.setFont(Font.font("System", FontWeight.BOLD, 30));			
+		}
+	}
+	
+	
+	@FXML
+	public void reinitialiserPartie(ActionEvent event) {
+		cleanGrille();		
+		nom_label_j1.setText(joueur1.getNom() + " (" + joueur1.getTypeNom() + ")");
+		nom_label_j2.setText(joueur2.getNom() + " (" + joueur2.getTypeNom() + ")");
+		message_partie_1.setText("Partie Réinitialisée");
+		message_partie_2.setFont(Font.font(20));
+		message_partie_2.setText("");
+		message_start.setFont(Font.font("System", FontWeight.NORMAL, 24));
+		message_start.setText("Vous pouvez changer les paramètres");
+		message_tour.setText("");
+		button_start.setText("Commencer la partie");
+		button_start.setDisable(false);
+		button_reset.setDisable(true);
+		if (this.jeu != null) {
+			interruptJeu = true;
+			this.jeu.interrupt();
+			this.jeu = null;
 		}
 	}
 
@@ -206,6 +240,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			notify();
 		}
 	}
+	
 
 	public Joueur creerHumain(String nom_joueur, int order) {
 		Joueur joueur = null;
@@ -272,13 +307,13 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		}
 	}
 
-	public void disableButtons(HBox buttons) {
+	public void disableButtonsColonne(HBox buttons) {
 		for (Node button : buttons.getChildren()) {
 			button.setDisable(true);
 		}
 	}
 
-	public void enableButtons(HBox buttons) {
+	public void enableButtonsColonne(HBox buttons) {
 		for (Node button : buttons.getChildren()) {
 			button.setDisable(false);
 		}
@@ -286,20 +321,11 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	@Override
 	public void lancementPartie(Joueur joueur1, Joueur joueur2) {
-		nom_label_j1.setText(joueur1.getNom() + " (" + joueur1.getTypeNom() + ")");
-		nom_label_j2.setText(joueur2.getNom() + " (" + joueur2.getTypeNom() + ")");
-		if (!isPartieActive) {
-			message_start.setText("C'est parti !");
-		} else {
-			message_start.setText("C'est reparti !");
-		}
-		button_start.setText("Recommencer");
-		isPartieActive = true;
+		
 	}
 
 	@Override
 	public void lancementTour(int tour, Joueur joueurCourant, Grille grille) {
-		// System.out.println("Tour " + tour);
 		message_start.setText("A " + joueurCourant.getNom() + " de jouer !");
 		message_tour.setText("Tour " + tour);
 	}
@@ -310,16 +336,14 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	}
 	
 	public void addJeton(String path_img_jeton, int ligne, int colonne) {
-		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
-		ImageView jeton = new ImageView(img_jeton);
+		ImageView jeton = new ImageView(path_img_jeton);
 		jeton.setFitHeight(100.0);
 		jeton.setFitWidth(100.0);
 		gridP4_pane.add(jeton, colonne, Constantes.NB_LIGNES - 1 - ligne);
 	}
 	
 	public void initialiserIcone(HBox paneIcone, String path_img_jeton) {
-		Image img_jeton = new Image(getClass().getClassLoader().getResource(path_img_jeton).toString(), true);
-		ImageView jeton = new ImageView(img_jeton);
+		ImageView jeton = new ImageView(path_img_jeton);
 		jeton.setFitHeight(25.0);
 		jeton.setFitWidth(25.0);
 		paneIcone.getChildren().add(jeton);
@@ -332,8 +356,6 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	@Override
 	public void afficherCoup(Joueur joueurCourant, int coup, long t) {
-		// System.out.println(joueurCourant.getNom() + " a joué en colonne " + (coup+1)
-		// + " après " + timeToString(t));
 		message_partie_2.setText(message_partie_1.getText());
 		message_partie_1
 				.setText(joueurCourant.getNom() + " a joué en colonne " + (coup + 1) + " après " + timeToString(t));
@@ -364,36 +386,40 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		message_partie_2.setFont(Font.font(30));
 		message_partie_2.setText("Temps de reflexion de " + partie.getJoueur2().getNom() + " : "
 				+ timeToString(partie.getTempsReflexionJ2()));
-
+		button_reset.setDisable(false);
+		button_start.setDisable(true);
 	}
 
 	@Override
 	public synchronized int getHumanCoup(String nom) {
 		// message_partie.setText(nom + " réfléchit ...");
-		enableButtons(buttons);
-		System.out.println("Coucou");
+		enableButtonsColonne(buttons);
+		button_start.setDisable(false);
+		button_reset.setDisable(false);
 		while (this.coup == -1 && !interruptJeu) {
 			try {
 				wait();
-			} catch (InterruptedException ie) {
-				ie.printStackTrace();
+			} catch (InterruptedException ie) {				
+				//ie.printStackTrace();
 			}
 		}
-		if (interruptJeu) System.out.println("interruption controlleur");
-		disableButtons(buttons);
+		disableButtonsColonne(buttons);
 		return this.coup;
 	}
 
 	@Override
 	public void reflexionIA(String nom) {
+		button_start.setDisable(true);
+		button_reset.setDisable(true);
 		// message_partie_1.setText(nom + " réfléchit ...");
 	}
 
+
+	
 	public void jouerCoupGraphique(int colonne, long tempsReflexion) {
 		Grille grille = this.partie.getGrille();
 		if (!grille.isCoupPossible(colonne)) {
 			message_partie_1.setText("Impossible de mettre le jeton dans cette colonne");
-			//System.out.println("COUP INVALIDE !");
 		} else {
 			if (partie.getJoueurCourant() == partie.getJoueur1()) {
 				this.ajouterCoupGraphique(grille, colonne, Constantes.SYMBOLE_J1);
@@ -409,6 +435,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			partie.nextTour();
 		}
 	}
+	
 
 	public void ajouterCoupGraphique(Grille grille, int colonne, Case symboleJoueur) {
 		for (int j = 0; j < Constantes.NB_LIGNES; j++) {

@@ -242,7 +242,6 @@ public class Grille {
 	public boolean isIAGagnante(Case symboleMax, int tour) {
 		int etatIA = getEtatPartie(symboleMax, tour);
 		if (etatIA != Constantes.PARTIE_EN_COURS) {
-			System.out.println("IA Gagnante");
 			return true;
 		}
 		return false;

@@ -173,17 +173,26 @@ public class Grille {
 	// EVALUATION
 	///////////////////////////////////////////////////////////////////////////
 
-	// VERSION 4
+	// VERSION 5
 	/**
 	 * Donne un score à la grille en fonction du joueur courant et d'une {@link fr.uha.ensisa.puissance4.data.evaluation.strategies.Strategie Strategie}
 	 * 
 	 * @param symboleJoueurCourant
 	 * @return
-	 */
-	public double evaluer(Case symboleJoueurCourant) {
-		Strategie strategie = new StrategieSimple(this, symboleJoueurCourant);
-		//Strategie strategie = new StrategieAmelioree(this, symboleJoueurCourant);
-		//Strategie strategie = new StrategieOddEven(this, symboleJoueurCourant);
+	 */	
+	public double evaluer(Case symboleJoueurCourant, int type_strategie) {
+		Strategie strategie = null;
+		switch (type_strategie) {
+		case Constantes.IA_STRATEGIE_AMELIOREE:
+			strategie = new StrategieAmelioree(this, symboleJoueurCourant);
+			break;
+		case Constantes.IA_STRATEGIE_ODD_EVEN:
+			strategie = new StrategieOddEven(this, symboleJoueurCourant);
+			break;
+		default:
+			strategie = new StrategieOddEven(this, symboleJoueurCourant);
+			break;
+		}
 		return strategie.getUtility();
 	}
 

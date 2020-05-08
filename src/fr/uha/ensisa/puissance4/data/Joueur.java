@@ -18,12 +18,25 @@ public abstract class Joueur {
 	 */
 	protected String icone_path;
 	
+	/**
+	 * Constructeur spécifique à l'utilisation Console
+	 * 
+	 * @param nom
+	 * @param order
+	 */
 	protected Joueur(String nom, int order)
 	{
 		this.nom = nom;
 		this.order = order;
 	}
 	
+	/**
+	 * Constructeur spécifique à l'utilisation GUI
+	 * 
+	 * @param nom
+	 * @param order
+	 * @param icone_path
+	 */
 	protected Joueur(String nom, int order, String icone_path)
 	{
 		this.nom = nom;

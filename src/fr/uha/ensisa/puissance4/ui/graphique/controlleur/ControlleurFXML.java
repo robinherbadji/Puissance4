@@ -1,7 +1,5 @@
 package fr.uha.ensisa.puissance4.ui.graphique.controlleur;
 
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -93,7 +91,11 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	private ComboBox<String> algobox_j1;
 	@FXML
 	private ComboBox<String> algobox_j2;
-
+	@FXML
+	private ComboBox<String> strategiebox_j1;
+	@FXML
+	private ComboBox<String> strategiebox_j2;
+	
 	@FXML
 	private Button button_start;
 	@FXML
@@ -178,10 +180,6 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			}
 			return this.iconeButton;
 		}
-		private void setDisable() {
-			this.iconeButton = null;
-			this.iconeCell = null;
-		}
 	}
 	
 	
@@ -190,7 +188,9 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		disableButtonsColonne(buttons);
 		initialiserAlgos(algobox_j1);
-		initialiserAlgos(algobox_j2);		
+		initialiserAlgos(algobox_j2);
+		initialiserStrategies(strategiebox_j1);
+		initialiserStrategies(strategiebox_j2);		
 		initialiserIconeBox(iconebox_j1);
 		initialiserIconeBox(iconebox_j2);
 		
@@ -265,7 +265,8 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		if (is_j1_humain) {
 			joueur1 = creerHumain(nom_field_j1.getText(), 1, iconebox_j1.getValue().getPath());
 		} else {
-			joueur1 = creerIA(nom_field_j1.getText(), 1, iconebox_j1.getValue().getPath(), algobox_j1.getValue().toString(), niveau_field_j1.getText());
+			joueur1 = creerIA(nom_field_j1.getText(), 1, iconebox_j1.getValue().getPath(),
+					algobox_j1.getValue().toString(), niveau_field_j1.getText(), strategiebox_j1.getValue().toString());
 		}
 
 		// Création Joueur 2
@@ -273,8 +274,9 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			if (is_j2_humain) {
 				joueur2 = creerHumain(nom_field_j2.getText(), 2, iconebox_j2.getValue().getPath());
 			} else {
-				joueur2 = creerIA(nom_field_j2.getText(), 2, iconebox_j2.getValue().getPath(), algobox_j2.getValue().toString(),
-						niveau_field_j2.getText());
+				joueur2 = creerIA(nom_field_j2.getText(), 2, iconebox_j2.getValue().getPath(),
+						algobox_j2.getValue().toString(), niveau_field_j2.getText(),
+						strategiebox_j2.getValue().toString());
 			}
 		}
 		
@@ -357,10 +359,10 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		return joueur;
 	}
 
-	public Joueur creerIA(String nom_joueur, int order, String icone_path, String algo, String level) {
+	public Joueur creerIA(String nom_joueur, int order, String icone_path, String algo, String level,
+			String strategie) {
 		Joueur joueur = null;
 
-		int algo_id = -1;
 		if (!nom_joueur.isEmpty()) {
 			if (iconebox_j1.getValue().getPath() != iconebox_j2.getValue().getPath()) {
 				int intLevel = isNiveauOK(level);
@@ -368,25 +370,36 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 					message_start.setText("Joueur " + order + " : Nombre dans [1,42]");
 					return null;
 				} else {
-					for (int j = 0; j < Constantes.IA_ALGOS.length; j++) {
-						if (algo == Constantes.IA_ALGOS[j]) {
-							algo_id = j;
-						}
-					}
-					if (algo_id < 0 || algo_id > Constantes.IA_ALGOS.length) {
+					int algo_id = getIDBox(Constantes.IA_ALGOS, algo);
+					if (algo_id == -1) {
 						message_start.setText("Joueur " + order + " : algorithme non défini");
 					} else {
-						joueur = new IA(nom_joueur, order, icone_path, algo_id, intLevel);
+						int strat_id = getIDBox(Constantes.IA_STRATEGIES, strategie);
+						if (strat_id == -1) {
+							message_start.setText("Joueur " + order + " : stratégie non définie");
+						} else {
+							joueur = new IA(nom_joueur, order, icone_path, algo_id, intLevel, strat_id);
+						}
 					}
 				}
-			}
-			else  {
+			} else {
 				message_start.setText("Les icônes doivent être différents");
-			}			
+			}
 		} else {
 			message_start.setText("Joueur " + order + " : saisir un nom");
 		}
 		return joueur;
+	}
+	
+	
+	public int getIDBox(String[] items, String choix) {
+		int id = -1;
+		for (int i = 0; i < items.length; i++) {
+			if (choix == items[i]) {
+				id = i;
+			}
+		}
+		return id;
 	}
 
 	public static int isNiveauOK(String str) {
@@ -455,9 +468,16 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		for (int j = 0; j < Constantes.IA_ALGOS.length; j++) {
 			algos.getItems().addAll(Constantes.IA_ALGOS[j]);
 		}
-		algos.setValue("Alpha-Beta");
+		algos.setValue(Constantes.IA_ALGOS[1]);
 	}
 	
+	public void initialiserStrategies(ComboBox<String> strategies) {
+		for (int j = 0; j < Constantes.IA_STRATEGIES.length; j++) {
+			strategies.getItems().addAll(Constantes.IA_STRATEGIES[j]);
+		}
+		strategies.setValue(Constantes.IA_STRATEGIES[1]);
+	}
+		
 	
 
 	public void disableParametres(VBox parametres) {

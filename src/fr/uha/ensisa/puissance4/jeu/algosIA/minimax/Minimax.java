@@ -13,6 +13,10 @@ public class Minimax extends Algorithm {
 	public Minimax(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour) {
 		super(levelIA, grilleDepart, joueurActuel, tour);
 	}
+	
+	public Minimax(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour, int typeStrategie) {
+		super(levelIA, grilleDepart, joueurActuel, tour, typeStrategie);
+	}
 
 	@Override
 	public int choisirCoup() {
@@ -71,7 +75,7 @@ public class Minimax extends Algorithm {
 		// On regarde si l'IA a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
-			return state.evaluer(symboleMax);
+			return state.evaluer(symboleMax, typeStrategie);
 		}
 
 		// Parcours des successeurs
@@ -92,7 +96,7 @@ public class Minimax extends Algorithm {
 		// On regarde si l'adversaire a gagné, ou match nul ou la profondeur max de l'IA est atteinte
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
-			return state.evaluer(symboleMax);
+			return state.evaluer(symboleMax, typeStrategie);
 		}
 
 		// Parcours des successeurs

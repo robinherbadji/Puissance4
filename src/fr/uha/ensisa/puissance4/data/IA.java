@@ -15,18 +15,38 @@ public class IA extends Joueur {
 	
 	private int algoIA;
 	private int levelIA;
+	private int strategieIA;
 	
-	
+	/**
+	 * Constructeur spécifique à l'utilisation Console
+	 * 
+	 * @param nom
+	 * @param order
+	 * @param algoIA
+	 * @param levelIA
+	 */
 	public IA(String nom, int order, int algoIA, int levelIA) {
 		super(nom, order);
 		this.algoIA=algoIA;
 		this.levelIA=levelIA;
+		this.strategieIA = Constantes.IA_STRATEGIE_SIMPLE;
 	}
 	
-	public IA(String nom, int order, String icone_path, int algoIA, int levelIA) {
+	/**
+	 * Constructeur spécifique à l'utilisation GUI
+	 * 
+	 * @param nom
+	 * @param order
+	 * @param icone_path
+	 * @param algoIA
+	 * @param levelIA
+	 * @param strategieIA
+	 */
+	public IA(String nom, int order, String icone_path, int algoIA, int levelIA, int strategieIA) {
 		super(nom, order, icone_path);
 		this.algoIA=algoIA;
 		this.levelIA=levelIA;
+		this.strategieIA = strategieIA;
 	}
 	
 
@@ -52,16 +72,16 @@ public class IA extends Joueur {
 		Algorithm iA = null;
 		switch (algoIA) {
 		case Constantes.IA_MINIMAX:
-			iA = new Minimax(levelIA, grille, this, tour);
+			iA = new Minimax(levelIA, grille, this, tour, strategieIA);
 			break;
 		case Constantes.IA_ALPHABETA:
-			iA = new AlphaBeta(levelIA, grille, this, tour); // Le + rapide des AlphaBeta
+			iA = new AlphaBeta(levelIA, grille, this, tour, strategieIA); // Le + rapide des AlphaBeta
 			break;
 		case Constantes.IA_NEGAMAX_THREAD:
-			iA = new NegamaxThread(levelIA, grille, this, tour); // Le + rapide des Minimax
+			iA = new NegamaxThread(levelIA, grille, this, tour, strategieIA); // Le + rapide des Minimax
 			break;
 		case Constantes.IA_NEGAMAX_ALPHA_THREAD:
-			iA = new NegamaxAlphaThread(levelIA, grille, this, tour);
+			iA = new NegamaxAlphaThread(levelIA, grille, this, tour, strategieIA);
 			break;
 		default:
 			break;			

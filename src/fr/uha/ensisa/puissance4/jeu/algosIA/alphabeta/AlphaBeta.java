@@ -9,9 +9,13 @@ import fr.uha.ensisa.puissance4.util.Constantes;
  * Classe implémentant l'algorithme Alpha-Beta
  */
 public class AlphaBeta extends Algorithm {
-
+/*
 	public AlphaBeta(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour) {
 		super(levelIA, grilleDepart, joueurActuel, tour);
+	}
+	*/
+	public AlphaBeta(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour, int typeStrategie) {
+		super(levelIA, grilleDepart, joueurActuel, tour, typeStrategie);
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class AlphaBeta extends Algorithm {
 		// atteinte
 		int etatPartie = state.getEtatPartie(symboleMax, tourExplore);
 		if ((etatPartie != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
-			return state.evaluer(symboleMax);
+			return state.evaluer(symboleMax,typeStrategie);
 		}
 
 		// Parcours des successeurs
@@ -99,7 +103,7 @@ public class AlphaBeta extends Algorithm {
 		// est atteinte
 		int etatPartieAdverse = state.getEtatPartie(symboleMin, tourExplore);
 		if ((etatPartieAdverse != Constantes.PARTIE_EN_COURS) || (this.tourExplore - this.tourDepart >= this.levelIA)) {
-			return state.evaluer(symboleMax);
+			return state.evaluer(symboleMax,typeStrategie);
 		}
 
 		// Parcours des successeurs

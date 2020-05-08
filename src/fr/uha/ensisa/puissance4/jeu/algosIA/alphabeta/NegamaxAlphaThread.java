@@ -17,6 +17,11 @@ public class NegamaxAlphaThread extends Algorithm {
 		super(levelIA, grilleDepart, joueurActuel, tour);
 		this.nbNoeuds = 0;
 	}
+	
+	public NegamaxAlphaThread(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour, int typeStrategie) {
+		super(levelIA, grilleDepart, joueurActuel, tour, typeStrategie);
+		this.nbNoeuds = 0;
+	}
 
 	@SuppressWarnings("serial")
 	public class NegamaxAlphaRecursive extends RecursiveTask<Double> {
@@ -65,9 +70,9 @@ public class NegamaxAlphaThread extends Algorithm {
 			if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS)
 					|| (profondeur - tourDepart >= levelIA)) {
 				if ((profondeur - tourDepart) % 2 == 1) {
-					return -state.evaluer(symboleMax);
+					return -state.evaluer(symboleMax, typeStrategie);
 				} else {
-					return state.evaluer(symboleMax);
+					return state.evaluer(symboleMax, typeStrategie);
 				}
 			}
 
@@ -97,9 +102,9 @@ public class NegamaxAlphaThread extends Algorithm {
 			if ((etatPartie != Constantes.PARTIE_EN_COURS) || (etatPartieAdverse != Constantes.PARTIE_EN_COURS)
 					|| (profondeur - tourDepart >= levelIA)) {
 				if ((profondeur - tourDepart) % 2 == 1) {
-					return -state.evaluer(symboleMax);
+					return -state.evaluer(symboleMax, typeStrategie);
 				} else {
-					return state.evaluer(symboleMax);
+					return state.evaluer(symboleMax, typeStrategie);
 				}
 			}
 

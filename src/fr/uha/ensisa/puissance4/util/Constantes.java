@@ -16,7 +16,13 @@ public abstract class Constantes {
 	public static final int IA_NEGAMAX_THREAD = 2;
 	public static final int IA_NEGAMAX_ALPHA_THREAD = 3;
 	
+	public static final int IA_STRATEGIE_SIMPLE = 0;
+	public static final int IA_STRATEGIE_AMELIOREE = 1;
+	public static final int IA_STRATEGIE_ODD_EVEN = 2;
+	
+	
 	public static final String[] IA_ALGOS = { "Minimax", "Alpha-Beta", "NegamaxThread", "NegamaxAlphaThread" };
+	public static final String[] IA_STRATEGIES = { "Simple", "Ameliorée", "Odd-Even" };
 
 	public static final String[] IA_NAMES = { "HAL", "Skynet", "Ultron", "R2-D2", "Rick Deckard", "IDA", "Robocop",
 			"WALL-E", "La Machine", "IA Robin & Yass" };

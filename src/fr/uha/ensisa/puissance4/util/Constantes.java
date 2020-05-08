@@ -34,6 +34,8 @@ public abstract class Constantes {
 	// Affectation des symboles aux joueurs
 	public static final Case SYMBOLE_J1 = Case.X;
 	public static final Case SYMBOLE_J2 = Case.O;
+	
+	public static final String[] JETON_JOUEUR = {"images/coffee.png", "images/robot.png", "images/donut.png", "images/superman.jpg"};
 	public static final String JETON_JOUEUR_1 = "images/coffee.png";
 	public static final String JETON_JOUEUR_2 = "images/robot.png";
 	//public static final String JETON_JOUEUR_1 = "images/donut.png";

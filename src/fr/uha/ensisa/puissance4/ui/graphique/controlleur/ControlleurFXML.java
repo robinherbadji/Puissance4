@@ -15,13 +15,19 @@ import fr.uha.ensisa.puissance4.ui.Controlleur;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
@@ -33,6 +39,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Callback;
 
 public class ControlleurFXML extends Controlleur implements Initializable {
 
@@ -68,12 +75,20 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	private TextField nom_field_j1;
 	@FXML
 	private TextField nom_field_j2;
-
 	@FXML
 	private TextField niveau_field_j1;
 	@FXML
 	private TextField niveau_field_j2;
-
+	
+	@FXML
+	private CheckBox checkChoose1;
+	@FXML
+	private CheckBox checkChoose2;
+	
+	@FXML
+	private ComboBox<ImageView> iconebox_j1;
+	@FXML
+	private ComboBox<String> iconebox_j2;
 	@FXML
 	private ComboBox<String> algobox_j1;
 	@FXML
@@ -110,6 +125,12 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 	@FXML
 	private GridPane gridP4_pane;
+	
+	@FXML
+	private ImageView image_winner1;
+	@FXML
+	private ImageView image_winner2;
+	
 
 	private boolean is_j1_humain = true;
 	private boolean is_j2_humain = false;
@@ -135,17 +156,75 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		disableButtonsColonne(buttons);
 		initialiserAlgos(algobox_j1);
 		initialiserAlgos(algobox_j2);
-		initialiserIcone(icone_pane_1, Constantes.JETON_JOUEUR_1);
-		initialiserIcone(icone_pane_2, Constantes.JETON_JOUEUR_2);
+		//initialiserIcones(iconebox_j1);
+		//initialiserIcones(iconebox_j2);
+		
+		//initialiserIcone(icone_pane_1, Constantes.JETON_JOUEUR_1);
+		//initialiserIcone(icone_pane_2, Constantes.JETON_JOUEUR_2);
+		
+		
+		// TEST AVEC LES CELLFACTORY
+		
+		ObservableList<ImageView> imgList = FXCollections.observableArrayList();
+		for (int j = 0; j < Constantes.JETON_JOUEUR.length; j++) {
+			ImageView jeton = new ImageView(Constantes.JETON_JOUEUR[j]);
+			jeton.setFitHeight(35.0);
+			jeton.setFitWidth(35.0);
+			imgList.addAll(jeton);
+		}
+		iconebox_j1.setItems(imgList);
+		iconebox_j1.setCellFactory(new Callback<ListView<ImageView>, ListCell<ImageView>>() {
 
+		    @Override public ListCell<ImageView> call(ListView<ImageView> p) {
+		        return new ListCell<ImageView>() {
+		            Label icon = new Label();
+		            //private final HBox cell;
+		            { 
+		                setContentDisplay(ContentDisplay.GRAPHIC_ONLY); 
+		                //cell = new HBox();
+
+		                //cell.getChildren().add(icon);
+		            }
+
+		            @Override protected void updateItem(ImageView item, boolean empty) {
+		                super.updateItem(item, empty);
+		                
+		                if (item == null) {
+		                    setGraphic(null);
+		                } else {
+		                    icon.setGraphic(item);
+		                    //setGraphic(null);
+		                    //setGraphic(cell);
+		                    setGraphic(item);
+		                }
+		           }
+		      };
+		  }
+		});
+		
+		class IconTextCellClass extends ListCell<ImageView> {
+		    @Override
+		    protected void updateItem(ImageView item, boolean empty) {
+		        super.updateItem(item, empty);
+		        if (item != null) {
+		        	setGraphic(item);
+		        }
+		    }
+		};
+
+		iconebox_j1.setButtonCell(new IconTextCellClass());
+		
+		
 		optionToggleGroup1.selectedToggleProperty()
 				.addListener((ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
 					if (newValue == humain_j1) {
 						is_j1_humain = true;
 						ia_pane1.setVisible(false);
+						checkChoose1.setVisible(false);
 					} else if (newValue == ia_j1) {
 						is_j1_humain = false;
 						ia_pane1.setVisible(true);
+						checkChoose1.setVisible(true);
 					}
 				});
 		optionToggleGroup2.selectedToggleProperty()
@@ -153,12 +232,48 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 					if (newValue == humain_j2) {
 						is_j2_humain = true;
 						ia_pane2.setVisible(false);
+						checkChoose2.setVisible(false);
 					} else if (newValue == ia_j2) {
 						is_j2_humain = false;
 						ia_pane2.setVisible(true);
+						checkChoose2.setVisible(true);
 					}
 				});
 	}
+	
+	
+	@FXML
+	public void choisir_nom_aleatoire1(ActionEvent event) {
+		if (checkChoose1.isSelected()) {
+			// Choix aléatoire
+			int index = (int) Math.floor(Math.random() * Constantes.IA_NAMES.length);
+			String nomJoueur = Constantes.IA_NAMES[index];
+			if (nomJoueur.compareTo(nom_field_j2.getText()) == 0) {
+				nomJoueur = Constantes.IA_NAMES[(index+1)%Constantes.IA_NAMES.length];
+			}
+			nom_field_j1.setText(nomJoueur);
+		}
+		else {
+			nom_field_j1.setText("");
+		}		
+	}
+	
+	@FXML
+	public void choisir_nom_aleatoire2(ActionEvent event) {
+		if (checkChoose2.isSelected()) {
+			// Choix aléatoire
+			int index = (int) Math.floor(Math.random() * Constantes.IA_NAMES.length);
+			String nomJoueur = Constantes.IA_NAMES[index];
+			if (nomJoueur.compareTo(nom_field_j1.getText()) == 0) {
+				nomJoueur = Constantes.IA_NAMES[(index+1)%Constantes.IA_NAMES.length];
+			}
+			nom_field_j2.setText(nomJoueur);
+		}
+		else {
+			nom_field_j2.setText("");
+		}
+	}
+	
 	
 
 	// GESTION DES BOUTONS
@@ -188,11 +303,12 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			if (this.jeu != null) {
 				if (joueur1 != this.partie.getJoueur1()) {
 					this.partie.setJoueur1(joueur1, this.isJoueurCourant1);
-				}
-				
+				}				
 				if (joueur2 != this.partie.getJoueur2()) {
 					this.partie.setJoueur2(joueur2, this.isJoueurCourant1);
 				}
+				message_partie_2.setText(message_partie_1.getText());
+				message_partie_1.setText("Partie rechargée");
 			}
 			// Création du jeu
 			else {
@@ -225,6 +341,8 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		button_start.setText("Commencer la partie");
 		button_start.setDisable(false);
 		button_reset.setDisable(true);
+		image_winner1.setImage(null);
+		image_winner2.setImage(null);
 		if (this.jeu != null) {
 			interruptJeu = true;
 			this.jeu.interrupt();
@@ -295,6 +413,28 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		}
 		algos.setValue("Alpha-Beta");
 	}
+	
+	public void initialiserIcones(ComboBox<ImageView> icones) {
+		for (int j = 0; j < Constantes.JETON_JOUEUR.length; j++) {
+			ImageView jeton = new ImageView(Constantes.JETON_JOUEUR[j]);
+			jeton.setFitHeight(35.0);
+			jeton.setFitWidth(35.0);
+			icones.getItems().addAll(jeton);
+		}
+		//icones.setValue("Alpha-Beta");
+	}
+	
+	
+	
+	// Ancienne fonction d'icônes
+	/*
+	public void initialiserIcone(HBox paneIcone, String path_img_jeton) {
+		ImageView jeton = new ImageView(path_img_jeton);
+		jeton.setFitHeight(25.0);
+		jeton.setFitWidth(25.0);
+		paneIcone.getChildren().add(jeton);
+	}
+	*/
 
 	public void disableParametres(VBox parametres) {
 		for (Node parametre : parametres.getChildren()) {
@@ -367,12 +507,18 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		switch (partie.getEtatPartie()) {
 		case Constantes.VICTOIRE_JOUEUR_1:
 			msgVainqueur.append("VICTOIRE " + partie.getJoueur1().getNom());
+			image_winner1.setImage(new Image(Constantes.JETON_JOUEUR_1));
+			image_winner2.setImage(new Image(Constantes.JETON_JOUEUR_1));
 			break;
 		case Constantes.VICTOIRE_JOUEUR_2:
 			msgVainqueur.append("VICTOIRE " + partie.getJoueur2().getNom());
+			image_winner1.setImage(new Image(Constantes.JETON_JOUEUR_2));
+			image_winner2.setImage(new Image(Constantes.JETON_JOUEUR_2));
 			break;
 		default:
 			msgVainqueur.append("MATCH NUL");
+			image_winner1.setImage(new Image(Constantes.JETON_JOUEUR_1));
+			image_winner2.setImage(new Image(Constantes.JETON_JOUEUR_2));
 			break;
 		}
 

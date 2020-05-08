@@ -41,6 +41,9 @@ public class Jeu extends Thread {
 		}
 	}
 
+	/**
+	 * Méthode appellée lorsque le controlleur est une Console
+	 */
 	public void runConsole() {
 		controlleur.lancementPartie(partie.getJoueur1(), partie.getJoueur2());
 		while (!partie.isPartieFinie()) {
@@ -54,10 +57,13 @@ public class Jeu extends Thread {
 				System.out.println("COUP INVALIDE : Recommencez !");
 			}
 		}
-
+		
 		controlleur.afficherFinPartie(partie);
 	}
 
+	/**
+	 * Méthode appellée lorsque le controlleur est un Controlleur Graphique FXML
+	 */
 	public synchronized void runFXMLControlleur() throws InterruptedException {
 		Platform.runLater(() -> controlleur.lancementPartie(partie.getJoueur1(), partie.getJoueur2()));
 		while (!partie.isPartieFinie() && !((ControlleurFXML)controlleur).interruptJeu) {
@@ -90,6 +96,7 @@ public class Jeu extends Thread {
 				return;
 			}
 		}
+		
 		Platform.runLater(() -> controlleur.afficherFinPartie(partie));
 	}
 

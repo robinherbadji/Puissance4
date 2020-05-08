@@ -230,51 +230,9 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	}
 	
 	
-	public void initialiserIconeBox(ComboBox<IconeJeton> iconeBox) {
-		iconeBox.setCellFactory(new Callback<ListView<IconeJeton>, ListCell<IconeJeton>>() {
-		    @Override
-		    public ListCell<IconeJeton> call(ListView<IconeJeton> p) {
-		        return new ListCell<IconeJeton>() {
-		            Label icon = new Label();
-		            { 
-		                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		            }
+	
 
-		            @Override protected void updateItem(IconeJeton item, boolean empty) {
-		                super.updateItem(item, empty);
-		                
-		                if (item == null || empty) {
-		                    setGraphic(null);
-		                } else {
-		                    icon.setGraphic(item.getIconeCell());
-		                    setGraphic(icon);
-		                }
-		           }
-		      };
-		  }
-		});
-		
-		class IconTextCellClass extends ListCell<IconeJeton> {
-		    @Override
-		    protected void updateItem(IconeJeton item, boolean empty) {
-		        super.updateItem(item, empty);
-		        if (item != null) {
-		        	setGraphic(item.getIconeButton());
-		        }
-		    }
-		};
-
-		iconeBox.setButtonCell(new IconTextCellClass());
-		ObservableList<IconeJeton> listeIcone = FXCollections.observableArrayList();
-		for (int j = 0; j < Constantes.JETON_JOUEUR.length; j++) {
-			IconeJeton jeton = new IconeJeton(Constantes.JETON_JOUEUR[j]);
-			listeIcone.addAll(jeton);
-		}
-		iconeBox.setItems(listeIcone);
-	}
-	
-	
-	
+	// GESTION DES BOUTONS
 	@FXML
 	public void choisir_nom_aleatoire1(ActionEvent event) {
 		if (checkChoose1.isSelected()) {
@@ -308,8 +266,6 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	}
 	
 	
-
-	// GESTION DES BOUTONS
 	@FXML
 	synchronized public void commencerPartie(ActionEvent event) {
 
@@ -329,9 +285,9 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 						niveau_field_j2.getText());
 			}
 		}
-
 		
 		if (joueur1 != null && joueur2 != null) {
+			
 			// Rechargement du jeu avec des nouveaux paramètres
 			if (this.jeu != null) {
 				if (joueur1 != this.partie.getJoueur1()) {
@@ -343,6 +299,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 				message_partie_2.setText(message_partie_1.getText());
 				message_partie_1.setText("Partie rechargée");
 			}
+			
 			// Création du jeu
 			else {
 				this.jeu = new Jeu(joueur1, joueur2, this);
@@ -449,6 +406,51 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		}
 		return intLevel;
 	}
+	
+	
+	public void initialiserIconeBox(ComboBox<IconeJeton> iconeBox) {
+		iconeBox.setCellFactory(new Callback<ListView<IconeJeton>, ListCell<IconeJeton>>() {
+		    @Override
+		    public ListCell<IconeJeton> call(ListView<IconeJeton> p) {
+		        return new ListCell<IconeJeton>() {
+		            Label icon = new Label();
+		            { 
+		                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		            }
+
+		            @Override protected void updateItem(IconeJeton item, boolean empty) {
+		                super.updateItem(item, empty);
+		                
+		                if (item == null || empty) {
+		                    setGraphic(null);
+		                } else {
+		                    icon.setGraphic(item.getIconeCell());
+		                    setGraphic(icon);
+		                }
+		           }
+		      };
+		  }
+		});
+		
+		class IconTextCellClass extends ListCell<IconeJeton> {
+		    @Override
+		    protected void updateItem(IconeJeton item, boolean empty) {
+		        super.updateItem(item, empty);
+		        if (item != null) {
+		        	setGraphic(item.getIconeButton());
+		        }
+		    }
+		};
+
+		iconeBox.setButtonCell(new IconTextCellClass());
+		ObservableList<IconeJeton> listeIcone = FXCollections.observableArrayList();
+		for (int j = 0; j < Constantes.JETON_JOUEUR.length; j++) {
+			IconeJeton jeton = new IconeJeton(Constantes.JETON_JOUEUR[j]);
+			listeIcone.addAll(jeton);
+		}
+		iconeBox.setItems(listeIcone);
+	}
+	
 
 	public void initialiserAlgos(ComboBox<String> algos) {
 		for (int j = 0; j < Constantes.IA_ALGOS.length; j++) {
@@ -457,27 +459,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		algos.setValue("Alpha-Beta");
 	}
 	
-	public void initialiserIcones(ComboBox<ImageView> icones) {
-		for (int j = 0; j < Constantes.JETON_JOUEUR.length; j++) {
-			ImageView jeton = new ImageView(Constantes.JETON_JOUEUR[j]);
-			jeton.setFitHeight(35.0);
-			jeton.setFitWidth(35.0);
-			icones.getItems().addAll(jeton);
-		}
-		//icones.setValue("Alpha-Beta");
-	}
 	
-	
-	
-	// Ancienne fonction d'icônes
-	/*
-	public void initialiserIcone(HBox paneIcone, String path_img_jeton) {
-		ImageView jeton = new ImageView(path_img_jeton);
-		jeton.setFitHeight(25.0);
-		jeton.setFitWidth(25.0);
-		paneIcone.getChildren().add(jeton);
-	}
-	*/
 
 	public void disableParametres(VBox parametres) {
 		for (Node parametre : parametres.getChildren()) {
@@ -503,8 +485,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	}
 
 	@Override
-	public void lancementPartie(Joueur joueur1, Joueur joueur2) {
-		
+	public void lancementPartie(Joueur joueur1, Joueur joueur2) {		
 	}
 
 	@Override

@@ -88,7 +88,7 @@
                         <ComboBox fx:id="iconebox_j1" prefHeight="40.0" prefWidth="85.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <TextField fx:id="nom_field_j1" maxWidth="150.0" promptText="Nom du joueur 1" text="Robin" />
+                              <TextField fx:id="nom_field_j1" maxWidth="150.0" promptText="Nom du joueur 1" />
                               <CheckBox fx:id="checkChoose1" mnemonicParsing="false" onAction="#choisir_nom_aleatoire1" text="choisir pour moi" visible="false">
                                  <HBox.margin>
                                     <Insets left="20.0" />

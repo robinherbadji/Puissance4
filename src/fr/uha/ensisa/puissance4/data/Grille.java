@@ -190,7 +190,7 @@ public class Grille {
 			strategie = new StrategieOddEven(this, symboleJoueurCourant);
 			break;
 		default:
-			strategie = new StrategieOddEven(this, symboleJoueurCourant);
+			strategie = new StrategieSimple(this, symboleJoueurCourant);
 			break;
 		}
 		return strategie.getUtility();

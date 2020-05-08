@@ -86,9 +86,9 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	private CheckBox checkChoose2;
 	
 	@FXML
-	private ComboBox<ImageView> iconebox_j1;
+	private ComboBox<IconeJeton> iconebox_j1;
 	@FXML
-	private ComboBox<String> iconebox_j2;
+	private ComboBox<IconeJeton> iconebox_j2;
 	@FXML
 	private ComboBox<String> algobox_j1;
 	@FXML
@@ -150,6 +150,41 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	public Jeu getJeu() {
 		return this.jeu;
 	}
+	
+
+	private class IconeJeton {
+		private String path;
+		private ImageView iconeCell;
+		private ImageView iconeButton;
+		
+		private IconeJeton(String path) {
+			this.path = path;
+			this.iconeCell = new ImageView(path);
+			this.iconeCell.setFitHeight(50.0);
+			this.iconeCell.setFitWidth(50.0);
+			this.iconeButton = null;
+		}		
+		private String getPath() {
+			return this.path;
+		}		
+		private ImageView getIconeCell() {
+			return this.iconeCell;
+		}
+		private ImageView getIconeButton() {
+			if (this.iconeButton == null) {
+				this.iconeButton = new ImageView(path);
+				this.iconeButton.setFitHeight(30.0);
+				this.iconeButton.setFitWidth(30.0);
+			}
+			return this.iconeButton;
+		}
+		private void setDisable() {
+			this.iconeButton = null;
+			this.iconeCell = null;
+		}
+	}
+	
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -162,57 +197,10 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		//initialiserIcone(icone_pane_1, Constantes.JETON_JOUEUR_1);
 		//initialiserIcone(icone_pane_2, Constantes.JETON_JOUEUR_2);
 		
-		
 		// TEST AVEC LES CELLFACTORY
 		
-		ObservableList<ImageView> imgList = FXCollections.observableArrayList();
-		for (int j = 0; j < Constantes.JETON_JOUEUR.length; j++) {
-			ImageView jeton = new ImageView(Constantes.JETON_JOUEUR[j]);
-			jeton.setFitHeight(35.0);
-			jeton.setFitWidth(35.0);
-			imgList.addAll(jeton);
-		}
-		iconebox_j1.setItems(imgList);
-		iconebox_j1.setCellFactory(new Callback<ListView<ImageView>, ListCell<ImageView>>() {
-
-		    @Override public ListCell<ImageView> call(ListView<ImageView> p) {
-		        return new ListCell<ImageView>() {
-		            Label icon = new Label();
-		            //private final HBox cell;
-		            { 
-		                setContentDisplay(ContentDisplay.GRAPHIC_ONLY); 
-		                //cell = new HBox();
-
-		                //cell.getChildren().add(icon);
-		            }
-
-		            @Override protected void updateItem(ImageView item, boolean empty) {
-		                super.updateItem(item, empty);
-		                
-		                if (item == null) {
-		                    setGraphic(null);
-		                } else {
-		                    icon.setGraphic(item);
-		                    //setGraphic(null);
-		                    //setGraphic(cell);
-		                    setGraphic(item);
-		                }
-		           }
-		      };
-		  }
-		});
-		
-		class IconTextCellClass extends ListCell<ImageView> {
-		    @Override
-		    protected void updateItem(ImageView item, boolean empty) {
-		        super.updateItem(item, empty);
-		        if (item != null) {
-		        	setGraphic(item);
-		        }
-		    }
-		};
-
-		iconebox_j1.setButtonCell(new IconTextCellClass());
+		initialiserIconeBox(iconebox_j1);
+		initialiserIconeBox(iconebox_j2);
 		
 		
 		optionToggleGroup1.selectedToggleProperty()
@@ -240,6 +228,51 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 					}
 				});
 	}
+	
+	
+	public void initialiserIconeBox(ComboBox<IconeJeton> iconeBox) {
+		iconeBox.setCellFactory(new Callback<ListView<IconeJeton>, ListCell<IconeJeton>>() {
+		    @Override
+		    public ListCell<IconeJeton> call(ListView<IconeJeton> p) {
+		        return new ListCell<IconeJeton>() {
+		            Label icon = new Label();
+		            { 
+		                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		            }
+
+		            @Override protected void updateItem(IconeJeton item, boolean empty) {
+		                super.updateItem(item, empty);
+		                
+		                if (item == null || empty) {
+		                    setGraphic(null);
+		                } else {
+		                    icon.setGraphic(item.getIconeCell());
+		                    setGraphic(icon);
+		                }
+		           }
+		      };
+		  }
+		});
+		
+		class IconTextCellClass extends ListCell<IconeJeton> {
+		    @Override
+		    protected void updateItem(IconeJeton item, boolean empty) {
+		        super.updateItem(item, empty);
+		        if (item != null) {
+		        	setGraphic(item.getIconeButton());
+		        }
+		    }
+		};
+
+		iconeBox.setButtonCell(new IconTextCellClass());
+		ObservableList<IconeJeton> listeIcone = FXCollections.observableArrayList();
+		for (int j = 0; j < Constantes.JETON_JOUEUR.length; j++) {
+			IconeJeton jeton = new IconeJeton(Constantes.JETON_JOUEUR[j]);
+			listeIcone.addAll(jeton);
+		}
+		iconeBox.setItems(listeIcone);
+	}
+	
 	
 	
 	@FXML
@@ -282,17 +315,17 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 
 		// Création Joueur 1
 		if (is_j1_humain) {
-			joueur1 = creerHumain(nom_field_j1.getText(), 1);
+			joueur1 = creerHumain(nom_field_j1.getText(), 1, iconebox_j1.getValue().getPath());
 		} else {
-			joueur1 = creerIA(nom_field_j1.getText(), 1, algobox_j1.getValue().toString(), niveau_field_j1.getText());
+			joueur1 = creerIA(nom_field_j1.getText(), 1, iconebox_j1.getValue().getPath(), algobox_j1.getValue().toString(), niveau_field_j1.getText());
 		}
 
 		// Création Joueur 2
 		if (joueur1 != null) {
 			if (is_j2_humain) {
-				joueur2 = creerHumain(nom_field_j2.getText(), 2);
+				joueur2 = creerHumain(nom_field_j2.getText(), 2, iconebox_j2.getValue().getPath());
 			} else {
-				joueur2 = creerIA(nom_field_j2.getText(), 2, algobox_j2.getValue().toString(),
+				joueur2 = creerIA(nom_field_j2.getText(), 2, iconebox_j2.getValue().getPath(), algobox_j2.getValue().toString(),
 						niveau_field_j2.getText());
 			}
 		}
@@ -360,37 +393,47 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	}
 	
 
-	public Joueur creerHumain(String nom_joueur, int order) {
+	public Joueur creerHumain(String nom_joueur, int order, String icone_path) {
 		Joueur joueur = null;
 		if (!nom_joueur.isEmpty()) {
-			joueur = new Humain(nom_joueur, order);
+			if (iconebox_j1.getValue().getPath() != iconebox_j2.getValue().getPath()) {
+				joueur = new Humain(nom_joueur, order, icone_path);
+			}
+			else  {
+				message_start.setText("Les icônes doivent être différents");
+			}
 		} else {
 			message_start.setText("Joueur " + order + " : saisir un nom");
 		}
 		return joueur;
 	}
 
-	public Joueur creerIA(String nom_joueur, int order, String algo, String level) {
+	public Joueur creerIA(String nom_joueur, int order, String icone_path, String algo, String level) {
 		Joueur joueur = null;
 
 		int algo_id = -1;
 		if (!nom_joueur.isEmpty()) {
-			int intLevel = isNiveauOK(level);
-			if (intLevel < 1 || intLevel > 42) {
-				message_start.setText("Joueur " + order + " : Nombre dans [1,42]");
-				return null;
-			} else {
-				for (int j = 0; j < Constantes.IA_ALGOS.length; j++) {
-					if (algo == Constantes.IA_ALGOS[j]) {
-						algo_id = j;
+			if (iconebox_j1.getValue().getPath() != iconebox_j2.getValue().getPath()) {
+				int intLevel = isNiveauOK(level);
+				if (intLevel < 1 || intLevel > 42) {
+					message_start.setText("Joueur " + order + " : Nombre dans [1,42]");
+					return null;
+				} else {
+					for (int j = 0; j < Constantes.IA_ALGOS.length; j++) {
+						if (algo == Constantes.IA_ALGOS[j]) {
+							algo_id = j;
+						}
+					}
+					if (algo_id < 0 || algo_id > Constantes.IA_ALGOS.length) {
+						message_start.setText("Joueur " + order + " : algorithme non défini");
+					} else {
+						joueur = new IA(nom_joueur, order, icone_path, algo_id, intLevel);
 					}
 				}
-				if (algo_id < 0 || algo_id > Constantes.IA_ALGOS.length) {
-					message_start.setText("Joueur " + order + " : algorithme non défini");
-				} else {
-					joueur = new IA(nom_joueur, order, algo_id, intLevel);
-				}
 			}
+			else  {
+				message_start.setText("Les icônes doivent être différents");
+			}			
 		} else {
 			message_start.setText("Joueur " + order + " : saisir un nom");
 		}
@@ -507,18 +550,18 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 		switch (partie.getEtatPartie()) {
 		case Constantes.VICTOIRE_JOUEUR_1:
 			msgVainqueur.append("VICTOIRE " + partie.getJoueur1().getNom());
-			image_winner1.setImage(new Image(Constantes.JETON_JOUEUR_1));
-			image_winner2.setImage(new Image(Constantes.JETON_JOUEUR_1));
+			image_winner1.setImage(new Image(joueur1.getIconePath()));
+			image_winner2.setImage(new Image(joueur1.getIconePath()));
 			break;
 		case Constantes.VICTOIRE_JOUEUR_2:
 			msgVainqueur.append("VICTOIRE " + partie.getJoueur2().getNom());
-			image_winner1.setImage(new Image(Constantes.JETON_JOUEUR_2));
-			image_winner2.setImage(new Image(Constantes.JETON_JOUEUR_2));
+			image_winner1.setImage(new Image(joueur2.getIconePath()));
+			image_winner2.setImage(new Image(joueur2.getIconePath()));
 			break;
 		default:
 			msgVainqueur.append("MATCH NUL");
-			image_winner1.setImage(new Image(Constantes.JETON_JOUEUR_1));
-			image_winner2.setImage(new Image(Constantes.JETON_JOUEUR_2));
+			image_winner1.setImage(new Image(joueur1.getIconePath()));
+			image_winner2.setImage(new Image(joueur2.getIconePath()));
 			break;
 		}
 
@@ -589,10 +632,10 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 				grille.addCase(j, colonne, symboleJoueur);
 				switch (symboleJoueur) {
 				case X:
-					addJeton(Constantes.JETON_JOUEUR_1, j, colonne);
+					addJeton(joueur1.getIconePath(), j, colonne);
 					break;
 				case O:
-					addJeton(Constantes.JETON_JOUEUR_2, j, colonne);
+					addJeton(joueur2.getIconePath(), j, colonne);
 					break;
 				default:
 					break;

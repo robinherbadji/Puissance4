@@ -190,15 +190,7 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		disableButtonsColonne(buttons);
 		initialiserAlgos(algobox_j1);
-		initialiserAlgos(algobox_j2);
-		//initialiserIcones(iconebox_j1);
-		//initialiserIcones(iconebox_j2);
-		
-		//initialiserIcone(icone_pane_1, Constantes.JETON_JOUEUR_1);
-		//initialiserIcone(icone_pane_2, Constantes.JETON_JOUEUR_2);
-		
-		// TEST AVEC LES CELLFACTORY
-		
+		initialiserAlgos(algobox_j2);		
 		initialiserIconeBox(iconebox_j1);
 		initialiserIconeBox(iconebox_j2);
 		
@@ -449,6 +441,13 @@ public class ControlleurFXML extends Controlleur implements Initializable {
 			listeIcone.addAll(jeton);
 		}
 		iconeBox.setItems(listeIcone);
+		if (iconeBox == iconebox_j1) {
+			iconebox_j1.setValue(iconebox_j1.getItems().get(0));
+		}
+		else {
+			iconebox_j2.setValue(iconebox_j2.getItems().get(1));
+		}
+		
 	}
 	
 

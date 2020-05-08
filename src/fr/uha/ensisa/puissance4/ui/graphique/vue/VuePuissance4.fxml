@@ -43,7 +43,7 @@
                         <ImageView fx:id="image_winner2" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </HBox>
-                  <GridPane fx:id="joueur_pane1" prefHeight="150.0" prefWidth="400.0">
+                  <GridPane fx:id="joueur_pane1" prefHeight="160.0" prefWidth="400.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="129.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="321.0" />
@@ -85,7 +85,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="iconebox_j1" prefHeight="40.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="iconebox_j1" prefHeight="40.0" prefWidth="85.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
                               <TextField fx:id="nom_field_j1" maxWidth="150.0" promptText="Nom du joueur 1" text="Robin" />
@@ -129,7 +129,7 @@
                         <Insets top="10.0" />
                      </padding>
                   </GridPane>
-                  <GridPane fx:id="joueur_pane2" prefHeight="150.0" prefWidth="400.0">
+                  <GridPane fx:id="joueur_pane2" prefHeight="160.0" prefWidth="400.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="129.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="321.0" />
@@ -174,7 +174,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="iconebox_j2" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="iconebox_j2" prefHeight="40.0" prefWidth="85.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
                               <TextField fx:id="nom_field_j2" maxWidth="150.0" promptText="Nom du joueur 1" text="IA Robin &amp; Yass" />

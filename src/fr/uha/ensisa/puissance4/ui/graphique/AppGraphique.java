@@ -37,7 +37,7 @@ public class AppGraphique extends Application {
 	@Override
 	public void stop() {
 		//this.controller.getJeu().interrupt();
-		this.controller.interrupt();		
+		//this.controller.interrupt();		
 	    System.out.println("Fermeture de l'application");
 	    System.exit(0);
 	}

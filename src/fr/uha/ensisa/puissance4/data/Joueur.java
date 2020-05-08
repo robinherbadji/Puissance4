@@ -13,11 +13,22 @@ public abstract class Joueur {
 	 * Indique si le joueur est le joueur 1 ou 2
 	 */
 	protected int order;
+	/**
+	 * Chemin de l'icône du joueur
+	 */
+	protected String icone_path;
 	
 	protected Joueur(String nom, int order)
 	{
 		this.nom = nom;
 		this.order = order;
+	}
+	
+	protected Joueur(String nom, int order, String icone_path)
+	{
+		this.nom = nom;
+		this.order = order;
+		this.icone_path = icone_path;
 	}
 	
 	/**
@@ -64,6 +75,10 @@ public abstract class Joueur {
 		{
 			return Constantes.SYMBOLE_J2;
 		}
+	}
+	
+	public String getIconePath() {
+		return this.icone_path;
 	}
 
 	/**

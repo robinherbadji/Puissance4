@@ -64,29 +64,29 @@ public class Jeu extends Thread {
 			try {
 				Platform.runLater(() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(),
 						partie.getGrille()));
-				wait(30);
-
-				long tempsDebut = System.currentTimeMillis();
+				wait(25);
+				
+				long tempsDebut = System.currentTimeMillis();				
 				((ControlleurFXML) controlleur).resetBouton();
 				int coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
 				((ControlleurFXML) controlleur).resetBouton();
+				
+				
 				if (((ControlleurFXML)controlleur).interruptJeu) {
-					System.out.println("Interrupetion");
-					wait(30);
 					Thread.currentThread().interrupt();
 					return;
 				}
 
 				final long tempsReflexion = System.currentTimeMillis() - tempsDebut;
-				wait(30);
+				wait(25);
 				Platform.runLater(() -> ((ControlleurFXML) controlleur).afficherCoup(partie.getJoueurCourant(), coup,
 						tempsReflexion));
 				Platform.runLater(() -> ((ControlleurFXML) controlleur).jouerCoupGraphique(coup, tempsReflexion));
-				wait(30);
+				wait(25);
 
 			} catch (InterruptedException e) {
-				//this.interrupt();
 				Thread.currentThread().interrupt();
+				((ControlleurFXML)controlleur).interruptJeu = false;
 				return;
 			}
 		}

@@ -16,10 +16,11 @@ public abstract class Constantes {
 	public static final int IA_NEGAMAX_THREAD = 2;
 	public static final int IA_NEGAMAX_ALPHA_THREAD = 3;
 	
-	public static final String[] IA_ALGOS = {"Minimax", "Alpha-Beta", "NegamaxThread", "NegamaxAlphaThread"};
-	
-	public static final String[] IA_NAMES = {"HAL", "Skynet", "Ultron", "R2-D2", "Rick Deckard", "IDA"};
-	
+	public static final String[] IA_ALGOS = { "Minimax", "Alpha-Beta", "NegamaxThread", "NegamaxAlphaThread" };
+
+	public static final String[] IA_NAMES = { "HAL", "Skynet", "Ultron", "R2-D2", "Rick Deckard", "IDA", "Robocop",
+			"WALL-E", "La Machine", "IA Robin & Yass" };
+
 	/**
 	 * V = case vide
 	 * X = case symbole joueur 1
@@ -34,12 +35,8 @@ public abstract class Constantes {
 	// Affectation des symboles aux joueurs
 	public static final Case SYMBOLE_J1 = Case.X;
 	public static final Case SYMBOLE_J2 = Case.O;
-	public static final String JETON_JOUEUR_1 = "images/coffee.png";
-	public static final String JETON_JOUEUR_2 = "images/robot.png";
-	//public static final String JETON_JOUEUR_1 = "images/donut.png";
-	//public static final String JETON_JOUEUR_2 = "images/superman.jpg";
 	
-	
+	public static final String[] JETON_JOUEUR = {"images/coffee.png", "images/robot.png", "images/donut.png", "images/superman.jpg"};	
 	
 	
 	//Définition de la taille de la grille

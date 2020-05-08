@@ -21,6 +21,22 @@ public class Partie {
 		tour = 1;
 		grille = new Grille();
 	}
+	
+	
+	public void setJoueur1(Joueur joueur1, boolean isJoueurCourant1) {
+		this.joueur1 = joueur1;		
+		if (isJoueurCourant1) {
+			this.joueurCourant = this.joueur1;
+		}
+	}
+	
+	public void setJoueur2(Joueur joueur2, boolean isJoueurCourant1) {
+		this.joueur2 = joueur2;
+		if (!isJoueurCourant1) {
+			this.joueurCourant = this.joueur2;
+		}
+	}
+	
 
 	/**
 	 * Renvoie le joueur 1

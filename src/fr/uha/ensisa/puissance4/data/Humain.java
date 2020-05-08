@@ -8,6 +8,10 @@ public class Humain extends Joueur {
 	public Humain(String nom, int order) {
 		super(nom, order);		
 	}
+	
+	public Humain(String nom, int order, String icone_path) {
+		super(nom, order, icone_path);		
+	}
 
 	@Override
 	public int getType() {

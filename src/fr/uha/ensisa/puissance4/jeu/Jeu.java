@@ -41,6 +41,9 @@ public class Jeu extends Thread {
 		}
 	}
 
+	/**
+	 * Méthode appellée lorsque le controlleur est une Console
+	 */
 	public void runConsole() {
 		controlleur.lancementPartie(partie.getJoueur1(), partie.getJoueur2());
 		while (!partie.isPartieFinie()) {
@@ -54,29 +57,46 @@ public class Jeu extends Thread {
 				System.out.println("COUP INVALIDE : Recommencez !");
 			}
 		}
-
+		
 		controlleur.afficherFinPartie(partie);
 	}
 
+	/**
+	 * Méthode appellée lorsque le controlleur est un Controlleur Graphique FXML
+	 */
 	public synchronized void runFXMLControlleur() throws InterruptedException {
 		Platform.runLater(() -> controlleur.lancementPartie(partie.getJoueur1(), partie.getJoueur2()));
-		while (!partie.isPartieFinie() && !this.isInterrupted()) {
-			Platform.runLater(
-					() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(), partie.getGrille()));
-			wait(30);
+		while (!partie.isPartieFinie() && !((ControlleurFXML)controlleur).interruptJeu) {
+			try {
+				Platform.runLater(() -> controlleur.lancementTour(partie.getTour(), partie.getJoueurCourant(),
+						partie.getGrille()));
+				wait(25);
+				
+				long tempsDebut = System.currentTimeMillis();				
+				((ControlleurFXML) controlleur).resetBouton();
+				int coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
+				((ControlleurFXML) controlleur).resetBouton();
+				
+				
+				if (((ControlleurFXML)controlleur).interruptJeu) {
+					Thread.currentThread().interrupt();
+					return;
+				}
 
-			long tempsDebut = System.currentTimeMillis();
-			((ControlleurFXML) controlleur).resetBouton();
-			int coup = partie.getJoueurCourant().joue(partie.getGrille(), controlleur, partie.getTour());
-			((ControlleurFXML) controlleur).resetBouton();
+				final long tempsReflexion = System.currentTimeMillis() - tempsDebut;
+				wait(25);
+				Platform.runLater(() -> ((ControlleurFXML) controlleur).afficherCoup(partie.getJoueurCourant(), coup,
+						tempsReflexion));
+				Platform.runLater(() -> ((ControlleurFXML) controlleur).jouerCoupGraphique(coup, tempsReflexion));
+				wait(25);
 
-			final long tempsReflexion = System.currentTimeMillis() - tempsDebut;
-			wait(30);
-			Platform.runLater(() -> ((ControlleurFXML) controlleur).afficherCoup(partie.getJoueurCourant(), coup,
-					tempsReflexion));
-			Platform.runLater(() -> ((ControlleurFXML) controlleur).jouerCoupGraphique(coup, tempsReflexion));
-			wait(30);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				((ControlleurFXML)controlleur).interruptJeu = false;
+				return;
+			}
 		}
+		
 		Platform.runLater(() -> controlleur.afficherFinPartie(partie));
 	}
 

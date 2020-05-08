@@ -22,6 +22,13 @@ public class IA extends Joueur {
 		this.algoIA=algoIA;
 		this.levelIA=levelIA;
 	}
+	
+	public IA(String nom, int order, String icone_path, int algoIA, int levelIA) {
+		super(nom, order, icone_path);
+		this.algoIA=algoIA;
+		this.levelIA=levelIA;
+	}
+	
 
 	@Override
 	public int getType() {

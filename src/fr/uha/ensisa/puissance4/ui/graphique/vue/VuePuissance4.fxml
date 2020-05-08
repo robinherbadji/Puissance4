@@ -123,14 +123,14 @@
                            <font>
                               <Font size="18.0" />
                            </font></Label>
-                        <ComboBox fx:id="algobox_j1" prefWidth="210.0" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="algobox_j1" prefWidth="205.0" GridPane.columnIndex="1" />
                         <TextField fx:id="niveau_field_j1" maxWidth="65.0" promptText="[1 , 42]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Stratégie :" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="strategiebox_j1" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="strategiebox_j1" prefWidth="125.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
                         <Insets top="2.0" />
@@ -184,8 +184,8 @@
                         <ComboBox fx:id="iconebox_j2" prefHeight="40.0" prefWidth="85.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <TextField fx:id="nom_field_j2" maxWidth="150.0" promptText="Nom du joueur 1" text="IA Robin &amp; Yass" />
-                              <CheckBox fx:id="checkChoose2" mnemonicParsing="false" onAction="#choisir_nom_aleatoire2" text="choisir pour moi">
+                              <TextField fx:id="nom_field_j2" maxWidth="150.0" promptText="Nom du joueur 2" text="IA Robin &amp; Yass" />
+                              <CheckBox fx:id="checkChoose2" mnemonicParsing="false" onAction="#choisir_nom_aleatoire2" selected="true" text="choisir pour moi">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin>
@@ -221,14 +221,14 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="algobox_j2" prefWidth="210.0" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="algobox_j2" prefWidth="205.0" GridPane.columnIndex="1" />
                         <TextField fx:id="niveau_field_j2" maxWidth="65.0" promptText="[1 , 42]" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Stratégie :" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="strategiebox_j2" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="strategiebox_j2" prefWidth="125.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
                         <Insets top="2.0" />
